@@ -1,17 +1,22 @@
 package com.pmg.mymusictaste.controller;
 
-import com.pmg.mymusictaste.util.MelonCrawler;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class BaseController {
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String mappedUrl() {
-        MelonCrawler melon = new MelonCrawler();
-        melon.getMelonCrawlingList("");
+        // MelonCrawler melon = new MelonCrawler();
+        // melon.getMelonCrawlingList("");
         return "index";
+    }
+
+    @GetMapping("/musicTest")
+    public String mappedUrl2() {
+        // MelonCrawler melon = new MelonCrawler();
+        // melon.getMelonCrawlingList("");
+        return "musicTest";
     }
 }
