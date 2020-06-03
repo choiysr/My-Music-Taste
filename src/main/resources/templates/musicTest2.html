@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+    <div class="player-toolbox">
+        <a id="btnSelectAll">전체선택</a>
+        <a id="btnDeleteSelected">선택삭제</a>
+    </div>
+
+    <div class="player-playlist"></div>
+    <div class="row player-playlist-item" data-titleidx="70017" data-youtubeid="rOCymN-Rwiw" data-playidx="1">
+    </div>
+    <div class="row player-playlist-item" data-titleidx="68938" data-youtubeid="TgOu00Mf3kI" data-playidx="2">
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            if (screen.width > 640) {
+                window.resizeTo(640, 810);
+            }
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            $("#btnSelectAll").click(function () {
+                $("input.selectMusic").attr("checked", true);
+                $("input.selectMusic").prop("checked", true);
+            });
+            $("#btnDeleteSelected").click(function () {
+                $("input.selectMusic:checked").each(function () {
+                    removePlaylist(parseInt($(this).attr("data-playidx")));
+                });
+            });
+
+            play(1);
+        });
+        // $(window).load(function () {
+        //     window.opener.opend();
+        // });
+
+        var player;
+        var cnt = 0;
+        var playidx = 0;
+        var playing = 0;
+
+        function addMusic(info, autoplay) {
+            var t = (playidx + 1)
+            if (Array.isArray(info)) {
+                for (var i = 0; i < info.length; i++) {
+                    playlist(info[i]);
+                }
+            }
+            else {
+                playlist(info);
+            }
+            if (autoplay) {
+                play(t);
+            }
+        }
+
+        function playlist(music) {
+            playidx = playidx + 1;
+            cnt = cnt + 1;
+            var div = "<div class='row player-playlist-item' data-titleidx='" + music.titleIdx + "' data-youtubeid='" + music.youtubeId + "' data-playidx='" + playidx + "'>";
+            div += "	<div class='col-xs-2 col-sm-1 text-center'>";
+            div += "		<input type='checkbox' class='selectMusic' data-playidx='" + playidx + "'>";
+            div += "	</div>";
+            div += "	<div class='col-xs-7 col-sm-10 title'>";
+            div += "		<a href='javascript:play(&quot;" + playidx + "&quot;)' class='text-muted playlink'><i class='fa fa-headphones' style='display:none'></i>" + music.title + "-" + music.artist + "</a>";
+            div += "	</div>";
+            div += "	<div class='col-xs-3 col-sm-1 text-center'>";
+            div += "		<a href='javascript:void(0)' onclick='addJjim(&quot;" + music.titleIdx + "&quot;)'>";
+            if (music.jjim == 1) {
+                div += "			<i class='fa fa-lg fa-star text-red' data-no='" + music.titleIdx + "'></i>";
+            }
+            else {
+                div += "			<i class='fa fa-lg fa-star-o text-muted' data-no='" + music.titleIdx + "'></i>";
+            }
+            div += "		</a>";
+            div += "		&nbsp;&nbsp;&nbsp;";
+            div += "		<a href='#' onclick='removePlaylist(&quot;" + playidx + "&quot;)'><i class='fa fa-lg fa-trash text-muted'></i></a>";
+            div += "	</div>";
+            div += "</div>";
+            $("div.player-playlist").append(div);
+        }
+
+        function addJjim(titleIdx) {
+            jjim2("M", titleIdx);
+            if (opener != undefined && opener != null) {
+                opener.musicChange(titleIdx);
+            }
+        }
+
+        function removePlaylist(titleIdx) {
+        }
+
+        function playMusic(data) {
+            $("div.player-playlist-item").each(function () {
+                if ($(this).attr("data-titleidx") == data.titleIdx) {
+                    var youtube = $(this).attr("data-youtubeid");
+                    return;
+                }
+            });
+        }
+        function play(playidx) {
+            $("a.playlink").removeClass("active");
+            $("a.playlink i").hide();
+            $("div.player-playlist-item").each(function () {
+                if (parseInt($(this).attr("data-playidx")) >= parseInt(playidx)) {
+                    $("a.playlink", this).addClass("active");
+                    $("i", this).show();
+
+                    var youtubeid = $(this).attr("data-youtubeid");
+                    if (player == null) {
+                        setTimeout(function () {
+                            console.log('Works!');
+                        }, 3000);
+                        player = new YT.Player('musicplayer', {
+                            videoId: youtubeid,
+                            events: {
+                                'onReady': playVideo,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    }
+                    else {
+                        player.loadVideoById(youtubeid);
+                    }
+
+                    playing = parseInt($(this).attr("data-playidx"));
+                    return false;
+                }
+            });
+        }
+
+        function removePlaylist(playidx) {
+            $("div.player-playlist-item").each(function () {
+                if ($(this).attr("data-playidx") == playidx) {
+                    $(this).remove();
+                }
+            });
+            cnt = cnt - 1;
+        }
+
+        function playVideo() {
+            player.playVideo();
+        }
+        function onPlayerStateChange(event) {
+            if (player.getPlayerState() == 0) {
+                playNext();
+            }
+        }
+        function playNext() {
+            if ($("input[name=repeat]:checked").val() == "all") {
+                play(playing + 1);
+            }
+            else {
+                play(playing);
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>
