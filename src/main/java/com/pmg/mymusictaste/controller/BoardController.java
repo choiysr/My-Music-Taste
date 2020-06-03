@@ -3,7 +3,7 @@ package com.pmg.mymusictaste.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pmg.mymusictaste.util.MelonCrawling;
+import com.pmg.mymusictaste.util.MelonCrawler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class BoardController {
   @GetMapping("test")
   public ResponseEntity<List<String>> test(){
 
-    MelonCrawling melon = new MelonCrawling();
+    MelonCrawler melon = new MelonCrawler();
     melon.getMelonCrawlingList("");
 
     List<String> list = new ArrayList<>();
