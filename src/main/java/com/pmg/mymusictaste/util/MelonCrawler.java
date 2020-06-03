@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pmg.mymusictaste.repository.Song;
+import com.pmg.mymusictaste.domain.Song;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BaseController {
 
+<<<<<<< HEAD
 
   @GetMapping("/")
   public String mappedUrl() {
@@ -17,4 +18,12 @@ public class BaseController {
     return "index";
   }
   
+=======
+    @GetMapping("/")
+    public String mappedUrl() {
+        MelonCrawler melon = new MelonCrawler();
+        melon.getMelonCrawlingList("");
+        return "index";
+    }
+>>>>>>> bef1875d02d1dfc287335ea54aa1a0cb4332f246
 }

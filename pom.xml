@@ -15,6 +15,9 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
+		<project.youtube.version>v3-rev8-1.12.0-beta</project.youtube.version>
+   	 	<project.http.version>1.12.0-beta</project.http.version>
+   	 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -70,6 +73,28 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+    		<version>2.3.0.RELEASE</version>
+		</dependency>
+
+   		 <!-- YouTube Data V3 support -->
+   		 <dependency>
+   		   	<groupId>com.google.apis</groupId>
+   		   	<artifactId>google-api-services-youtube</artifactId>
+   		   	<version>${project.youtube.version}</version>
+   		 </dependency>
+		
+   		 <dependency>
+   		  	 <groupId>com.google.http-client</groupId>
+   		  	 <artifactId>google-http-client-jackson2</artifactId>
+   		  	 <version>${project.http.version}</version>
+   		 </dependency>
+
+
+
 	</dependencies>
 
 	<build>
@@ -95,6 +120,10 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+     		<id>google-api-services</id>
+      		<url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
+    	</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
