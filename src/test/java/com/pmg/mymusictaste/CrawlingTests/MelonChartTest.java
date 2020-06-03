@@ -2,7 +2,7 @@ package com.pmg.mymusictaste.CrawlingTests;
 
 import java.util.List;
 
-import com.pmg.mymusictaste.domain.Song;
+import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.util.MelonCrawler;
 
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,8 @@ public class MelonChartTest {
     public void crawlTest() {
 
         MelonCrawler melon = new MelonCrawler();
-        List<Song> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
-        
+        List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
+
 
         
     }

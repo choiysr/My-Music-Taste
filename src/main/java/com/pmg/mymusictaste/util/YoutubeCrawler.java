@@ -39,11 +39,12 @@ public class YoutubeCrawler {
 
     private static List<SongInfo> songList;
 
+
     public YoutubeCrawler(List<SongInfo> songList) {
         this.songList = songList;
     }
 
-    public void useYoutubeAPI() {
+    public List<SongInfo> useYoutubeAPI() {
         Properties properties = new Properties();
         try {
             // youtube.properties파일을 참고한다. 
@@ -78,10 +79,7 @@ public class YoutubeCrawler {
             String apiKey = properties.getProperty("youtube.apikey");
             search.setKey(apiKey);
             search.setType("video");
-            /*
-             * This method reduces the info returned to only the fields we need and makes
-             * calls more efficient.
-             */
+
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
 
@@ -90,9 +88,8 @@ public class YoutubeCrawler {
                 search.setQ(queryTerm);
                 SearchListResponse searchResponse = search.execute();
                 List<SearchResult> searchResultList = searchResponse.getItems();
-    
                 if (searchResultList != null) {
-                    prettyPrint(searchResultList.iterator(), queryTerm);
+                    song.setYoutubeId(prettyPrint(searchResultList.iterator(), queryTerm));
                 }
             }
             
@@ -103,6 +100,8 @@ public class YoutubeCrawler {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
+        } finally {
+            return songList;
         }
     }
 
@@ -136,7 +135,9 @@ public class YoutubeCrawler {
      *
      * @param query Search query (String)
      */
-    private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
+    private static String prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
+
+        String youtubeId = "";
 
         System.out.println("\n=============================================================");
         System.out.println("   First " + NUMBER_OF_VIDEOS_RETURNED + " videos for search on \"" + query + "\".");
@@ -145,18 +146,19 @@ public class YoutubeCrawler {
             System.out.println(" There aren't any results for your query.");
         }
         while (iteratorSearchResults.hasNext()) {
-
             SearchResult singleVideo = iteratorSearchResults.next();
             ResourceId rId = singleVideo.getId();
             // Double checks the kind is video.
             if (rId.getKind().equals("youtube#video")) {
                 // 썸네일 필요시 사용.
                 // Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
-                System.out.println(" Video Id" + rId.getVideoId());
-                System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
+                // System.out.println(" Video Id" + rId.getVideoId());
+                // System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 // System.out.println(" Thumbnail: " + thumbnail.getUrl());
-                System.out.println("\n-------------------------------------------------------------\n");
+                // System.out.println("\n-------------------------------------------------------------\n");
+                youtubeId = rId.getVideoId();
             }
         }
+        return youtubeId;
     }
 }
