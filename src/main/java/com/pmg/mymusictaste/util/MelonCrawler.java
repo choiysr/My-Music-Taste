@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import com.pmg.mymusictaste.domain.Song;
-=======
 import com.pmg.mymusictaste.DTO.SongInfo;
->>>>>>> 777eb71b98aaf1b58b3661d02da9eb1b25e23f68
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
