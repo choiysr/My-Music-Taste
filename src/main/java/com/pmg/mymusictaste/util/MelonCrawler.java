@@ -1,5 +1,5 @@
 package com.pmg.mymusictaste.util;
 
-public class MelonCrawling {
+public class MelonCrawler {
     
 }
