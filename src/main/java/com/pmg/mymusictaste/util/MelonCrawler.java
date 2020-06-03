@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.pmg.mymusictaste.domain.Song;
+=======
+import com.pmg.mymusictaste.DTO.SongInfo;
+>>>>>>> 777eb71b98aaf1b58b3661d02da9eb1b25e23f68
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +17,7 @@ import org.jsoup.select.Elements;
 
 public class MelonCrawler {
 
-  public List<Song> getMelonCrawlingList(String url){
+  public List<SongInfo> getMelonCrawlingList(String url){
     
     // https://www.melon.com/chart/index.htm 실시간 
     // https://www.melon.com/chart/rise/index.htm 급상승
@@ -22,11 +26,11 @@ public class MelonCrawler {
     // https://www.melon.com/chart/month/index.htm 월간
     
     // 선언부
-    url = "https://www.melon.com/chart/month/index.htm";
+    // url = "https://www.melon.com/chart/month/index.htm";
     Document doc = null;
     Elements elements = null;
-    List<Song> songList = null;
-    Song song = null;
+    List<SongInfo> songList = null;
+    SongInfo song = null;
 
 
     // 프로세스부
@@ -45,14 +49,14 @@ public class MelonCrawler {
 
       if(doc != null){
         elements = doc.select("tr.lst50");
-        songList = new ArrayList<Song>();
+        songList = new ArrayList<SongInfo>();
         System.out.println("============================================================");
         for(Element el : elements){
-          song = new Song();
-          song.setName(el.select("div.rank01").select("a").text());
-          song.setArtist(el.select("div.rank02").select("a").first().text());
-          song.setSumnail(el.select("div").select("a").select("img[src]").text());
-          System.out.println("song data > " + song.toString());
+          song = new SongInfo();
+          song.setTitle(el.select("div.rank01").select("a").text());
+          song.setSinger(el.select("div.rank02").select("a").first().text());
+          song.setThumbnail(el.select("div").select("a").select("img[src]").text());
+          // System.out.println("song data > " + song.toString());
           songList.add(song);
         }
         System.out.println("============================================================");
@@ -62,9 +66,9 @@ public class MelonCrawler {
         e.printStackTrace();
     }
 
-    for(Song s : songList){
-      System.out.println("songList " + s);
-    }
+    // for(Song s : songList){
+    //   System.out.println("songList " + s);
+    // }
 
     return songList;
 

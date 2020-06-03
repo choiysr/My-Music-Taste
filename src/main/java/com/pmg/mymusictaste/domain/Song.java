@@ -1,6 +1,7 @@
 package com.pmg.mymusictaste.domain;
 
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
+@Entity
 public class Song {
 
   @Id
@@ -19,5 +21,9 @@ public class Song {
   private @NonNull String Name;
   private @NonNull String artist;
   private @NonNull String sumnail;
+  private @NonNull String title;
+  private @NonNull String singer;
+  private @NonNull String thumbnail;
+  private @NonNull String youtubeId;
 
 }

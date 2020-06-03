@@ -18,6 +18,7 @@ import com.google.api.services.youtube.YouTube.Search;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import com.pmg.mymusictaste.DTO.SongInfo;
 /**
  * YoutubeCrawler
  */
@@ -35,6 +36,12 @@ public class YoutubeCrawler {
 
     // API Request를 만드는 객체 
     private static YouTube youtube;
+
+    private static List<SongInfo> songList;
+
+    public YoutubeCrawler(List<SongInfo> songList) {
+        this.songList = songList;
+    }
 
     public void useYoutubeAPI() {
         Properties properties = new Properties();
@@ -59,7 +66,7 @@ public class YoutubeCrawler {
             }).setApplicationName("youtube-cmdline-search-sample").build();
 
             // 검색 키워드를 가져오는 getInputQuery 호출 
-            String queryTerm = getInputQuery();
+            // String queryTerm = getInputQuery();
 
             YouTube.Search.List search = youtube.search().list("id,snippet");
             /*
@@ -70,12 +77,6 @@ public class YoutubeCrawler {
              */
             String apiKey = properties.getProperty("youtube.apikey");
             search.setKey(apiKey);
-            search.setQ(queryTerm);
-            /*
-             * We are only searching for videos (not playlists or channels). If we were
-             * searching for more, we would add them as a string like this:
-             * "video,playlist,channel".
-             */
             search.setType("video");
             /*
              * This method reduces the info returned to only the fields we need and makes
@@ -83,13 +84,18 @@ public class YoutubeCrawler {
              */
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
-            SearchListResponse searchResponse = search.execute();
 
-            List<SearchResult> searchResultList = searchResponse.getItems();
-
-            if (searchResultList != null) {
-                prettyPrint(searchResultList.iterator(), queryTerm);
+            for(SongInfo song : songList) {
+                String queryTerm = song.getTitle()+" "+song.getSinger()+" official";
+                search.setQ(queryTerm);
+                SearchListResponse searchResponse = search.execute();
+                List<SearchResult> searchResultList = searchResponse.getItems();
+    
+                if (searchResultList != null) {
+                    prettyPrint(searchResultList.iterator(), queryTerm);
+                }
             }
+            
         } catch (GoogleJsonResponseException e) {
             System.err.println(
                     "There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
@@ -99,6 +105,8 @@ public class YoutubeCrawler {
             t.printStackTrace();
         }
     }
+
+
 
     /*
      * Returns a query term (String) from user via the terminal.
