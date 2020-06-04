@@ -1,7 +1,7 @@
 package com.pmg.mymusictaste.controller;
 
-import com.pmg.mymusictaste.service.SongService;
 import com.pmg.mymusictaste.domain.Song;
+import com.pmg.mymusictaste.service.SongService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@RestController  
 @RequestMapping("/*")
 @RequiredArgsConstructor
 public class SongController {
@@ -27,8 +27,7 @@ public class SongController {
         Page<Song> songList = songs.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
-
+  }
 
     
 
-}

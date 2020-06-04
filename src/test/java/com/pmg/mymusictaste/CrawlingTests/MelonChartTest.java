@@ -17,7 +17,6 @@ public class MelonChartTest {
         MelonCrawler melon = new MelonCrawler();
         List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
 
-
         
     }
 
