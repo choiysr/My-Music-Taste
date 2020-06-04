@@ -13,8 +13,14 @@ public class BaseController {
   public String mappedUrl() {
 
     MelonCrawler melon = new MelonCrawler();
-    melon.getMelonCrawlingList("");
+    //melon.getMelonCrawlingList("");
     return "index";
+  }
+
+  @GetMapping("/musicTest")
+  public String mmapedUrl(){
+
+    return "musicTest";
   }
   
 }

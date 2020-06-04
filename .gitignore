@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ignore all .pdf files in the doc/ directory
+*.properties

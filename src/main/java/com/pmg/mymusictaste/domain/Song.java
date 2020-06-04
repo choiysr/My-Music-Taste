@@ -6,24 +6,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
 public class Song {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long sid;
-  private @NonNull String Name;
-  private @NonNull String artist;
-  private @NonNull String sumnail;
-  private @NonNull String title;
-  private @NonNull String singer;
-  private @NonNull String thumbnail;
-  private @NonNull String youtubeId;
+  private String title;
+  private String singer;
+  private String thumbnail;
+  private String youtubeId;
 
 }
