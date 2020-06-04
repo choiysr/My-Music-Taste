@@ -18,6 +18,7 @@ import com.google.api.services.youtube.YouTube.Search;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import com.pmg.mymusictaste.DTO.SongInfo;
 /**
  * YoutubeCrawler
  */
@@ -36,7 +37,14 @@ public class YoutubeCrawler {
     // API Request를 만드는 객체 
     private static YouTube youtube;
 
-    public void useYoutubeAPI() {
+    private static List<SongInfo> songList;
+
+
+    public YoutubeCrawler(List<SongInfo> songList) {
+        this.songList = songList;
+    }
+
+    public List<SongInfo> useYoutubeAPI() {
         Properties properties = new Properties();
         try {
             // youtube.properties파일을 참고한다. 
@@ -59,7 +67,7 @@ public class YoutubeCrawler {
             }).setApplicationName("youtube-cmdline-search-sample").build();
 
             // 검색 키워드를 가져오는 getInputQuery 호출 
-            String queryTerm = getInputQuery();
+            // String queryTerm = getInputQuery();
 
             YouTube.Search.List search = youtube.search().list("id,snippet");
             /*
@@ -70,26 +78,21 @@ public class YoutubeCrawler {
              */
             String apiKey = properties.getProperty("youtube.apikey");
             search.setKey(apiKey);
-            search.setQ(queryTerm);
-            /*
-             * We are only searching for videos (not playlists or channels). If we were
-             * searching for more, we would add them as a string like this:
-             * "video,playlist,channel".
-             */
             search.setType("video");
-            /*
-             * This method reduces the info returned to only the fields we need and makes
-             * calls more efficient.
-             */
+
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
-            SearchListResponse searchResponse = search.execute();
 
-            List<SearchResult> searchResultList = searchResponse.getItems();
-
-            if (searchResultList != null) {
-                prettyPrint(searchResultList.iterator(), queryTerm);
+            for(SongInfo song : songList) {
+                String queryTerm = song.getTitle()+" "+song.getSinger()+" official";
+                search.setQ(queryTerm);
+                SearchListResponse searchResponse = search.execute();
+                List<SearchResult> searchResultList = searchResponse.getItems();
+                if (searchResultList != null) {
+                    song.setYoutubeId(prettyPrint(searchResultList.iterator(), queryTerm));
+                }
             }
+            
         } catch (GoogleJsonResponseException e) {
             System.err.println(
                     "There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
@@ -97,8 +100,12 @@ public class YoutubeCrawler {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
+        } finally {
+            return songList;
         }
     }
+
+
 
     /*
      * Returns a query term (String) from user via the terminal.
@@ -128,7 +135,9 @@ public class YoutubeCrawler {
      *
      * @param query Search query (String)
      */
-    private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
+    private static String prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
+
+        String youtubeId = "";
 
         System.out.println("\n=============================================================");
         System.out.println("   First " + NUMBER_OF_VIDEOS_RETURNED + " videos for search on \"" + query + "\".");
@@ -137,18 +146,19 @@ public class YoutubeCrawler {
             System.out.println(" There aren't any results for your query.");
         }
         while (iteratorSearchResults.hasNext()) {
-
             SearchResult singleVideo = iteratorSearchResults.next();
             ResourceId rId = singleVideo.getId();
             // Double checks the kind is video.
             if (rId.getKind().equals("youtube#video")) {
                 // 썸네일 필요시 사용.
                 // Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
-                System.out.println(" Video Id" + rId.getVideoId());
-                System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
+                // System.out.println(" Video Id" + rId.getVideoId());
+                // System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 // System.out.println(" Thumbnail: " + thumbnail.getUrl());
-                System.out.println("\n-------------------------------------------------------------\n");
+                // System.out.println("\n-------------------------------------------------------------\n");
+                youtubeId = rId.getVideoId();
             }
         }
+        return youtubeId;
     }
 }
