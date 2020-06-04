@@ -27,8 +27,8 @@ public class CombineTests {
 
         MelonCrawler melon = new MelonCrawler();
         List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
-        YoutubeCrawler youtube = new YoutubeCrawler(list);
-        List<SongInfo> finalList = youtube.useYoutubeAPI();
+        // YoutubeCrawler youtube = new YoutubeCrawler(list);
+        // List<SongInfo> finalList = youtube.useYoutubeAPI();
         
         // 이후에 finalList를 레파지토리를 이용해 save하면 DB에 저장됩니다.
         // 근데 이게 일일이 리스트 돌면서 객체 하나하나씩 save하는게 아니라 
@@ -51,9 +51,6 @@ public class CombineTests {
         // sRepo.saveAll(finalList);
         // 위처럼하면 리스트 통째로 저장(트랜잭션 1개)
         // 근데 saveAll을 구현해야하는가 아마 그럴거에요. 그걸 구글링해서 찾아주시면 됨! saveAll이 작동하도록 
-        
-        
-
         
 
     }

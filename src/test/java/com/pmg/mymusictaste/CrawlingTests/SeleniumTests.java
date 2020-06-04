@@ -1,35 +1,24 @@
 package com.pmg.mymusictaste.CrawlingTests;
 
-import java.util.stream.IntStream;
-
-import com.pmg.mymusictaste.domain.Song;
-import com.pmg.mymusictaste.repository.SongRepository;
+import com.pmg.mymusictaste.DTO.SongInfo;
+import com.pmg.mymusictaste.util.YoutubeCrawler;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * SeleniumTests
- */
-
- @SpringBootTest
+@SpringBootTest
 public class SeleniumTests {
 
-    @Autowired
-    SongRepository repo ;
+    private static YoutubeCrawler crawler = YoutubeCrawler.getChrome();
 
     @Test
-    public void insertDummies() {
+    public void utilTest(){
 
-        String[] strarr = {"oCkAUDJKa10", "DdUYiULhRSQ", "FVf-2DdFX80", "OFVlAvs0j4g", "Xw9kagBlXIo", "ATRsQu2vRJ4" , "ljzeYZdPFv4",  "u7bFrfAYWzA", "pEDwj6KyCjg" ,  "H3FLz4f-k5Y" }; 
+        SongInfo test = SongInfo.builder().singer("아이유").title("밤편지").build();
 
-        IntStream.range(0,11).forEach(i-> {
-            repo.save(Song.builder()
-            .thumbnail("https://cdnimg.melon.co.kr/cm2/album/images/104/33/754/10433754_20200521162928_500.jpg/melon/resize/120/quality/80/optimize")
-            .singer("가수"+i).title("제목"+i).youtubeId(strarr[i]).build());
-        });
-        
+        String videoId = crawler.crawl(test.getTitle(),test.getSinger());
+        System.out.println(videoId);   
+
     }
     
 }
