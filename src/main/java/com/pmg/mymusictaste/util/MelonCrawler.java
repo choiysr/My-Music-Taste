@@ -49,9 +49,9 @@ public class MelonCrawler {
         System.out.println("============================================================");
         for(Element el : elements){
           song = new Song();
-          song.setName(el.select("div.rank01").select("a").text());
-          song.setArtist(el.select("div.rank02").select("a").first().text());
-          song.setSumnail(el.select("div").select("a").select("img[src]").text());
+          song.setTitle(el.select("div.rank01").select("a").text());
+          song.setSinger(el.select("div.rank02").select("a").first().text());
+          song.setThumbnail(el.select("div").select("a").select("img[src]").text());
           System.out.println("song data > " + song.toString());
           songList.add(song);
         }

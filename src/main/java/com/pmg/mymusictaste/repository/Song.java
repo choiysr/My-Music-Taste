@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 public class Song {
 
-  private @NonNull String Name;
-  private @NonNull String artist;
-  private @NonNull String sumnail;
+  private @NonNull String title;
+  private @NonNull String singer;
+  private @NonNull String thumbnail;
 
 }
