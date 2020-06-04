@@ -96,13 +96,16 @@ public class YoutubeCrawler {
         } catch (GoogleJsonResponseException e) {
             System.err.println(
                     "There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
+                    return null;
         } catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
         } finally {
-            return songList;
+
         }
+
+        return this.songList;
     }
 
 
@@ -139,9 +142,9 @@ public class YoutubeCrawler {
 
         String youtubeId = "";
 
-        System.out.println("\n=============================================================");
-        System.out.println("   First " + NUMBER_OF_VIDEOS_RETURNED + " videos for search on \"" + query + "\".");
-        System.out.println("=============================================================\n");
+        // System.out.println("\n=============================================================");
+        // System.out.println("   First " + NUMBER_OF_VIDEOS_RETURNED + " videos for search on \"" + query + "\".");
+        // System.out.println("=============================================================\n");
         if (!iteratorSearchResults.hasNext()) {
             System.out.println(" There aren't any results for your query.");
         }
@@ -150,6 +153,7 @@ public class YoutubeCrawler {
             ResourceId rId = singleVideo.getId();
             // Double checks the kind is video.
             if (rId.getKind().equals("youtube#video")) {
+                
                 // 썸네일 필요시 사용.
                 // Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
                 // System.out.println(" Video Id" + rId.getVideoId());
@@ -157,6 +161,9 @@ public class YoutubeCrawler {
                 // System.out.println(" Thumbnail: " + thumbnail.getUrl());
                 // System.out.println("\n-------------------------------------------------------------\n");
                 youtubeId = rId.getVideoId();
+                if(youtubeId == null || youtubeId == "") {
+                    System.out.println("youtubeId가 NULL인것" + singleVideo.getSnippet().getTitle());
+                }
             }
         }
         return youtubeId;

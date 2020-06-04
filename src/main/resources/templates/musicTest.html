@@ -49,7 +49,7 @@
                 let $listUl = $("#topList");
                 let liStr = "";
                 result.content.forEach((ele)=> {
-                    liStr += "<li>"+ele.title+ele.singer+"</li>"; 
+                    liStr += "<li data-youtubeId='+>"+ele.title+ele.singer+"</li>"; 
                 })
                 $listUl.html(liStr);
             }
