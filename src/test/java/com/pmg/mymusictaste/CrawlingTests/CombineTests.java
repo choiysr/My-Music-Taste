@@ -29,21 +29,15 @@ public class CombineTests {
         List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
         YoutubeCrawler youtube = new YoutubeCrawler(list);
         List<SongInfo> finalList = youtube.useYoutubeAPI();
+        Song songs = null;
 
         List<Song> songList = new ArrayList<Song>();
-        Song song = null;
         // 이후에 finalList를 레파지토리를 이용해 save하면 DB에 저장됩니다.
         // 근데 이게 일일이 리스트 돌면서 객체 하나하나씩 save하는게 아니라 
         // 리스트 자체를 파라미터로 넘겨주면 저장되는 방법도 있거든요? 
         // 그거 구글링해서 한번 알아봐서 적용해주세용(저도 안해봤어요 )
 
         // ex.
-<<<<<<< HEAD
-        /*
-        for(SongInfo song : finalList) {
-            System.out.println(song);
-            sServ.saveSong(Song.builder().title(song.getTitle()).singer(song.getSinger()).thumbnail(song.getThumbnail()).youtubeId(song.getYoutubeId()).build());
-=======
         for(SongInfo song : list) {
             System.out.println("song gettitle : "+song.getTitle());
             if(song.getTitle()!=null||song.getTitle()!="") {
@@ -52,11 +46,10 @@ public class CombineTests {
                 System.out.println("get error========!");
             }
             // sServ.saveSong(Song.builder().title(song.getTitle()).singer(song.getSinger()).thumbnail(song.getThumbnail()).youtubeId(song.getYoutubeId()).build());
->>>>>>> 8351aca175f12b72b56f72649a96e74926913be5
             // 이렇게하면 리스트 돌면서 하나하나씩 db에 저장
             // 넣을때마다 트랜잭션 발생 
         }
-        */
+        
 
         //sRepo.saveAll(finalList);
         // 위처럼하면 리스트 통째로 저장(트랜잭션 1개)
@@ -66,12 +59,12 @@ public class CombineTests {
         //SongInfo List를 Song에 담기
 
         for(SongInfo si : finalList){
-            song = new Song();
-            song.setSinger(si.getSinger());
-            song.setTitle(si.getTitle());
-            song.setThumbnail(si.getThumbnail());
-            song.setYoutubeId(si.getYoutubeId());
-            songList.add(song);
+            songs = new Song();
+            songs.setSinger(si.getSinger());
+            songs.setTitle(si.getTitle());
+            songs.setThumbnail(si.getThumbnail());
+            songs.setYoutubeId(si.getYoutubeId());
+            songList.add(songs);
         }
         for(Song s : songList){
             System.out.println("change Song List > " + s);

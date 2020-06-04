@@ -18,7 +18,7 @@ public class BaseController {
   }
 
   @GetMapping("/musicTest")
-  public String mmapedUrl(){
+  public String mmapedUrl2(){
 
     return "musicTest";
   }

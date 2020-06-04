@@ -20,6 +20,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> getSongList(Pageable pageInfo) {
+        System.out.println("pageInfo > " + pageInfo);
         Page<Song> songList = songRepo.findAll(pageInfo);
         return songList;
     }
