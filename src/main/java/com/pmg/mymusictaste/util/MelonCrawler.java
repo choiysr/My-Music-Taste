@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 
 public class MelonCrawler {
 
-  public List<SongInfo> getMelonCrawlingList(String url){
+  public List<SongInfo> getMelonCrawlingList(MelonTarget target){
     
     // https://www.melon.com/chart/index.htm 실시간 
     // https://www.melon.com/chart/rise/index.htm 급상승
@@ -30,7 +30,7 @@ public class MelonCrawler {
 
 
     // 프로세스부
-    try {doc = Jsoup.connect(url).get(); 
+    try {doc = Jsoup.connect(target.getValue()).get(); 
         
 /*         if(doc != null && null != doc.select("div.rank01")){
           title = doc.select("div.rank01").select("a[title]").text(); 

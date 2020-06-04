@@ -16,7 +16,7 @@ public class Crawler {
 
   public void putMusicList(String url){
     MelonCrawler melon = new MelonCrawler();
-    List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm"); // url 
+    List<SongInfo> list = melon.getMelonCrawlingList(MelonTarget.DAILY); // url 
     YoutubeCrawler2 youtube = new YoutubeCrawler2(list);
     List<SongInfo> finalList = youtube.useYoutubeAPI();
     

@@ -7,6 +7,7 @@ import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.service.SongService;
 import com.pmg.mymusictaste.util.MelonCrawler;
+import com.pmg.mymusictaste.util.MelonTarget;
 import com.pmg.mymusictaste.util.YoutubeCrawler;
 import com.pmg.mymusictaste.util.YoutubeCrawler2;
 
@@ -27,7 +28,7 @@ public class CombineTests {
     public void getYoutubeVideoIdByMelonTest(){
 
         MelonCrawler melon = new MelonCrawler();
-        List<SongInfo> list = melon.getMelonCrawlingList("https://www.melon.com/chart/index.htm");
+        List<SongInfo> list = melon.getMelonCrawlingList(MelonTarget.DAILY);
         YoutubeCrawler2 youtube = new YoutubeCrawler2(list);
         List<SongInfo> finalList = youtube.useYoutubeAPI();
         Song songs = null;
