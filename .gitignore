@@ -31,4 +31,4 @@ build/
 .vscode/
 
 # ignore all .pdf files in the doc/ directory
-resources/**/*.properties
+*.properties
