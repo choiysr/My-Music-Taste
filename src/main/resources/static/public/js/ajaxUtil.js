@@ -11,6 +11,7 @@ const ajaxService = (function(){
             success(result)
         })
     }
+
     
     return {
         getAjax : getAjax

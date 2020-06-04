@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class SongInfo {
 
     private String title;
+    private String type;
     private String singer;
     private String thumbnail;
     private String youtubeId;
