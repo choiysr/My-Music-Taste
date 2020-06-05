@@ -1,4 +1,5 @@
 const ajaxService = (function(){
+
     function getAjax(url,data,success,fail) {
         $.ajax({
             type: "GET",
@@ -10,16 +11,14 @@ const ajaxService = (function(){
         }).done(function (result) {
             success(result)
         })
-    }
+    }    
 
-    
-
-
-    
     return {
         getAjax : getAjax
     };
+
 })();
+
 
 class URL {
 

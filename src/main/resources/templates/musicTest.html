@@ -17,11 +17,15 @@
 
     <button id="testbtn">클릭하면 플레이어가 보임</button>
     <br>
-    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
-
-    <div id="testlist">
+    <div id="testlist" class="col-ld-5">
         <ul id="topList">
+
+        </ul>
+    </div>
+    <div id="myPlayList" class="col-ld-5">
+        <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+        <div id="player"></div>
+        <ul id="myList">
 
         </ul>
     </div>
@@ -34,6 +38,7 @@
         <h4 class="playlist-items" data-youtubeId="TgOu00Mf3kI" data-idx="">IU(아이유) _ eight(에잇) (Prod.&Feat. SUGA of
             BTS)</h4>
     </div>
+
 
     
 
@@ -50,17 +55,24 @@
                 let $listUl = $("#topList");
                 let liStr = "";
                 result.content.forEach((ele)=> {
-
-                    //플레이리스트가 완성이 되면 data-idx 는 지워도됨 
-                    //플레이리스트에 idx 로 재생성 
-                    //onPlay() 는 현재 idx 값으로 youtubeID를 조회하지만 
                     //youtube Id값으로 재생 
                     //플레이리스트는 어떤식으로 재생 ? 
                     liStr += "<li data-youtubeId=" + ele.youtubeId +" data-idx="+ ele.sid+">"+"<img src="+ele.thumbnail + "width=50 height=50>&nbsp"+ele.title+"&nbsp"+ele.singer
-                    +"&nbsp<button onclick=onPlay("+ele.sid+")>재생</button>"
-                    +"&nbsp<button onclick=addMusic(" + ")>담기</button>"
+                    +"&nbsp<button onclick=onPlay("+ele.sid+",'add')>재생</button>"
+                    +"&nbsp<button onclick=addMusic("+ele.sid+")>담기</button>" 
                     +"</li>";
                 });
+                $listUl.html(liStr);
+            }
+                //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
+                function successTest2(result) {
+                let $listUl = $("#myList");
+                let liStr = "";
+                result.content.forEach((ele)=> {
+                    liStr += "<li data-mode='playList' data-idKey=" + ele.youtubeId +" data-listIdx="+ ele.sid+">"+"&nbsp"+ele.title+"&nbsp"+ele.singer
+                    +"&nbsp<button onclick=onPlay("+ele.sid+",'play')>재생</button>"
+                    +"</li>";
+                }); 
                 $listUl.html(liStr);
             }
 
@@ -73,6 +85,8 @@
             //조회에 성공하면 successTest 함수를 통해 음악리스트 html 코드를 생성 
             ajaxService.getAjax(API_Server.commonURL +"songlist",null,successTest,fail);
 
+            //로그인정보로 플레이리스트 조회 
+            ajaxService.getAjax(API_Server.commonURL +"addPlayList",null,successTest2,fail);
             //재생만 되는 함수 생성 . 
 
             //플레이리스트 함수 생성 .
@@ -80,7 +94,7 @@
 
             function playBtn(idx){
                 console.log(idx);
-                onPlay(1);
+                onPlay(1,'play');
                 return;
                 console.log("currentPlayIngIdx > " + currentPlayingIdx);
                 if(currentPlayingIdx != undefined ){
@@ -92,20 +106,24 @@
             
             $("#testbtn").on('click', () => {
                 currentPlayingIdx = 1;
-                onPlay(1);
+                onPlay(1,'play');
             })
         });
 
-        //같은 메소드를 사용하돼 매개변수로 mode 를 추가해 play , playList 를 구분하여 자동재생여부 판단 
-        function onPlay(targetIdx) {
+        //같은 메소드를 사용 매개변수로 mode 를 추가해 play , playList 를 구분하여 자동재생여부 판단 ?
+        function onPlay(targetIdx,mode) {
             //이부분에서 재생과 플레이리스트 재생을 나눌 수 있다면 좋을까나 ?
+            if(mode == 'add'){
+                addMusic(targetIdx);
+            }
+            console.log(mode);
             console.log("TARGET INDEX")
             console.log(targetIdx)
             currentPlayingIdx = targetIdx;
 
             //이 부분을 youtubeId 로 처음부터 조회하는것도 괜찮을듯 
             //let musicIndex = $('[data-youtubeId="' + targetId + '"').attr("data-idx");
-            let youtubeId = $('[data-idx="' + targetIdx + '"').attr("data-youtubeId");
+            let youtubeId = $('[data-idx="' + targetIdx + '"]').attr("data-youtubeId");
             if (player == null || parseInt(targetIdx)==1) {
                 player = new YT.Player('player', {
                     height: '240',
@@ -147,21 +165,31 @@
 
             //플레이리스트 idx 로 이어서 재생.
             let nextPage = ++currentPlayingIdx;            
-            onPlay(nextPage);
+            onPlay(nextPage,'play');
         }
         function stopVideo() {
             player.stopVideo();
         }
 
+        //재생,담기하면 플레이리스트에 저장
+        function addMusic(idx){
+            //ajax 호출로 PlayList Insert
 
-        function addMusic(singer,youtube,title){
-            console.log(title);
-            console.log(youtube);
-            console.log(singer);
-            //ajaxService.getAjax(API_Server.commonURL +"songlist",null,successTest,fail);
+            //인덱스 요소에 대해서 생각해봐야함
+            var youtubeId = $('[data-idx="' + idx + '"').attr("data-youtubeId");
+            var name = $('[data-idx="' + idx + '"').text();
+            var sid = idx;
+            let $listUl = $("#myList");
+            let liStr = "";
+            //playList index 값을 조회해서 최대값에 +1 을 해서 넣어준다.? DB에서 max 값을 조회해준다
+            liStr += "<li data-idKey=" + youtubeId +" data-listIdx="+ sid+">" +name
+            +"&nbsp<button onclick=onPlay("+sid+",'play')>재생</button>"
+            +"</li>";
+            $listUl.append(liStr);
+
             
-
         }
+
 
 
     </script>

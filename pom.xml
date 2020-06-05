@@ -156,7 +156,7 @@
 		<repository>
 			<id>in-project</id>
 			<name>custom jars</name>
-			<url>file://C:\Users\choiy\workspace\mymusictaste\src\main\resources\lib</url>
+			<url>file://C:\git\mymusictaste\src\main\resources\lib</url>
 		</repository>
 		<repository>
 			<id>spring-milestones</id>

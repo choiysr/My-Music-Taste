@@ -1,5 +1,6 @@
 package com.pmg.mymusictaste.controller;
 
+import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.service.SongService;
 
@@ -36,6 +37,12 @@ public class SongController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+    @GetMapping("/addPlayList")
+    public ResponseEntity<Page<Song>> test(){
+        Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
+        
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
   }
 
     
