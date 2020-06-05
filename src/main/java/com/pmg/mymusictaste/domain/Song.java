@@ -21,6 +21,7 @@ public class Song {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long sid;
+  private Integer ranking;
   private String type;
   private String title;
   private String singer;

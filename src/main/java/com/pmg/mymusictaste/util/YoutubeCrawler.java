@@ -34,7 +34,7 @@ public class YoutubeCrawler {
         return new YoutubeCrawler(webDriverID, webDriverPath);
     }
 
-    public void closeWebDriver() {
+    private void closeWebDriver() {
         driver.close();
     }
 
@@ -50,6 +50,7 @@ public class YoutubeCrawler {
             navigation.to(targetURL);
             songList.get(i).setYoutubeId(getVideoId(driver.findElements(By.id("video-title"))));
         }
+        closeWebDriver();
         return songList;
     }
 
@@ -66,8 +67,4 @@ public class YoutubeCrawler {
 		return videoId;
     }
 
-
-
-
-    
 }

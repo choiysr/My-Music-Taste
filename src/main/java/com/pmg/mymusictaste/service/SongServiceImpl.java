@@ -18,12 +18,21 @@ public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepo;
 
+    // 테스트용 
     @Override
     public Page<Song> getSongList(Pageable pageInfo) {
         System.out.println("pageInfo > " + pageInfo);
         Page<Song> songList = songRepo.findAll(pageInfo);
         return songList;
     }
+
+
+    @Override
+    public Page<Song> findByType(Pageable page, String type) {
+        Page<Song> songList = songRepo.findByType(page, type);
+        return songList;
+    }
+        
 
     @Override
     public void saveSong(Song song) {
@@ -34,6 +43,7 @@ public class SongServiceImpl implements SongService {
     public void saveAllSong(List<Song> list){
         //List<Song> list1 = songRepo.saveAll(list);
     }
-        
+
+
 
 }

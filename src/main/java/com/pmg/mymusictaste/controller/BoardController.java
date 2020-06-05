@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/*")
 public class BoardController {
 
-
-
   @GetMapping("test")
   public ResponseEntity<List<String>> test(){
 
@@ -29,6 +27,4 @@ public class BoardController {
     return new ResponseEntity<>(list,HttpStatus.OK);
   }
 
-
-  
 }

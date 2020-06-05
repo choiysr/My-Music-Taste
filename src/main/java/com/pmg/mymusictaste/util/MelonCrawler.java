@@ -20,6 +20,7 @@ public class MelonCrawler {
     List<SongInfo> songList = null;
     SongInfo song = null;
     String songType = null;
+    Integer rank = 1;
 
     // 프로세스부
     try {
@@ -44,16 +45,17 @@ public class MelonCrawler {
           String singersText = "";
           // a태그는 n(가수수) * 2. 가수가 1명일때는 a태그 2개
           if (singers.size() == 2) {
-            singersText = singers.first().text();
+            singersText = singers.first().text(); 
           } else {
             singersText = singers.first().text();
             for (int j = 1; j < (singers.size() / 2); j++) {
               singersText += "," + singers.get(j).text();
             }
           }
+          song.setRanking(rank++);
           song.setType(songType);
           song.setSinger(singersText);
-          song.setThumbnail(el.select("div").select("a").select("img").attr("src"));
+          song.setThumbnail(el.select("div").select("img").attr("src"));
           songList.add(song);
         }
       }

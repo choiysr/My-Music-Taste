@@ -19,7 +19,7 @@ public class MelonChartTest {
         List<SongInfo> songList = melon.getMelonCrawlingList(MelonTarget.DAILY);
 
         for (int k = 1; k <= songList.size(); k++) {
-            System.out.println("[" + k + "]" + songList.get(k - 1).getSinger() + " - " + songList.get(k - 1).getTitle()
+            System.out.println("[" + songList.get(k-1).getRanking() + "]" + songList.get(k - 1).getSinger() + " - " + songList.get(k - 1).getTitle()
                     + " - " + songList.get(k - 1).getThumbnail());
         }
 

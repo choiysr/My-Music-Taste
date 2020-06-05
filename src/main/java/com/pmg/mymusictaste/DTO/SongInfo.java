@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SongInfo {
 
+    private Integer ranking;
     private String title;
     private String type;
     private String singer;
