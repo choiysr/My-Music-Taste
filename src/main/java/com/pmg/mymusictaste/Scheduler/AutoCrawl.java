@@ -14,36 +14,20 @@ import com.pmg.mymusictaste.util.YoutubeCrawler;
 public class AutoCrawl {
 
     private MelonCrawler melonCrawler;
-    private YoutubeCrawler youtubeCrawler = YoutubeCrawler.getChrome();
-    private final MelonTarget melonTarget;
+    private YoutubeCrawler youtubeCrawler;
     List<String> strList = new ArrayList<>();
 
-    public AutoCrawl(MelonTarget target) {
-        System.out.println("오토크롤객체생성------------");
-        this.melonTarget = target;
+    public AutoCrawl() {
+        this.melonCrawler = new MelonCrawler();
     }
 
-    public void startCrawling() {
-        System.out.println("오토크롤 스타트 크롤링------------");
-        List<SongInfo> targetList = melonCrawler.getMelonCrawlingList(this.melonTarget);
-        System.out.println(targetList);
-        for(SongInfo song : targetList) {
-           String youtubeId =  youtubeCrawler.crawl(song.getTitle(), song.getSinger());
-           System.out.println(youtubeId);
-           strList.add(youtubeId);
+    public void startCrawling(MelonTarget target) {
+        List<SongInfo> targetList = melonCrawler.getMelonCrawlingList(target);
+        youtubeCrawler = YoutubeCrawler.getChrome();
+        youtubeCrawler.crawl(targetList);
+        for (SongInfo song : targetList) {
+            System.out.println(song);
         }
+    }
 
-        System.out.println("========크롤링한 YOUTUBEID");
-
-        for(String st : strList) {
-            System.out.println(st);
-        }
-    } 
-
-
- 
-
-
-
-    
 }

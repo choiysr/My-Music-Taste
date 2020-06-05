@@ -13,63 +13,57 @@ import org.jsoup.select.Elements;
 
 public class MelonCrawler {
 
-  public List<SongInfo> getMelonCrawlingList(MelonTarget target){
-    
-    // https://www.melon.com/chart/index.htm 실시간 
-    // https://www.melon.com/chart/rise/index.htm 급상승
-    // https://www.melon.com/chart/day/index.htm 일간 
-    // https://www.melon.com/chart/week/index.htm 주간
-    // https://www.melon.com/chart/month/index.htm 월간
-    
-    // 선언부
-    // url = "https://www.melon.com/chart/month/index.htm";
+  public List<SongInfo> getMelonCrawlingList(MelonTarget target) {
+
     Document doc = null;
     Elements elements = null;
     List<SongInfo> songList = null;
     SongInfo song = null;
-
+    String songType = null;
 
     // 프로세스부
-    try {doc = Jsoup.connect(target.getValue()).get(); 
-        
-/*         if(doc != null && null != doc.select("div.rank01")){
-          title = doc.select("div.rank01").select("a[title]").text(); 
-        } */
-        /* 
-      if(doc != null && null != doc.select("div.rank01")){
-        elements = doc.select("div.rank01");
-        for(Element el : elements){
-          System.out.println("elements index > " + el.select("a[title]").text());
+    try {
+      doc = Jsoup.connect(target.getUrl()).get();
+      if (doc != null) {
+        if(target.equals(MelonTarget.REALTIME)){
+          songType = "REALTIME";
+        } else if(target.equals(MelonTarget.DAILY)){
+          songType = "DAILY";
+        } else if(target.equals(MelonTarget.WEEKLY)){
+          songType = "WEEKLY";
+        } else{
+          songType = "MONTHLY";
         }
-      } */
-
-      if(doc != null){
         elements = doc.select("tr.lst50");
         songList = new ArrayList<SongInfo>();
-        System.out.println("============================================================");
-        for(Element el : elements){
+        for (Element el : elements) {
           song = new SongInfo();
           song.setTitle(el.select("div.rank01").select("a").text());
-          song.setSinger(el.select("div.rank02").select("a").first().text());
-          song.setThumbnail(el.select("div").select("a").select("img[src]").text());
-          // System.out.println("song data > " + song.toString());
+          // 가수 여러명인지 체크
+          Elements singers = el.select("div.rank02").select("a");
+          String singersText = "";
+          // a태그는 n(가수수) * 2. 가수가 1명일때는 a태그 2개
+          if (singers.size() == 2) {
+            singersText = singers.first().text();
+          } else {
+            singersText = singers.first().text();
+            for (int j = 1; j < (singers.size() / 2); j++) {
+              singersText += "," + singers.get(j).text();
+            }
+          }
+          song.setType(songType);
+          song.setSinger(singersText);
+          song.setThumbnail(el.select("div").select("a").select("img").attr("src"));
           songList.add(song);
         }
-        System.out.println("============================================================");
       }
-
+      
     } catch (IOException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
-
-    // for(Song s : songList){
-    //   System.out.println("songList " + s);
-    // }
 
     return songList;
 
   }
 
-  
 }
- 

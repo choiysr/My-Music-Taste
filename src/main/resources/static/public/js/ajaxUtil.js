@@ -13,6 +13,9 @@ const ajaxService = (function(){
     }
 
     
+
+
+    
     return {
         getAjax : getAjax
     };

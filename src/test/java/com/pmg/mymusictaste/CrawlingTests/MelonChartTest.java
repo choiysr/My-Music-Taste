@@ -16,9 +16,13 @@ public class MelonChartTest {
     public void crawlTest() {
 
         MelonCrawler melon = new MelonCrawler();
-        List<SongInfo> list = melon.getMelonCrawlingList(MelonTarget.DAILY);
-        System.out.println(list);
-        
+        List<SongInfo> songList = melon.getMelonCrawlingList(MelonTarget.DAILY);
+
+        for (int k = 1; k <= songList.size(); k++) {
+            System.out.println("[" + k + "]" + songList.get(k - 1).getSinger() + " - " + songList.get(k - 1).getTitle()
+                    + " - " + songList.get(k - 1).getThumbnail());
+        }
+
     }
 
 }
