@@ -12,8 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Song {
@@ -21,6 +21,7 @@ public class Song {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long sid;
+  private String type;
   private String title;
   private String singer;
   private String thumbnail;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pmg.mymusictaste.util.MelonCrawler;
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class BoardController {
   public ResponseEntity<List<String>> test(){
 
     MelonCrawler melon = new MelonCrawler();
-    melon.getMelonCrawlingList("");
+    melon.getMelonCrawlingList(MelonTarget.DAILY);
 
     List<String> list = new ArrayList<>();
     

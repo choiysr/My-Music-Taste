@@ -2,9 +2,12 @@ package com.pmg.mymusictaste.util;
 
 import java.util.List;
 
+import com.pmg.mymusictaste.DTO.SongInfo;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -18,7 +21,7 @@ public class YoutubeCrawler {
     public String WEB_DRIVER_ID;
     public String WEB_DRIVER_PATH;
 
-    public YoutubeCrawler(String webDriverID, String webDriverPath) {
+    private YoutubeCrawler(String webDriverID, String webDriverPath) {
         System.setProperty(webDriverID, webDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
@@ -35,11 +38,24 @@ public class YoutubeCrawler {
         driver.close();
     }
 
-    public String crawl(String title, String singer) {
-        String targetURL = BASE_URL+title+" "+singer+" official";
-        String videoId ="";
+    public List<SongInfo> crawl(List<SongInfo> songList) {
+        String targetURL = BASE_URL+songList.get(0).getTitle()+" "+songList.get(0).getSinger()+" official";
         driver.get(targetURL);
-        List<WebElement> elements = driver.findElements(By.id("video-title"));
+        songList.get(0).setYoutubeId(getVideoId(driver.findElements(By.id("video-title"))));
+
+        Navigation navigation = driver.navigate();
+
+        for(int i=1;i<songList.size();i++) {
+            targetURL = BASE_URL+songList.get(i).getTitle()+" "+songList.get(i).getSinger()+" official";
+            navigation.to(targetURL);
+            songList.get(i).setYoutubeId(getVideoId(driver.findElements(By.id("video-title"))));
+        }
+        return songList;
+    }
+
+
+    public String getVideoId(List<WebElement> elements) {
+        String videoId = "";
         for(WebElement ele : elements) {
             String eleId = ele.getAttribute("href");
             if(eleId!=null) {
@@ -47,8 +63,11 @@ public class YoutubeCrawler {
                 break;
             } 
         }
-        return videoId;
+		return videoId;
     }
+
+
+
 
     
 }
