@@ -3,7 +3,7 @@
 
 <head>
     <!-- Title -->
-    <title>Dashboard | Graindashboard UI Kit</title>
+    <title>my Music PlayList</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,7 +24,7 @@
         integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
     <!-- YOUTUBE API-->
     <script src="https://www.youtube.com/player_api"></script>
-
+    <script th:src="@{~/public/js/ajaxUtil.js}"></script>
 </head>
 
 <body class="has-sidebar has-fixed-sidebar-and-header">
@@ -263,7 +263,7 @@
 
         <div class="content">
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-sx-12">
                     <div class="card mb-3 mb-md-4">
                         <div class="card-header">
                             <h5 class="font-weight-semi-bold mb-0">Top 100</h5>
@@ -274,65 +274,44 @@
                                 <table class="table text-nowrap mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">num</th>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">Customer</th>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">Phone</th>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">Amount</th>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">Status</th>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">Actions</th>
+                                            <th class="font-weight-semi-bold border-top-0 py-2">song</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         <tr>
-                                            <td class="py-3">149531</td>
-                                            <td class="py-3">
-                                                <div>John Doe</div>
-                                                <div class="text-muted">Acme Inc.</div>
-                                            </td>
-                                            <td class="py-3">(000) 111-1234</td>
-                                            <td class="py-3">$1,230.00</td>
-                                            <td class="py-3">
-                                                <span class="badge badge-pill badge-success">Fulfilled</span>
-                                            </td>
-                                            <td class="py-3">
-                                                <div class="position-relative">
-                                                    <a id="dropDown10Invoker" class="link-dark d-flex" href="#"
-                                                        aria-controls="dropDown10" aria-haspopup="true"
-                                                        aria-expanded="false" data-unfold-target="#dropDown10"
-                                                        data-unfold-event="click" data-unfold-type="css-animation"
-                                                        data-unfold-duration="300" data-unfold-animation-in="fadeIn"
-                                                        data-unfold-animation-out="fadeOut">
-                                                        <i class="gd-more-alt icon-text"></i>
-                                                    </a>
-
-                                                    <ul id="dropDown10"
-                                                        class="unfold unfold-light unfold-top unfold-right position-absolute py-3 mt-1 unfold-css-animation unfold-hidden fadeOut"
-                                                        aria-labelledby="dropDown10Invoker"
-                                                        style="min-width: 150px; animation-duration: 300ms; right: 0px;">
-                                                        <li class="unfold-item">
-                                                            <a class="unfold-link media align-items-center text-nowrap"
-                                                                href="#">
-                                                                <i class="gd-pencil unfold-item-icon mr-3"></i>
-                                                                <span class="media-body">Edit</span>
-                                                            </a>
-                                                        </li>
-                                                        <li class="unfold-item">
-                                                            <a class="unfold-link media align-items-center text-nowrap"
-                                                                href="#">
-                                                                <i class="gd-close unfold-item-icon mr-3"></i>
-                                                                <span class="media-body">Delete</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                            <td class="py-3" id="topList"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+                    <div id="player"></div>
+                    <div class="card mb-3 mb-md-4">
+                        <div class="card-header">
+                            <h5 class="font-weight-semi-bold mb-0">Top 100</h5>
+                        </div>
+
+                        <div class="card-body pt-0">
+                            <div class="table-responsive-xl">
+                                <table class="table text-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-semi-bold border-top-0 py-2">song</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="py-3" id="myList"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                 </div>
             </div>
 
@@ -386,6 +365,151 @@
         $.GDCore.components.GDChartistBar.init('.js-bar-chart');
         $.GDCore.components.GDChartistDonut.init('.js-donut-chart');
     </script>
+       <script>
+
+        var player;
+        var currentPlayingIdx;
+        const API_Server = new URL("http://localhost:8080/");
+
+        $(document).ready(() => {
+
+            //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
+            function successTest(result) {
+                let $listUl = $("#topList");
+                let liStr = "";
+                result.content.forEach((ele)=> {
+                    //youtube Id값으로 재생 
+                    //플레이리스트는 어떤식으로 재생 ? 
+                    liStr += "<li data-youtubeId=" + ele.youtubeId +" data-idx="+ ele.sid+">"+"<img src="+ele.thumbnail + "width=50 height=50>&nbsp"+ele.title+"&nbsp"+ele.singer
+                    +"&nbsp<button onclick=onPlay("+ele.sid+",'add')>재생</button>"
+                    +"&nbsp<button onclick=addMusic("+ele.sid+")>담기</button>" 
+                    +"</li>";
+                });
+                $listUl.html(liStr);
+            }
+                //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
+                function getmyPlayList(result) {
+                let $listUl = $("#myList");
+                let liStr = "";
+                result.content.forEach((ele)=> {
+                    liStr += "<li data-mode='playList' data-idKey=" + ele.youtubeId +" data-listIdx="+ ele.sid+">"+"&nbsp"+ele.title+"&nbsp"+ele.singer
+                    +"&nbsp<button onclick=onPlay("+ele.sid+",'play')>재생</button>"
+                    +"</li>";
+                }); 
+                $listUl.html(liStr);
+            }
+
+            //실패시 호출되는 함수 
+            function fail(result) {
+                console.log(result)
+            }
+
+            //ajax 통신으로 song table 에 있는 음악을 조회 
+            //조회에 성공하면 successTest 함수를 통해 음악리스트 html 코드를 생성 
+            ajaxService.getAjax(API_Server.commonURL +"songlist",null,successTest,fail);
+
+            //로그인정보로 플레이리스트 조회 
+            ajaxService.getAjax(API_Server.commonURL +"addPlayList",null,getmyPlayList,fail);
+            //재생만 되는 함수 생성 . 
+
+            //플레이리스트 함수 생성 .
+            // onPlay 함수로 음악 이어가기 재생 
+
+            function playBtn(idx){
+                console.log(idx);
+                onPlay(1,'play');
+                return;
+                console.log("currentPlayIngIdx > " + currentPlayingIdx);
+                if(currentPlayingIdx != undefined ){
+                    currentPlayingIdx ++ ;
+                }else{
+                    currentPlayingIdx = 1;
+                }
+            }
+            
+            $("#testbtn").on('click', () => {
+                currentPlayingIdx = 1;
+                onPlay(1,'play');
+            })
+        });
+
+        function onPlay(targetIdx,mode) {
+
+            //mode 를 매개변수로 받아서 재생목록에 있는 재생버튼에서는 추가로 담지 않습니다.
+            if(mode == 'add'){
+                addMusic(targetIdx);
+            }
+            console.log(mode);
+            console.log("TARGET INDEX")
+            console.log(targetIdx)
+            currentPlayingIdx = targetIdx;
+
+            //이 부분을 youtubeId 로 처음부터 조회하는것도 괜찮을듯 
+            //let musicIndex = $('[data-youtubeId="' + targetId + '"').attr("data-idx");
+            let youtubeId = $('[data-idx="' + targetIdx + '"]').attr("data-youtubeId");
+            if (player == null || parseInt(targetIdx)==1) {
+                player = new YT.Player('player', {
+                    height: '240',
+                    width: '320',
+                    videoId: youtubeId,
+                    playerVars: {
+                        'controls': 1, //플레이어 컨드롤러 표시여부
+                        'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
+                        'autoplay': 1, //자동재생 여부
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            } else {
+                player.loadVideoById(youtubeId);
+              }
+
+        }
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            console.log("영상 시작");
+            event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            // 재생이 종료됐으면 다음 영상을 재생한다. 
+            if (player.getPlayerState() == 0) {
+                console.log("영상종료");
+                playNext();
+            }
+        }
+
+        function playNext() {
+            console.log("playNext > ");
+
+            //플레이리스트 idx 로 이어서 재생.
+            let nextPage = ++currentPlayingIdx;            
+            onPlay(nextPage,'play');
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+        //재생,담기하면 플레이리스트에 저장
+        function addMusic(idx){
+            //ajax 호출로 PlayList Insert
+
+            //인덱스 요소에 대해서 생각해봐야함
+            var youtubeId = $('[data-idx="' + idx + '"').attr("data-youtubeId");
+            var name = $('[data-idx="' + idx + '"').text();
+            var sid = idx;
+            let $listUl = $("#myList");
+            let liStr = "";
+            //playList index 값을 조회해서 최대값에 +1 을 해서 넣어준다.? DB에서 max 값을 조회해준다
+            liStr += "<li data-idKey=" + youtubeId +" data-listIdx="+ sid+">" +name
+            +"&nbsp<button onclick=onPlay("+sid+",'play')>재생</button>"
+            +"</li>";
+            $listUl.append(liStr);   
+        }
+    </script>
 </body>
+
 
 </html>
