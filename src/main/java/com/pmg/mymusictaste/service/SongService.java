@@ -13,7 +13,7 @@ public interface SongService {
     public Page<Song> getSongList(Pageable pageInfo);
     
 
-    public Page<Song> findByType(Pageable page, String type);
+    public Page<Song> findByType(int startPage, int amount, String type);
     
     public void saveSong(Song song);
     public void saveAllSong(List<Song> list);

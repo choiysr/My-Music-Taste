@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pmg.mymusictaste.DTO.SongInfo;
-import com.pmg.mymusictaste.Scheduler.AutoCrawl;
-import com.pmg.mymusictaste.util.MelonTarget;
 import com.pmg.mymusictaste.util.YoutubeCrawler;
 
 import org.junit.jupiter.api.Test;

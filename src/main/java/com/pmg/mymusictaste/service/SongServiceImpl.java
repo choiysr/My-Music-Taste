@@ -7,7 +7,9 @@ import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.repository.SongRepository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,8 @@ public class SongServiceImpl implements SongService {
 
 
     @Override
-    public Page<Song> findByType(Pageable page, String type) {
+    public Page<Song> findByType(int startPage, int pageAmount, String type) {
+        Pageable page = PageRequest.of(startPage, pageAmount, Sort.Direction.ASC);
         Page<Song> songList = songRepo.findByType(page, type);
         return songList;
     }
