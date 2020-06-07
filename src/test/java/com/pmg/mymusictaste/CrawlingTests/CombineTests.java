@@ -6,6 +6,7 @@ import java.util.List;
 import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.Scheduler.AutoCrawl;
 import com.pmg.mymusictaste.domain.Song;
+import com.pmg.mymusictaste.service.CrawlingService;
 import com.pmg.mymusictaste.service.SongService;
 import com.pmg.mymusictaste.util.MelonCrawler;
 import com.pmg.mymusictaste.util.MelonTarget;
@@ -23,12 +24,13 @@ public class CombineTests {
     @Setter(onMethod_ = { @Autowired })
     private SongService sServ;
 
+    @Setter(onMethod_ = { @Autowired })
+    private CrawlingService cServ;
+
     @Test
     public void autoCrawlTest() {
-
         AutoCrawl ac = new AutoCrawl();
-        ac.startCrawling(MelonTarget.DAILY);
-
+        cServ.saveSongList(ac.startCrawling(MelonTarget.DAILY));
     }
 
     @Test

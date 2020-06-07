@@ -1,6 +1,5 @@
 package com.pmg.mymusictaste.controller;
 
-import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.service.SongService;
 
@@ -10,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

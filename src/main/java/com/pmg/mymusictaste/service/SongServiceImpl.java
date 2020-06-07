@@ -30,9 +30,12 @@ public class SongServiceImpl implements SongService {
 
 
     @Override
-    public Page<Song> findByType(int startPage, int pageAmount, String type) {
-        Pageable page = PageRequest.of(startPage, pageAmount, Sort.Direction.ASC);
-        Page<Song> songList = songRepo.findByType(page, type);
+    public Page<Song> getSongListByType(int startPage, int pageAmount, String type) {
+        // ranking 순으로 가져와야 맞지만, 어차피 insert될때 랭킹 순서대로되므로
+        // (=auto increament되는 sid 순서대로 되므로) pk기준으로 가져오는 것이 효율적
+        // 페이징은 0부터 시작이므로 startPage-1 
+        Pageable page = PageRequest.of(startPage-1, pageAmount, Sort.Direction.ASC, "sid");
+        Page<Song> songList = songRepo.findAllByType(type,page);
         return songList;
     }
         

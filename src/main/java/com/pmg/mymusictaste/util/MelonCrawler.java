@@ -26,13 +26,13 @@ public class MelonCrawler {
     try {
       doc = Jsoup.connect(target.getUrl()).get();
       if (doc != null) {
-        if(target.equals(MelonTarget.REALTIME)){
+        if (target.equals(MelonTarget.REALTIME)) {
           songType = "REALTIME";
-        } else if(target.equals(MelonTarget.DAILY)){
+        } else if (target.equals(MelonTarget.DAILY)) {
           songType = "DAILY";
-        } else if(target.equals(MelonTarget.WEEKLY)){
+        } else if (target.equals(MelonTarget.WEEKLY)) {
           songType = "WEEKLY";
-        } else{
+        } else {
           songType = "MONTHLY";
         }
         elements = doc.select("tr.lst50");
@@ -45,7 +45,7 @@ public class MelonCrawler {
           String singersText = "";
           // a태그는 n(가수수) * 2. 가수가 1명일때는 a태그 2개
           if (singers.size() == 2) {
-            singersText = singers.first().text(); 
+            singersText = singers.first().text();
           } else {
             singersText = singers.first().text();
             for (int j = 1; j < (singers.size() / 2); j++) {
@@ -59,7 +59,7 @@ public class MelonCrawler {
           songList.add(song);
         }
       }
-      
+
     } catch (IOException e) {
       e.printStackTrace();
     }
