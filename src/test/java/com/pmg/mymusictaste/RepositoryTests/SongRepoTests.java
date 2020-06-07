@@ -1,6 +1,7 @@
 package com.pmg.mymusictaste.RepositoryTests;
 
 import com.pmg.mymusictaste.service.SongService;
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class SongRepoTests {
 
         int startPage = 0;
         int amount = 50;
-        Pageable page = PageRequest.of(startPage-1, amount, Sort.Direction.ASC, "ranking");
+        // sserv.findByType(startPage, amount, MelonTarget.DAILY);
         
 
     }

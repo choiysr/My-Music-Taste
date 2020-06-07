@@ -31,11 +31,11 @@ public class SongController {
     }
 
     // 실시간/일간/주간/월간 별로 리스트 데이터를 반환
-    @GetMapping("/songList/{type}/{page}")
-    public ResponseEntity<Page<Song>> getSongList(@PathVariable String type, @PathVariable Integer page) {
-        Page<Song> songList = songServ.findByType(PageRequest.of(page-1, 50, Sort.Direction.ASC, "sid"), type); 
-        return new ResponseEntity<>(songList, HttpStatus.OK);
-    }
+    // @GetMapping("/songList/{type}/{page}")
+    // public ResponseEntity<Page<Song>> getSongList(@PathVariable String type, @PathVariable Integer page) {
+    //     Page<Song> songList = songServ.findByType(PageRequest.of(page-1, 50, Sort.Direction.ASC, "sid"), type); 
+    //     return new ResponseEntity<>(songList, HttpStatus.OK);
+    // }
 
     @GetMapping("/addPlayList")
     public ResponseEntity<Page<Song>> test(){
