@@ -373,8 +373,10 @@
 
         $(document).ready(() => {
 
+            //var login = '@Request.RequestContext.HttpContext.Session["userInfo"]';
+
             //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
-            function successTest(result) {
+            function getMelonList(result) {
                 let $listUl = $("#topList");
                 let liStr = "";
                 result.content.forEach((ele)=> {
@@ -388,7 +390,7 @@
                 $listUl.html(liStr);
             }
                 //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
-                function getmyPlayList(result) {
+                function getMyPlayList(result) {
                 let $listUl = $("#myList");
                 let liStr = "";
                 result.content.forEach((ele)=> {
@@ -405,32 +407,11 @@
             }
 
             //ajax 통신으로 song table 에 있는 음악을 조회 
-            //조회에 성공하면 successTest 함수를 통해 음악리스트 html 코드를 생성 
-            ajaxService.getAjax(API_Server.commonURL +"songlist",null,successTest,fail);
+            //조회에 성공하면 getMelonList 함수를 통해 음악리스트 html 코드를 생성 
+            ajaxService.getAjax(API_Server.commonURL +"songlist",null,getMelonList,fail);
 
             //로그인정보로 플레이리스트 조회 
-            ajaxService.getAjax(API_Server.commonURL +"addPlayList",null,getmyPlayList,fail);
-            //재생만 되는 함수 생성 . 
-
-            //플레이리스트 함수 생성 .
-            // onPlay 함수로 음악 이어가기 재생 
-
-            function playBtn(idx){
-                console.log(idx);
-                onPlay(1,'play');
-                return;
-                console.log("currentPlayIngIdx > " + currentPlayingIdx);
-                if(currentPlayingIdx != undefined ){
-                    currentPlayingIdx ++ ;
-                }else{
-                    currentPlayingIdx = 1;
-                }
-            }
-            
-            $("#testbtn").on('click', () => {
-                currentPlayingIdx = 1;
-                onPlay(1,'play');
-            })
+            ajaxService.getAjax(API_Server.commonURL +"getPlayList",login,getMyPlayList,fail);
         });
 
         function onPlay(targetIdx,mode) {
@@ -494,12 +475,22 @@
 
         //재생,담기하면 플레이리스트에 저장
         function addMusic(idx){
-            //ajax 호출로 PlayList Insert
 
             //인덱스 요소에 대해서 생각해봐야함
+
             var youtubeId = $('[data-idx="' + idx + '"').attr("data-youtubeId");
             var name = $('[data-idx="' + idx + '"').text();
             var sid = idx;
+
+            var addSong = { youtubeId : youtubeId, 
+                            name : name}
+
+            if(login){
+                // music insert 
+                ajaxService.postAjax(API_Server.commonURL +"addMusic",addSong,getMyPlayList,fail);
+            }
+            //ajax 호출로 PlayList Insert
+
             let $listUl = $("#myList");
             let liStr = "";
             //playList index 값을 조회해서 최대값에 +1 을 해서 넣어준다.? DB에서 max 값을 조회해준다
@@ -508,6 +499,8 @@
             +"</li>";
             $listUl.append(liStr);   
         }
+
+
     </script>
 </body>
 
