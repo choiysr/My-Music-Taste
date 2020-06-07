@@ -37,8 +37,17 @@ public class SongController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-    @GetMapping("/addPlayList")
-    public ResponseEntity<Page<Song>> test(){
+    @GetMapping("/getPlayList")
+    public ResponseEntity<Page<Song>> getPlayList(){
+        Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
+        
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+
+    @PostMapping("/addMusic")
+    public ResponseEntity<Page<Song>> addMusic(){
+
+        //로그인 세션을 통과한 음악정보 playList 에 저장 
         Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
         
         return new ResponseEntity<>(songList, HttpStatus.OK);

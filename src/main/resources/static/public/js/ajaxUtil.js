@@ -11,6 +11,18 @@ const ajaxService = (function(){
         }).done(function (result) {
             success(result)
         })
+    }
+    function postAjax(url,data,succses1,fail){
+        $.ajax({
+            type: "POST",
+            url: url,
+            data : data,
+            dataType: 'json',
+            async : false,
+            fail : fail
+        }).done(function (result) {
+            success(result)
+        })
     }    
 
     return {
