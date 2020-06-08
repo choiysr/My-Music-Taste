@@ -259,7 +259,7 @@
                 </div>
                 <!-- End Card -->
                 <!-- Card -->
-                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4">
+                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4" id="playerArea" style="display: none;">
                     <div class="card h-100">
                         <div class="card-header" style="text-align: center;">
                             <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">MUSIC PLAYER</h5>
@@ -282,7 +282,7 @@
                             <div id="myList">
 
                             </div>
-                            <div class="border-top p-3 px-md-4 mx-0 listCount">
+                            <!-- <div class="border-top p-3 px-md-4 mx-0 listCount">
                                 <table>
                                     <tr style="font-size: small;">
                                         <td style="width: 5vw;"><input type="checkbox"></td>
@@ -291,7 +291,7 @@
                                         <td style="width: 5vw;"><i class="gd-close text-light"></i></td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -401,77 +401,131 @@
             return listStr;
         }
 
-        // + 버튼을 누르면 플레이리스트 영역으로 노래를 추가시키는 function 
-        // 전체듣기/담기를 고려하여 sid를 array형식으로 만든다. 
+        // 전체듣기/담기시 활용  
+        // function addMusicIntoPlaylist(sid, play) {
+        //     let $myListDiv = $("#myList");
+        //     let listStr = "";
+        //     let songArr = [];
+        //     sid.forEach((sidObj, index) => {
+        //         let $targetSong = $("#" + sidObj);
+        //         let song = {
+        //             'youtubeId': $targetSong.attr("data-youtubeId"),
+        //             'title': $targetSong.attr("data-title"),
+        //             'singer': $targetSong.attr("data-singer")
+        //         };
+        //         songArr.push(song);
+        //     })
+        //     $myListDiv.append(makeMyListTag(songArr));
+        //     // ★ajax 호출이 들어가야 함 
+        // }
+
         function addMusicIntoPlaylist(sid, play) {
+            // [재생]버튼 눌렀을 경우 추가
             let $myListDiv = $("#myList");
             let listStr = "";
             let songArr = [];
-            sid.forEach((sid, index) => {
-                let $targetSong = $("#" + sid);
-                let song = {
-                    'youtubeId': $targetSong.attr("data-youtubeId"),
-                    'title': $targetSong.attr("data-title"),
-                    'singer': $targetSong.attr("data-singer")
-                };
-                songArr.push(song);
-            })
-            $myListDiv.append(makeMyListTag(songArr));
+            let isFirstPlay = $(".listCount").length == 0;
+            let $targetSong = $("#" + sid);
+            let song = {
+                'sid': sid,
+                'youtubeId': $targetSong.attr("data-youtubeId"),
+                'title': $targetSong.attr("data-title"),
+                'singer': $targetSong.attr("data-singer")
+            };
+            songArr.push(song);
             // ★ajax 호출이 들어가야 함 
+            // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
+            $myListDiv.append(makeMyListTag(songArr));
+            // 리스트에 아무곡도 들어있지 않았던 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생시킨다. 
+            if (isFirstPlay) {
+                console.log("리스트에 아무곡도 들어있지 않은 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생")
+                showPlayerArea();
+                onPlay(1);
+            }
+            if (play == 'play') {
+                onPlay($('[data-sid="' + sid + '"]').attr("data-idx"));
+            }
+
         }
+
 
         function makeMyListTag(songArr) {
             let listCount = $(".listCount").length;
+            let isFirstPlay = listCount == 0;
             let listStr = "";
-            songArr.forEach((song,index)=>{
-                listStr += '<div class="border-top p-3 px-md-4 mx-0" data-idx="'+(listCount+1)+'"><table><tr style="font-size: small;" data-youtubeId="'+song.youtubeId+'">'
-                + '<td style="width: 5vw;"><input type="checkbox" value='+(listCount+1)+'></td>'
-                + '<td style="width: 90vw; text-align: left;">'+song.title+' - '+song.singer+'</td>'
-                + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList('+(listCount+1)+')></i></td></tr></table></div>';
+            songArr.forEach((song, index) => {
+                listStr += '<div class="border-top p-3 px-md-4 mx-0 listCount" data-idx="' + (listCount + 1) + '" data-youtubeId="' + song.youtubeId + '" data-sid="' + song.sid + '"><table><tr style="font-size: small;">'
+                    + '<td style="width: 5vw;"><input type="checkbox" value=' + (listCount + 1) + '></td>'
+                    + '<td style="width: 90vw; text-align: left;"><a class="titleAndSingerText" style="cursor:pointer;"onclick=onPlay('+(listCount+1)+')>' + song.title + ' - ' + song.singer + '</a></td>'
+                    + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList(' + (listCount + 1) + ')></i></td></tr></table></div>';
                 ++listCount;
             });
             return listStr;
         }
 
-        function removeSongInMyList(){
+        // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
+        // ajax처리해야함
+        function removeSongInMyList(targetIdx) {
+            let $targetSong = $('[data-idx="' + targetIdx + '"]');
+            $targetSong.remove();
+            let $allMySongs = $(".listCount");
+            // 2020.06.08저녁 -> 셀렉터를 이용해 자식노드의 내용 바꿔줘야함.
+            // 바꿀리스트 
+            // -> .listCount div의(this) data-idx
+            // -> 첫번째 td의 checkbox value 
+            // -> 두번째 td의 onclick의 onPlay파라미터
+            // -> 마지막 td의 removeSongInMyList의 파라미터 
+
+            // $allMySongs.each(function(index,item){
+            //     let test = $(item);
+            //     console.log("---test")
+            //     console.log(test)
+            //     console.log("children")
+            //     console.log(test.children)
+
+            // })
+
+
 
         }
-
-        // [전체담기]를 누르면 차트에 있는 모든 노래를 플레이리스트에 추가시키는 function 
-        // 기존 플레이리스트 아래에 추가되어야 한다. 
-        // [전체재생]일 경우 기존 플레이리스트 아래 모든 노래를 추가시킨 후 1위부터 재생시킨다  
-        function addAllSong() {
-
-        }
-
-
-
-
-
 
 
 
         /* ========== 뮤직 플레이어 관련 ========== */
 
-        function onPlay(targetIdx, mode) {
+        // 플레이리스트에 한곡도 없을때 기본적으로 display: none
+        // 플레이리스트에 한곡이라도 담기면 plyerArea를 활성화한다(inline-block)
+        function showPlayerArea() {
+            $("#playerArea").css('display', 'inline-block');
+        }
 
-            //mode 를 매개변수로 받아서 재생목록에 있는 재생버튼에서는 추가로 담지 않습니다.
-            if (mode == 'add') {
-                addMusic(targetIdx);
-            }
-            console.log(mode);
-            console.log("TARGET INDEX")
-            console.log(targetIdx)
+        // 현재 재생중인 영역의 css 변경 
+        function currentPalyTargetTagColorChange(idx){
+            console.log("==색상변경")
+            let $allSongsInMyList = $(".titleAndSingerText");
+            $allSongsInMyList.each(function(index,item){
+                if(item.style.color != '#4a4e69'){
+                    item.style.color = '#4a4e69';
+                    console.log("--")
+                }
+                if(index+1==idx) {
+                    item.style.color = '#265df1';
+                }
+            })
+        }
+
+        function onPlay(targetIdx) {
             currentPlayingIdx = targetIdx;
-
             //이 부분을 youtubeId 로 처음부터 조회하는것도 괜찮을듯 
             //let musicIndex = $('[data-youtubeId="' + targetId + '"').attr("data-idx");
             let youtubeId = $('[data-idx="' + targetIdx + '"]').attr("data-youtubeId");
-            if (player == null || parseInt(targetIdx) == 1) {
+            currentPalyTargetTagColorChange(targetIdx);
+            if (player == null) {
+                console.log("플레이어 객체 생성");
                 player = new YT.Player('player', {
                     height: '240',
                     width: '320',
-                    videoId: "TgOu00Mf3kI",
+                    videoId: youtubeId,
                     playerVars: {
                         'controls': 1, //플레이어 컨드롤러 표시여부
                         'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
@@ -485,7 +539,6 @@
             } else {
                 player.loadVideoById(youtubeId);
             }
-
         }
         // 4. The API will call this function when the video player is ready.
         function onPlayerReady(event) {
@@ -504,7 +557,7 @@
         function playNext() {
             //플레이리스트 idx 로 이어서 재생.
             let nextPage = ++currentPlayingIdx;
-            onPlay(nextPage, 'play');
+            onPlay(nextPage);
         }
 
         function stopVideo() {
