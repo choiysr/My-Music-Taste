@@ -349,8 +349,8 @@
                 let $listUl = $("#myList");
                 let liStr = "";
                 result.content.forEach((ele) => {
-                    liStr += "<li data-mode='playList' data-idKey=" + ele.youtubeId + " data-listIdx=" + ele.sid + ">" + "&nbsp" + ele.title + "&nbsp" + ele.singer
-                        + "&nbsp<button onclick=onPlay(" + ele.sid + ",'play')>재생</button>"
+                    liStr += "<li data-mode='playList' data-idKey=" + ele.youtubeId + " data-listIdx=" + ele.pid + ">" + "&nbsp" + ele.title + "&nbsp" + ele.singer
+                        + "&nbsp<button onclick=onPlay(" + ele.pid + ",'play')>재생</button>"
                         + "</li>";
                 });
                 $listUl.html(liStr);
@@ -366,7 +366,7 @@
             ajaxService.getAjax(API_Server.commonURL + "songlist", null, getMelonList, fail);
 
             //로그인정보로 플레이리스트 조회 
-            ajaxService.getAjax(API_Server.commonURL + "getPlayList", login, getMyPlayList, fail);
+            ajaxService.getAjax(API_Server.commonURL + "getPlayList", null, getMyPlayList, fail);
 
         });
         // end of onready 
@@ -441,13 +441,14 @@
 
             var addSong = {
                 youtubeId: youtubeId,
-                name: name
+                title : "사랑과우정사이",
+                singer : "김연우",
             }
-
-            if (login) {
+            ajaxService.postAjax(API_Server.commonURL + "addMusic", addSong, getMyPlayList, fail);
+            /*if (login) {
                 // music insert 
                 ajaxService.postAjax(API_Server.commonURL + "addMusic", addSong, getMyPlayList, fail);
-            }
+            }*/
             //ajax 호출로 PlayList Insert
 
             let $listUl = $("#myList");

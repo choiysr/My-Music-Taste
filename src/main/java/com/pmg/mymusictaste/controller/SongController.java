@@ -1,6 +1,12 @@
 package com.pmg.mymusictaste.controller;
 
+import javax.servlet.http.HttpSession;
+
+import com.pmg.mymusictaste.domain.Playlist;
 import com.pmg.mymusictaste.domain.Song;
+import com.pmg.mymusictaste.domain.User;
+import com.pmg.mymusictaste.repository.UserRepository;
+import com.pmg.mymusictaste.service.PlayListService;
 import com.pmg.mymusictaste.service.SongService;
 
 import org.springframework.data.domain.Page;
@@ -22,6 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class SongController {
 
     private final SongService songServ;
+    private final PlayListService playServ;
+    private final UserRepository userreop;
+
 
     // 소라-플레이어 만들면서 테스트용으로 사용중 
     @GetMapping("/songlist")
@@ -37,21 +46,29 @@ public class SongController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+
+    //user가 저장한 플레이리스트 목록 가져오기 
     @GetMapping("/getPlayList")
-    public ResponseEntity<Page<Song>> getPlayList(){
-        Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
-        
-        return new ResponseEntity<>(songList, HttpStatus.OK);
+    public ResponseEntity<Page<Playlist>> getPlayList(){
+        //User user = (User) session.getAttribute("userInfo");
+        User user = userreop.findById("userid").orElse(null);
+        Page<Playlist> playList = playServ.getPlayListByUser(1, 10, user);
+        return new ResponseEntity<>(playList, HttpStatus.OK);
     }
+
+
 
     @PostMapping("/addMusic")
-    public ResponseEntity<Page<Song>> addMusic(){
+    public void addMusic(Playlist playlist, HttpSession session){
+        User user = (User) session.getAttribute("userInfo");
+        user = userreop.findById("userid").orElse(null);
+        playlist.setUser(user);
 
-        //로그인 세션을 통과한 음악정보 playList 에 저장 
-        Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
+        playlist = Playlist.builder().singer("김연우").title("사랑과우정사이").user(user).youtubeid("oCkAUDJKa10").build();
+        playServ.addMusic(playlist);
         
-        return new ResponseEntity<>(songList, HttpStatus.OK);
     }
+    
   }
 
     

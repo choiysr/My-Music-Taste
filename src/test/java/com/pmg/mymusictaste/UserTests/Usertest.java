@@ -28,10 +28,12 @@ public class Usertest {
     public void playlistInsertTest(){
 
         User user = urepo.findById("userid").orElse(null);
-        Playlist list = Playlist.builder().singer("songsinger").title("songtitle").user(user).youtubeid("oCkAUDJKa10").build();
+        System.out.println("user > "+ user);
+        Playlist list = Playlist.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
         prepo.save(list);
-        Playlist list2 = Playlist.builder().singer("songsinger11").title("songtitle11").user(user).youtubeid("oCkAUasdfKa10").build();
+        Playlist list2 = Playlist.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
         prepo.save(list2);
+
 
 
     }

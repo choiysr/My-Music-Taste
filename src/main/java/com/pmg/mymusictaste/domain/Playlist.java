@@ -27,8 +27,9 @@ public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pid;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user")
+
+    @ManyToOne
+    @JoinColumn(name="userid")
     private User user;
     private String title;
     private String singer;
