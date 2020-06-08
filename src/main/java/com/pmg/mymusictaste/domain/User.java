@@ -26,6 +26,7 @@ public class User {
     @OneToMany
     private List<Playing> playList;
 
-    
+
+
     
 }

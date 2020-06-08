@@ -1,5 +1,6 @@
 package com.pmg.mymusictaste.UserTests;
 
+import com.google.api.services.youtube.model.Playlist;
 import com.pmg.mymusictaste.domain.User;
 import com.pmg.mymusictaste.repository.UserRepository;
 
@@ -24,11 +25,14 @@ public class Usertest {
 
     @Test
     public void playlistInsertTest(){
+
         // User user = urepo.findById("userid").orElse(null);
-        // Playing list = Playing.builder().singer("songsinger").title("songtitle").user(user).youtubeid("oCkAUDJKa10").build();
+        // System.out.println("user > "+ user);
+        // Playlist list = Playlist.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
         // prepo.save(list);
-        // Playing list2 = Playing.builder().singer("songsinger11").title("songtitle11").user(user).youtubeid("oCkAUasdfKa10").build();
+        // Playlist list2 = Playlist.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
         // prepo.save(list2);
+
     }
     
 }
