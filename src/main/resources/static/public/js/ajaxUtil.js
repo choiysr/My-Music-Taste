@@ -1,10 +1,9 @@
 const ajaxService = (function () {
     
-    function getAjax(url, data, success, fail) {
+    function getAjax(url, success, fail) {
         $.ajax({
             type: "GET",
             url: url,
-            data: data,
             contentType: 'application/json',
             dataType: 'json',
             async: false,

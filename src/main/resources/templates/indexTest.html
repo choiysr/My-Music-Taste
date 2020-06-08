@@ -213,93 +213,127 @@
             </ul>
         </aside>
         <!-- End Sidebar Nav -->
-
         <div class="content">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-12 col-sx-12">
-                    <div class="card mb-3 mb-md-4">
-                        <div class="card-header">
-                            <h5 class="font-weight-semi-bold mb-0">Top 100</h5>
+                <!-- Card -->
+                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header" style="text-align: center;">
+                            <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">실시간 TOP50</h5>
                         </div>
+                        <div class="card-body p-0" id="musicChart">
+                            <!-- 테스트용 html. 코드는 ajax통신 후 사라집니다. 지우지말것 -->
+                            <div class="border-top p-3 px-md-4 mx-0">
+                                <table>
+                                    <tr>
+                                        <td rowspan="2" style="text-align: center; width: 5vw;">
+                                            1
+                                        </td>
+                                        <td rowspan="2" style="text-align: center; width: 15vw;">
+                                            <img src="https://cdnimg.melon.co.kr/cm2/album/images/104/26/648/10426648_20200506153340_500.jpg/melon/resize/120/quality/80/optimize"
+                                                width="50" height="50">
+                                        </td>
+                                        <td style="font-size: small; width: 70vw;">
+                                            에잇(Prod.&Feat. SUGA of BTS)
+                                        </td>
+                                        <td rowspan="2" style="width: 5vw;">
+                                            <button type="button" class="btn btn-icon btn-dark rounded-circle btn-sm">
+                                                <i class="gd-control-play btn-icon-inner"></i>
+                                            </button>
+                                        </td>
+                                        <td rowspan="2" style="width: 5vw;">
+                                            <button type="button" class="btn btn-icon btn-light rounded-circle btn-sm"
+                                                onclick="">
+                                                <i class="gd-plus btn-icon-inner"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:x-small;">아이유</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- END 테스트용 html -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End Card -->
+                <!-- Card -->
+                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header" style="text-align: center;">
+                            <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">MUSIC PLAYER</h5>
+                        </div>
+                        <div class="card-body p-0" style="text-align: center;">
+                            <div class="border-top p-3 px-md-4 mx-0">
+                                <div id="player"></div>
+                                <div id="button-area">
+                                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
+                                        style="font-size: x-small;">전체선택</button>
+                                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
+                                        style="font-size: x-small;">선택삭제</button>
+                                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
+                                        style="font-size: x-small;">전체반복</button>
+                                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
+                                        style="font-size: x-small;">한곡반복</button>
+                                </div>
+                            </div>
 
-                        <div class="card-body pt-0">
-                            <div class="table-responsive-xl">
-                                <table class="table text-nowrap mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">song</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="py-3" id="topList"></td>
-                                        </tr>
-                                    </tbody>
+                            <div id="myList">
+
+                            </div>
+                            <div class="border-top p-3 px-md-4 mx-0 listCount">
+                                <table>
+                                    <tr style="font-size: small;">
+                                        <td style="width: 5vw;"><input type="checkbox"></td>
+                                        <td style="width: 90vw; text-align: left;">에잇(Prod.&Feat. SUGA of BTS) - 아이유
+                                        </td>
+                                        <td style="width: 5vw;"><i class="gd-close text-light"></i></td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
-                    <div id="player"></div>
-                    <div class="card mb-3 mb-md-4">
-                        <div class="card-header">
-                            <h5 class="font-weight-semi-bold mb-0">Top 100</h5>
-                        </div>
+                <!-- End Card -->
 
-                        <div class="card-body pt-0">
-                            <div class="table-responsive-xl">
-                                <table class="table text-nowrap mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="font-weight-semi-bold border-top-0 py-2">song</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <tr>
-                                            <td class="py-3" id="myList"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <footer class="small p-3 px-md-4 mt-auto">
-                    <div class="row justify-content-between">
-                        <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
-                            <ul class="list-dot list-inline mb-0">
-                                <li class="list-dot-item list-dot-item-not list-inline-item mr-lg-2"><a
-                                        class="link-dark" href="#">FAQ</a></li>
-                                <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark"
-                                        href="#">Support</a>
-                                </li>
-                                <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark" href="#">Contact
-                                        us</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center mb-3 mb-lg-0">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                            class="gd-twitter-alt"></i></a></li>
-                                <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                            class="gd-facebook"></i></a></li>
-                                <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                            class="gd-github"></i></a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center text-lg-right">
-                            &copy; 2019 Graindashboard. All Rights Reserved.
-                        </div>
-                    </div>
-                </footer>
-                <!-- End Footer -->
             </div>
+            <!-- End row -->
+
+
+            <!-- Footer -->
+            <footer class="small p-3 px-md-4 mt-auto">
+                <div class="row justify-content-between">
+                    <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
+                        <ul class="list-dot list-inline mb-0">
+                            <li class="list-dot-item list-dot-item-not list-inline-item mr-lg-2"><a class="link-dark"
+                                    href="#">FAQ</a></li>
+                            <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark" href="#">Support</a>
+                            </li>
+                            <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark" href="#">Contact
+                                    us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg text-center mb-3 mb-lg-0">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
+                                        class="gd-twitter-alt"></i></a></li>
+                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
+                                        class="gd-facebook"></i></a></li>
+                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
+                                        class="gd-github"></i></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg text-center text-lg-right">
+                        &copy; 2019 Graindashboard. All Rights Reserved.
+                    </div>
+                </div>
+            </footer>
+            <!-- End Footer -->
+        </div>
+        <!-- End Content -->
     </main>
 
 
@@ -323,52 +357,102 @@
         var player;
         var currentPlayingIdx;
         const API_Server = new URL("http://localhost:8080/");
-        var ajaxServe = ajaxServe
 
         $(document).ready(() => {
 
-            //var login = '@Request.RequestContext.HttpContext.Session["userInfo"]';
+            getMusicChartList("DAILY", 1);
+            onPlay(3, 'play');
 
-            //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
-            function getMelonList(result) {
-                let $listUl = $("#topList");
-                let liStr = "";
-                result.content.forEach((ele) => {
-                    //youtube Id값으로 재생 
-                    //플레이리스트는 어떤식으로 재생 ? 
-                    liStr += "<li data-youtubeId=" + ele.youtubeId + " data-idx=" + ele.sid + ">" + "<img src=" + ele.thumbnail + "width=50 height=50>&nbsp" + ele.title + "&nbsp" + ele.singer
-                        + "&nbsp<button onclick=onPlay(" + ele.sid + ",'add')>재생</button>"
-                        + "&nbsp<button onclick=addMusic(" + ele.sid + ")>담기</button>"
-                        + "</li>";
-                });
-                $listUl.html(liStr);
-            }
-            //ajax 통신에 성공하면 호출되는 함수 . HTMl 코드 작성 
-            function getMyPlayList(result) {
-                let $listUl = $("#myList");
-                let liStr = "";
-                result.content.forEach((ele) => {
-                    liStr += "<li data-mode='playList' data-idKey=" + ele.youtubeId + " data-listIdx=" + ele.sid + ">" + "&nbsp" + ele.title + "&nbsp" + ele.singer
-                        + "&nbsp<button onclick=onPlay(" + ele.sid + ",'play')>재생</button>"
-                        + "</li>";
-                });
-                $listUl.html(liStr);
-            }
-
-            //실패시 호출되는 함수 
-            function fail(result) {
-                console.log(result)
-            }
-
-            //ajax 통신으로 song table 에 있는 음악을 조회 
-            //조회에 성공하면 getMelonList 함수를 통해 음악리스트 html 코드를 생성 
-            ajaxService.getAjax(API_Server.commonURL + "songlist", null, getMelonList, fail);
-
-            //로그인정보로 플레이리스트 조회 
-            ajaxService.getAjax(API_Server.commonURL + "getPlayList", login, getMyPlayList, fail);
 
         });
         // end of onready 
+
+        /* ========== TOP50 리스트 관련 ========== */
+
+        // TYPE별 음악 차트를 ajax로 가져오고, 화면에 태그를 뿌려주는 function 
+        function getMusicChartList(type, page) {
+            ajaxService.getAjax(API_Server.commonURL + "musicChartList/" + type + "/" + page, success);
+            function success(result) {
+                let $musicChartDiv = $("#musicChart");
+                $musicChartDiv.html(makeMusicChartListTag(result.content));
+            }
+        }
+
+        // 음악 차트 리스트 태그를 만들어서 문자열 형태로 반환하는 function
+        function makeMusicChartListTag(song) {
+            let listStr = "";
+            song.forEach((song, index) => {
+                listStr += '<div class="border-top p-3 px-md-4 mx-0">'
+                    + '<table><tr><td rowspan="2" style="text-align: center; width: 5vw;">' + song.ranking + '</td>'
+                    + '<td rowspan="2" style="text-align: center; width: 15vw;">'
+                    + '<img src="' + song.thumbnail + ' width="50" height="50"></td>'
+                    + '<td style="font-size: small; width: 70vw;">' + song.title + '</td>'
+                    + '<td rowspan="2" style="width: 5vw;">'
+                    + '<button type="button" class="btn btn-icon btn-dark rounded-circle btn-sm"'
+                    + ' onclick=addMusicIntoPlaylist(' + song.sid + ',"play")' + '>'
+                    + '<i class="gd-control-play btn-icon-inner"></i></button></td>'
+                    + '<td rowspan="2" style="width: 5vw;">'
+                    + '<button type="button" class="btn btn-icon btn-light rounded-circle btn-sm" id="' + song.sid + '"'
+                    + ' data-youtubeId="' + song.youtubeId + '" data-title="' + song.title + '" data-singer="' + song.singer + '"'
+                    + ' onclick=addMusicIntoPlaylist(' + song.sid + ')' + '>'
+                    + '<i class="gd-plus btn-icon-inner"></i></button></td></tr><tr>'
+                    + '<td style="font-size:x-small;">' + song.singer + '</td></tr></table></div>'
+            })
+            return listStr;
+        }
+
+        // + 버튼을 누르면 플레이리스트 영역으로 노래를 추가시키는 function 
+        // 전체듣기/담기를 고려하여 sid를 array형식으로 만든다. 
+        function addMusicIntoPlaylist(sid, play) {
+            let $myListDiv = $("#myList");
+            let listStr = "";
+            let songArr = [];
+            if(sid.isArray)
+            sid.forEach((sid, index) => {
+                let $targetSong = $("#" + sid);
+                let song = {
+                    'youtubeId': $targetSong.attr("data-youtubeId"),
+                    'title': $targetSong.attr("data-title"),
+                    'singer': $targetSong.attr("data-singer")
+                };
+                songArr.push(song);
+            })
+            $myListDiv.append(makeMyListTag(songArr));
+            // ★ajax 호출이 들어가야 함 
+        }
+
+        function makeMyListTag(songArr) {
+            let listCount = $(".listCount").length;
+            let listStr = "";
+            songArr.forEach((song,index)=>{
+                listStr += '<div class="border-top p-3 px-md-4 mx-0" data-idx="'+(listCount+1)+'"><table><tr style="font-size: small;" data-youtubeId="'+song.youtubeId+'">'
+                + '<td style="width: 5vw;"><input type="checkbox" value='+(listCount+1)+'></td>'
+                + '<td style="width: 90vw; text-align: left;">'+song.title+' - '+song.singer+'</td>'
+                + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList('+(listCount+1)+')></i></td></tr></table></div>';
+                ++listCount;
+            });
+            return listStr;
+        }
+
+        function removeSongInMyList(){
+
+        }
+
+        // [전체담기]를 누르면 차트에 있는 모든 노래를 플레이리스트에 추가시키는 function 
+        // 기존 플레이리스트 아래에 추가되어야 한다. 
+        // [전체재생]일 경우 기존 플레이리스트 아래 모든 노래를 추가시킨 후 1위부터 재생시킨다  
+        function addAllSong() {
+
+        }
+
+
+
+
+
+
+
+
+        /* ========== 뮤직 플레이어 관련 ========== */
 
         function onPlay(targetIdx, mode) {
 
@@ -388,7 +472,7 @@
                 player = new YT.Player('player', {
                     height: '240',
                     width: '320',
-                    videoId: youtubeId,
+                    videoId: "TgOu00Mf3kI",
                     playerVars: {
                         'controls': 1, //플레이어 컨드롤러 표시여부
                         'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
@@ -419,45 +503,14 @@
         }
 
         function playNext() {
-            console.log("playNext > ");
-
             //플레이리스트 idx 로 이어서 재생.
             let nextPage = ++currentPlayingIdx;
             onPlay(nextPage, 'play');
         }
+
         function stopVideo() {
             player.stopVideo();
         }
-
-        //재생,담기하면 플레이리스트에 저장
-        function addMusic(idx) {
-
-            //인덱스 요소에 대해서 생각해봐야함
-
-            var youtubeId = $('[data-idx="' + idx + '"').attr("data-youtubeId");
-            var name = $('[data-idx="' + idx + '"').text();
-            var sid = idx;
-
-            var addSong = {
-                youtubeId: youtubeId,
-                name: name
-            }
-
-            if (login) {
-                // music insert 
-                ajaxService.postAjax(API_Server.commonURL + "addMusic", addSong, getMyPlayList, fail);
-            }
-            //ajax 호출로 PlayList Insert
-
-            let $listUl = $("#myList");
-            let liStr = "";
-            //playList index 값을 조회해서 최대값에 +1 을 해서 넣어준다.? DB에서 max 값을 조회해준다
-            liStr += "<li data-idKey=" + youtubeId + " data-listIdx=" + sid + ">" + name
-                + "&nbsp<button onclick=onPlay(" + sid + ",'play')>재생</button>"
-                + "</li>";
-            $listUl.append(liStr);
-        }
-
 
     </script>
 </body>

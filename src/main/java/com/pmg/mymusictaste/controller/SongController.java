@@ -31,7 +31,7 @@ public class SongController {
     }
 
     // 실시간/일간/주간/월간 별로 리스트 데이터를 반환
-    @GetMapping("/songList/{type}/{page}")
+    @GetMapping("/musicChartList/{type}/{page}")
     public ResponseEntity<Page<Song>> getSongList(@PathVariable String type, @PathVariable Integer page) {
         Page<Song> songList = songServ.getSongListByType(page,50,type); 
         return new ResponseEntity<>(songList, HttpStatus.OK);

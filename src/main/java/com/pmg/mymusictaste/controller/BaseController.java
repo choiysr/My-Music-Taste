@@ -9,7 +9,7 @@ public class BaseController {
 
   @GetMapping("/")
   public String mappedUrl() {
-    return "index";
+    return "indexTest";
   }
 
   @GetMapping("/musicTest")

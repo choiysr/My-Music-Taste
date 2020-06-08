@@ -2,7 +2,6 @@ package com.pmg.mymusictaste.service;
 
 import java.util.List;
 
-import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.repository.SongRepository;
 
