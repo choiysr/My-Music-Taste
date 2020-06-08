@@ -370,6 +370,7 @@
         var player;
         var currentPlayingIdx;
         const API_Server = new URL("http://localhost:8080/");
+        var ajaxServe = ajaxServe
 
         $(document).ready(() => {
 
@@ -412,6 +413,7 @@
 
             //로그인정보로 플레이리스트 조회 
             ajaxService.getAjax(API_Server.commonURL +"getPlayList",login,getMyPlayList,fail);
+
         });
 
         function onPlay(targetIdx,mode) {
