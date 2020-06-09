@@ -27,11 +27,11 @@ public class Usertest {
     @Autowired
     private PlayingService pservce;
 
-    @Test
-    public void userTest() {
-        User user = User.builder().userid("userid").password("password").nickname("nickname").build();
-        urepo.save(user);
-    }
+    // @Test
+    // public void userTest() {
+    //     User user = User.builder().userid("userid").password("password").nickname("nickname").build();
+    //     urepo.save(user);
+    // }
 
     @Test
     public void playlistInsertTest(){
