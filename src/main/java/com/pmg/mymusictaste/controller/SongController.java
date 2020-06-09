@@ -1,8 +1,9 @@
 package com.pmg.mymusictaste.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
-import com.google.api.services.youtube.model.Playlist;
 import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.domain.User;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,21 +52,25 @@ public class SongController {
 
     //user가 저장한 플레이리스트 목록 가져오기 
     @GetMapping("/getPlayList")
-    public ResponseEntity<Page<Playing>> getPlayList(){
+    public ResponseEntity<List<Playing>> getPlayList(){
         //User user = (User) session.getAttribute("userInfo");
         User user = userreop.findById("userid").orElse(null);
-        Page<Playing> playList = playServ.getPlayingByUser(1, 10, user);
+
+        List<Playing> playList = playServ.getUserPlayList(user);
         return new ResponseEntity<>(playList, HttpStatus.OK);
     }
 
 
 
     @PostMapping("/addMusic")
-    public void addMusic(Playing playing, HttpSession session){
-        User user = (User) session.getAttribute("userInfo");
-        user = userreop.findById("userid").orElse(null);
-        playing.setUser(user);
-        playServ.addMusic(Playing.builder().singer("김연우").title("사랑과우정사이").user(user).youtubeid("oCkAUDJKa10").build());
+    public void addMusic(@RequestBody List<Playing> playList, HttpSession session){
+        //로그인 정보를 가져옴
+        //User user = (User) session.getAttribute("userInfo");
+
+        User user = userreop.findById("userid").orElse(null);
+        playServ.addMusic(playList);
+        //playList.setUser(user);
+        //playServ.addMusic(Playing.builder().singer("김연우").title("사랑과우정사이").user(user).youtubeid("oCkAUDJKa10").build());
         
     }
     

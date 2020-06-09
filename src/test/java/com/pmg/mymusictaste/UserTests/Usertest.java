@@ -6,6 +6,7 @@ import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.User;
 import com.pmg.mymusictaste.repository.PlayingRepository;
 import com.pmg.mymusictaste.repository.UserRepository;
+import com.pmg.mymusictaste.service.PlayingService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 public class Usertest {
 
     @Autowired
+    private PlayingRepository prepo;
+
+    @Autowired
     private UserRepository urepo;
 
     @Autowired
-    private PlayingRepository prepo;
+    private PlayingService pservce;
 
     @Test
     public void userTest() {
@@ -33,18 +37,31 @@ public class Usertest {
     public void playlistInsertTest(){
         System.out.println("playListInserTest");
 
-         User user = urepo.findById("userid").orElse(null);
-        //System.out.println("user > "+ user);
+        User user = urepo.findById("userid").orElse(null);
+        List<Playing> playList=  urepo.findPlaylistByUserid(user.getUserid());
+        for(Playing p : playList) {
+            log.info(p+"");
+        }
+
+        // User user = urepo.findById("hb").orElse(null);
+        // System.out.println("user > "+ user);
         // Playing list = Playing.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
         // prepo.save(list);
         // Playing list2 = Playing.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
         // prepo.save(list2);
         
-        List<Playing> playList = urepo.findAllByUserId(user.getUserid());
-        for(Playing play : playList){
+        //List<Playing> playList = urepo.findAllByUserid(user.getUserid());
+        /* for(Playing play : playList){
             System.out.println("play > " + play );
         }
-
+         */
+        //Page<Playing> list = pservce.getPlayingByUser(1, 10, user);
+        
+        //List<Playing> pl = urepo.findAllByUserid(user.getUserid());
+        
+        /* for(Playing li : list){
+            System.out.println("playing List > " + li);
+        } */
     }
     
 }
