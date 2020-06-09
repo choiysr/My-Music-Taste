@@ -25,6 +25,9 @@
     <!-- YOUTUBE API-->
     <script src="https://www.youtube.com/player_api"></script>
     <script th:src="@{~/public/js/ajaxUtil.js}"></script>
+    <!-- Icon import -->
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
 </head>
 
 <body class="has-sidebar has-fixed-sidebar-and-header">
@@ -156,55 +159,50 @@
         <!-- Sidebar Nav -->
         <aside id="sidebar" class="js-custom-scroll side-nav">
             <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
-                <hr>
-                <!-- START MY PLAYLIST -->
-                <li class="side-nav-menu-item active">
-                    <a class="side-nav-menu-link media align-items-center" href="/">
-                        <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-music-alt"></i>
-                        </span>
-                        <span class="side-nav-fadeout-on-closed media-body">MY PLAYLIST</span>
-                    </a>
-                </li>
-                <hr>
-                <!-- END MY PLAYLIST -->
-
                 <!-- Title -->
                 <li class="sidebar-heading h6">MUSIC TOP50</li>
                 <!-- End Title -->
 
 
                 <li class="side-nav-menu-item active">
-                    <a class="side-nav-menu-link media align-items-center" href="/">
+                    <a class="side-nav-menu-link media align-items-center" onclick="getMusicChartList('realtime',1)"
+                        style="cursor: pointer;">
                         <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-heart"></i>
+                            <i class='far fa-heart navbar-chart' data-id='realtime'
+                                style='font-size:20px;color:#265df1;'></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">실시간</span>
                     </a>
                 </li>
 
                 <li class="side-nav-menu-item active">
-                    <a class="side-nav-menu-link media align-items-center" href="/">
+                    <a class="side-nav-menu-link media align-items-center" onclick="getMusicChartList('daily',1)"
+                        style="cursor: pointer;">
                         <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-heart"></i>
+                            <i class='far fa-heart navbar-chart' data-id='daily'
+                                style='font-size:20px;color:#265df1;'></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">일간</span>
                     </a>
                 </li>
 
                 <li class="side-nav-menu-item active">
-                    <a class="side-nav-menu-link media align-items-center" href="/">
+                    <a class="side-nav-menu-link media align-items-center" onclick="getMusicChartList('weekly',1)"
+                        style="cursor: pointer;">
                         <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-heart"></i>
+                            <i class='far fa-heart navbar-chart' data-id='weekly'
+                                style='font-size:20px;color:#265df1;'></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">주간</span>
                     </a>
                 </li>
 
                 <li class="side-nav-menu-item active">
-                    <a class="side-nav-menu-link media align-items-center" href="/">
+                    <a class="side-nav-menu-link media align-items-center" onclick="getMusicChartList('monthly',1)"
+                        style="cursor: pointer;">
                         <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-heart"></i>
+                            <i class='far fa-heart navbar-chart' data-id='monthly'
+                                style='font-size:20px;color:#265df1;'></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">월간</span>
                     </a>
@@ -219,13 +217,13 @@
                 <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4">
                     <div class="card h-100">
                         <div class="card-header" style="text-align: center;">
-                            <h1 class="h6 text-uppercase font-weight-semi-bold mb-0">실시간차트</h1>
+                            <h1 class="h6 text-uppercase font-weight-semi-bold mb-0" id="chartText">실시간차트</h1>
                         </div>
                         <div class='toplist-button-area' style="text-align: center; margin-bottom: 10px;">
                             <button class="btn btn-dark btn-sm" type="button" id="playAllRightNow"
-                                style="font-size: x-small;">전체재생</button>
+                                style="font-size: x-small;" onclick="addAllMusicIntoPlaylist('play');">전체재생</button>
                             <button class="btn btn-light btn-sm" type="button" id="addAllSong"
-                                style="font-size: x-small;">전체담기</button>
+                                style="font-size: x-small;" onclick="addAllMusicIntoPlaylist();">전체담기</button>
                         </div>
 
                         <div class="card-body p-0" id="musicChart">
@@ -287,7 +285,7 @@
                                 </div>
                             </div>
 
-                            <div id="myList">
+                            <div id="myList" style="overflow-y:auto; overflow-x:hidden; height:4380.550px;">
 
                             </div>
                             <!-- <div class="border-top p-3 px-md-4 mx-0 listCount">
@@ -368,8 +366,7 @@
 
         $(document).ready(() => {
 
-
-            getMusicChartList('DAILY', 1);
+            getMusicChartList('realtime', 1);
             console.log("onread3214y")
 
             // 전체선택 버튼 눌렀을때 리스트의 모든 곡을 체크/체크해제  
@@ -413,18 +410,38 @@
             })
 
 
-
         });
         // end of onready 
+
 
         /* ========== TOP50 리스트 관련 ========== */
 
         // TYPE별 음악 차트를 ajax로 가져오고, 화면에 태그를 뿌려주는 function 
         function getMusicChartList(type, page) {
+            $('html').scrollTop(0);
             ajaxService.getAjax(API_Server.commonURL + 'musicChartList/' + type + '/' + page, success);
             function success(result) {
                 let $musicChartDiv = $('#musicChart');
                 $musicChartDiv.html(makeMusicChartListTag(result.content));
+                let $chartText = $("#chartText");
+                $('.navbar-chart').each(function (index, item) {
+                    if (item.dataset.id != type) {
+                        $('[data-id="' + item.dataset.id + '"]').addClass('far').removeClass('fas');
+                    } else {
+                        $('[data-id="' + item.dataset.id + '"]').addClass('fas').removeClass('far');
+                    }
+                })
+
+                if (type == 'realtime') {
+                    $chartText.text('실시간차트')
+                } else if (type == 'daily') {
+                    $chartText.text('일간차트')
+                } else if (type == 'weekly') {
+                    $chartText.text('주간차트')
+                } else {
+                    $chartText.text('월간차트')
+                }
+
             }
         }
 
@@ -442,7 +459,7 @@
                     + ' onclick=addMusicIntoPlaylist(' + song.sid + ',"play")' + '>'
                     + '<i class="gd-control-play btn-icon-inner"></i></button></td>'
                     + '<td rowspan="2" style="width: 5vw;">'
-                    + '<button type="button" class="btn btn-icon btn-light rounded-circle btn-sm" id="' + song.sid + '"'
+                    + '<button type="button" class="btn btn-icon btn-light rounded-circle btn-sm chartList" id="' + song.sid + '"'
                     + ' data-youtubeId="' + song.youtubeId + '" data-title="' + song.title + '" data-singer="' + song.singer + '"'
                     + ' onclick=addMusicIntoPlaylist(' + song.sid + ')' + '>'
                     + '<i class="gd-plus btn-icon-inner"></i></button></td></tr><tr>'
@@ -451,26 +468,37 @@
             return listStr;
         }
 
-        // 전체듣기/담기시 활용  
-        // function addMusicIntoPlaylist(sid, play) {
-        //     let $myListDiv = $("#myList");
-        //     let listStr = "";
-        //     let songArr = [];
-        //     sid.forEach((sidObj, index) => {
-        //         let $targetSong = $("#" + sidObj);
-        //         let song = {
-        //             'youtubeId': $targetSong.attr("data-youtubeId"),
-        //             'title': $targetSong.attr("data-title"),
-        //             'singer': $targetSong.attr("data-singer")
-        //         };
-        //         songArr.push(song);
-        //     })
-        //     $myListDiv.append(makeMyListTag(songArr));
-        //     // ★ajax 호출이 들어가야 함 
-        // }
-
-
-        // 전체 담기 
+        // 전체 담기 버튼을 눌렀을 경우 
+        function addAllMusicIntoPlaylist(play) {
+            let $myListDiv = $('#myList');
+            let $chartList = $(".chartList");
+            let songArr = [];
+            let isFirstPlay = $('.listCount').length == 0;
+            $chartList.each(function (index, item) {
+                let $targetSong = $("#" + item.id);
+                let song = {
+                    'youtubeId': $targetSong.attr("data-youtubeId"),
+                    'title': $targetSong.attr("data-title"),
+                    'singer': $targetSong.attr("data-singer")
+                };
+                songArr.push(song);
+            })
+            // ★ajax 호출이 들어가야 함 
+            // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
+            $myListDiv.append(makeMyListTag(songArr));
+            if (isFirstPlay) {
+                console.log("리스트에 아무곡도 들어있지 않은 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생")
+                showPlayerArea();
+                onPlay(1);
+            }
+            // 리스트에 곡이 들어있고 '전체재생'버튼을 눌렀을 경우 1위곡을 재생
+            if (play == 'play' && !isFirstPlay) {
+                console.log("리스트에 곡이 들어있고 전체재생 버튼을 누름")
+                let myListLength = $('.listCount').length;
+                let charListLenght = $(".chartList").length;
+                onPlay(myListLength - charListLenght + 1);
+            }
+        }
 
 
         // top리스트에서 add버튼 눌렀을 경우 

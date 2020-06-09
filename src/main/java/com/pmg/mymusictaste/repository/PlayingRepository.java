@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PlayingRepository extends JpaRepository<Playing, Long>{
 
     Page<Playing> findAllByUser(User user, Pageable page);
+    Integer countByUser(User user); 
+
 }
