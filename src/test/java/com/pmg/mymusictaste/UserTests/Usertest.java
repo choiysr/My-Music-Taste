@@ -38,10 +38,6 @@ public class Usertest {
         System.out.println("playListInserTest");
 
         User user = urepo.findById("userid").orElse(null);
-        List<Playing> playList=  urepo.findPlaylistByUserid(user.getUserid());
-        for(Playing p : playList) {
-            log.info(p+"");
-        }
 
         // User user = urepo.findById("hb").orElse(null);
         // System.out.println("user > "+ user);
@@ -55,13 +51,12 @@ public class Usertest {
             System.out.println("play > " + play );
         }
          */
-        //Page<Playing> list = pservce.getPlayingByUser(1, 10, user);
         
-        //List<Playing> pl = urepo.findAllByUserid(user.getUserid());
+        List<Playing> list = prepo.findAllByUser(user);
         
-        /* for(Playing li : list){
+        for(Playing li : list){
             System.out.println("playing List > " + li);
-        } */
+        } 
     }
     
 }

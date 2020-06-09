@@ -6,10 +6,6 @@ import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.User;
 import com.pmg.mymusictaste.repository.PlayingRepository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;

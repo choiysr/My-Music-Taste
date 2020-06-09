@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, String>{
     
 
-    @Query("SELECT PLAYLIST FROM USER WHERE USERID={user}")
-    List<Playing> findPlaylistByUserid(User user);
-    //List<Playing> findAllByUserid(String userid);
+    //List<Playing> findByUserid(User user);
+    List<Playing> findAllByUserid(String userid);
 }
