@@ -8,11 +8,10 @@ import com.pmg.mymusictaste.domain.Playing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface PlayingRepository extends JpaRepository<Playing, Long>{
+public interface MemberRepository extends JpaRepository<Member, String>{
+    
 
-    List<Playing> findAllByMember(Member member);
-    Integer countByMember(Member member); 
-
+    //List<Playing> findByUserid(Member member);
+    List<Playing> findAllByUserid(String userid);
 }

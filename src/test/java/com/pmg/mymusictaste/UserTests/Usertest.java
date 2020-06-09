@@ -2,10 +2,10 @@ package com.pmg.mymusictaste.UserTests;
 
 import java.util.List;
 
+import com.pmg.mymusictaste.domain.Member;
 import com.pmg.mymusictaste.domain.Playing;
-import com.pmg.mymusictaste.domain.User;
+import com.pmg.mymusictaste.repository.MemberRepository;
 import com.pmg.mymusictaste.repository.PlayingRepository;
-import com.pmg.mymusictaste.repository.UserRepository;
 import com.pmg.mymusictaste.service.PlayingService;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class Usertest {
     private PlayingRepository prepo;
 
     @Autowired
-    private UserRepository urepo;
+    private MemberRepository mrepo;
 
     @Autowired
     private PlayingService pservce;
@@ -37,7 +37,7 @@ public class Usertest {
     public void playlistInsertTest(){
         System.out.println("playListInserTest");
 
-        User user = urepo.findById("userid").orElse(null);
+        Member member = mrepo.findById("userid").orElse(null);
 
         // User user = urepo.findById("hb").orElse(null);
         // System.out.println("user > "+ user);
@@ -52,7 +52,7 @@ public class Usertest {
         }
          */
         
-        List<Playing> list = prepo.findAllByUser(user);
+        List<Playing> list = prepo.findAllByMember(member);
         
         for(Playing li : list){
             System.out.println("playing List > " + li);

@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Member {
 
     @Id
-    private String userId;
+    private String userid;
+    private String password;
     private String nickname;
-    private String profileImg;
     
 }

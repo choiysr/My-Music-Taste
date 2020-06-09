@@ -2,8 +2,8 @@ package com.pmg.mymusictaste.service;
 
 import java.util.List;
 
+import com.pmg.mymusictaste.domain.Member;
 import com.pmg.mymusictaste.domain.Playing;
-import com.pmg.mymusictaste.domain.User;
 import com.pmg.mymusictaste.repository.PlayingRepository;
 
 import org.springframework.stereotype.Service;
@@ -35,8 +35,8 @@ public class PlayingServiceImpl implements PlayingService{
   }
  */
   @Override
-  public List<Playing> getUserPlayList(User user){
-    return repository.findAllByUser(user);
+  public List<Playing> getMemberPlayList(Member member){
+    return repository.findAllByMember(member);
   }
 
 }

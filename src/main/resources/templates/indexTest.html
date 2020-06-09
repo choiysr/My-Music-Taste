@@ -35,10 +35,14 @@
     <header class="header bg-body">
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
-
+                <!-- Logo For Mobile View -->
+                    <img class="img-fluid w-100" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard">
+                <!-- End Logo For Mobile View -->
 
                 <!-- Logo For Desktop View -->
                 <a class="navbar-brand navbar-brand-desktop" href="/">
+                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard"
+                        style="width: auto; height: 33px;">
                     <!--메인 이미지 -->
                     <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
                         style="width: auto; height: 33px;">
@@ -307,9 +311,6 @@
         var player;
         var currentPlayingIdx;
         const API_Server = new URL('http://localhost:8080/');
-
-        var aValue = '@Request.RequestContext.HttpContext.Session["userInfo"]';
-        console.log("aValue:" + aValue);
 
         $(document).ready(() => {
 

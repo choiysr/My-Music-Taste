@@ -1,6 +1,5 @@
 package com.pmg.mymusictaste.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +26,7 @@ public class Playing {
     private Long pid;
 
     @ManyToOne
-    private User user;
+    private Member member;
 
     private String title;
     private String singer;
