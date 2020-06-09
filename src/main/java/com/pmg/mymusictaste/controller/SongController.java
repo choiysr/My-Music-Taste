@@ -35,13 +35,6 @@ public class SongController {
     private final UserRepository userreop;
 
 
-    // 소라-플레이어 만들면서 테스트용으로 사용중 
-    @GetMapping("/songlist")
-    public ResponseEntity<Page<Song>> getSongListTest() {
-        Page<Song> songList = songServ.getSongList(PageRequest.of(0, 10, Sort.Direction.DESC, "sid"));
-        return new ResponseEntity<>(songList, HttpStatus.OK);
-    }
-
     // 실시간/일간/주간/월간 별로 리스트 데이터를 반환
     @GetMapping("/musicChartList/{type}/{page}")
     public ResponseEntity<Page<Song>> getSongList(@PathVariable String type, @PathVariable Integer page) {
@@ -61,7 +54,6 @@ public class SongController {
     }
 
 
-
     @PostMapping("/addMusic")
     public void addMusic(@RequestBody List<Playing> playList, HttpSession session){
         //로그인 정보를 가져옴
@@ -71,7 +63,6 @@ public class SongController {
         playServ.addMusic(playList);
         //playList.setUser(user);
         //playServ.addMusic(Playing.builder().singer("김연우").title("사랑과우정사이").user(user).youtubeid("oCkAUDJKa10").build());
-        
     }
     
   }
