@@ -219,8 +219,15 @@
                 <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4">
                     <div class="card h-100">
                         <div class="card-header" style="text-align: center;">
-                            <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">실시간 TOP50</h5>
+                            <h1 class="h6 text-uppercase font-weight-semi-bold mb-0">실시간차트</h1>
                         </div>
+                        <div class='toplist-button-area' style="text-align: center; margin-bottom: 10px;">
+                            <button class="btn btn-dark btn-sm" type="button" id="playAllRightNow"
+                                style="font-size: x-small;">전체재생</button>
+                            <button class="btn btn-light btn-sm" type="button" id="addAllSong"
+                                style="font-size: x-small;">전체담기</button>
+                        </div>
+
                         <div class="card-body p-0" id="musicChart">
                             <!-- 테스트용 html. 코드는 ajax통신 후 사라집니다. 지우지말것 -->
                             <div class="border-top p-3 px-md-4 mx-0">
@@ -259,7 +266,7 @@
                 </div>
                 <!-- End Card -->
                 <!-- Card -->
-                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4" id="playerArea" style="display: none;">
+                <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4" id="playerArea" style="visibility:hidden;">
                     <div class="card h-100">
                         <div class="card-header" style="text-align: center;">
                             <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">MUSIC PLAYER</h5>
@@ -269,13 +276,14 @@
                                 <div id="player"></div>
                                 <div id="button-area">
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;">전체선택</button>
+                                        style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;">선택삭제</button>
+                                        style="font-size: x-small;" id="deleteAll">선택삭제</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;">전체반복</button>
+                                        style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;">한곡반복</button>
+                                        style="font-size: x-small;" id="repeatOneSong"
+                                        data-isChecked=false>한곡반복</button>
                                 </div>
                             </div>
 
@@ -356,12 +364,54 @@
 
         var player;
         var currentPlayingIdx;
-        const API_Server = new URL("http://localhost:8080/");
+        const API_Server = new URL('http://localhost:8080/');
 
         $(document).ready(() => {
 
-            getMusicChartList("DAILY", 1);
-            onPlay(3, 'play');
+
+            getMusicChartList('DAILY', 1);
+            console.log("onread3214y")
+
+            // 전체선택 버튼 눌렀을때 리스트의 모든 곡을 체크/체크해제  
+            $('#checkAll').on('click', function (e) {
+                e.preventDefault;
+                let checkTF = ($('#checkAll').attr('data-isChecked') === 'true');
+                $('#checkAll').attr('data-isChecked', !checkTF)
+                $('.listCheckbox').prop('checked', !checkTF);
+            });
+
+            // 전체반복 버튼 눌렀을때 리스트의 마지막 곡 재생 후 첫번째 곡으로 이동할 수 있게끔 옵션설정
+            // 마지막곡 재생이 끝나면 onPlayerStateChange()메서드에서 checkAll의 data-isChecked 속성을 확인하여 첫번째 곡으로 이동시킬 수 있도록 함
+            $('#repeatAll').on('click', function (e) {
+                e.preventDefault;
+                // 한곡반복 설정 해제 
+                $('#repeatOneSong').attr('data-isChecked', false);
+                $('#repeatOneSong').removeClass('btn-primary').addClass('btn-outline-primary');
+                let checkTF = ($('#repeatAll').attr('data-isChecked') === 'true');
+                $('#repeatAll').attr('data-isChecked', !checkTF);
+                // 반복설정여부에 따라 클래스(for css) 변경
+                if (!checkTF) {
+                    $('#repeatAll').removeClass('btn-outline-primary').addClass('btn-primary');
+                } else {
+                    $('#repeatAll').removeClass('btn-primary').addClass('btn-outline-primary');
+                }
+            })
+
+            $('#repeatOneSong').on('click', function (e) {
+                e.preventDefault;
+                // 전곡반복 설정 해제 
+                $('#repeatAll').attr('data-isChecked', false);
+                $('#repeatAll').removeClass('btn-primary').addClass('btn-outline-primary');
+                let checkTF = ($('#repeatOneSong').attr('data-isChecked') === 'true');
+                $('#repeatOneSong').attr('data-isChecked', !checkTF);
+                // 반복설정여부에 따라 클래스(for css) 변경
+                if (!checkTF) {
+                    $('#repeatOneSong').removeClass('btn-outline-primary').addClass('btn-primary');
+                } else {
+                    $('#repeatOneSong').removeClass('btn-primary').addClass('btn-outline-primary');
+                }
+            })
+
 
 
         });
@@ -371,16 +421,16 @@
 
         // TYPE별 음악 차트를 ajax로 가져오고, 화면에 태그를 뿌려주는 function 
         function getMusicChartList(type, page) {
-            ajaxService.getAjax(API_Server.commonURL + "musicChartList/" + type + "/" + page, success);
+            ajaxService.getAjax(API_Server.commonURL + 'musicChartList/' + type + '/' + page, success);
             function success(result) {
-                let $musicChartDiv = $("#musicChart");
+                let $musicChartDiv = $('#musicChart');
                 $musicChartDiv.html(makeMusicChartListTag(result.content));
             }
         }
 
         // 음악 차트 리스트 태그를 만들어서 문자열 형태로 반환하는 function
         function makeMusicChartListTag(song) {
-            let listStr = "";
+            let listStr = '';
             song.forEach((song, index) => {
                 listStr += '<div class="border-top p-3 px-md-4 mx-0">'
                     + '<table><tr><td rowspan="2" style="text-align: center; width: 5vw;">' + song.ranking + '</td>'
@@ -419,18 +469,23 @@
         //     // ★ajax 호출이 들어가야 함 
         // }
 
+
+        // 전체 담기 
+
+
+        // top리스트에서 add버튼 눌렀을 경우 
         function addMusicIntoPlaylist(sid, play) {
             // [재생]버튼 눌렀을 경우 추가
-            let $myListDiv = $("#myList");
-            let listStr = "";
+            let $myListDiv = $('#myList');
+            let listStr = '';
             let songArr = [];
-            let isFirstPlay = $(".listCount").length == 0;
-            let $targetSong = $("#" + sid);
+            let isFirstPlay = $('.listCount').length == 0;
+            let $targetSong = $('#' + sid);
             let song = {
                 'sid': sid,
-                'youtubeId': $targetSong.attr("data-youtubeId"),
-                'title': $targetSong.attr("data-title"),
-                'singer': $targetSong.attr("data-singer")
+                'youtubeId': $targetSong.attr('data-youtubeId'),
+                'title': $targetSong.attr('data-title'),
+                'singer': $targetSong.attr('data-singer')
             };
             songArr.push(song);
             // ★ajax 호출이 들어가야 함 
@@ -443,20 +498,21 @@
                 onPlay(1);
             }
             if (play == 'play') {
-                onPlay($('[data-sid="' + sid + '"]').attr("data-idx"));
+                // top리스트에서 재생버튼을 눌렀을 경우, 기존 리스트에 해당 곡이 있었을경우(sid가 중복되는경우)
+                // 마지막 노드의(last())곡이 재생된다. 
+                onPlay($('[data-sid="' + sid + '"]').last().attr('data-idx'));
             }
-
         }
 
 
         function makeMyListTag(songArr) {
-            let listCount = $(".listCount").length;
+            let listCount = $('.listCount').length;
             let isFirstPlay = listCount == 0;
-            let listStr = "";
+            let listStr = '';
             songArr.forEach((song, index) => {
                 listStr += '<div class="border-top p-3 px-md-4 mx-0 listCount" data-idx="' + (listCount + 1) + '" data-youtubeId="' + song.youtubeId + '" data-sid="' + song.sid + '"><table><tr style="font-size: small;">'
-                    + '<td style="width: 5vw;"><input type="checkbox" value=' + (listCount + 1) + '></td>'
-                    + '<td style="width: 90vw; text-align: left;"><a class="titleAndSingerText" style="cursor:pointer;"onclick=onPlay('+(listCount+1)+')>' + song.title + ' - ' + song.singer + '</a></td>'
+                    + '<td style="width: 5vw;"><input type="checkbox" class="listCheckbox" value=' + (listCount + 1) + '></td>'
+                    + '<td style="width: 90vw; text-align: left;"><a class="titleAndSingerText" style="cursor:pointer;"onclick=onPlay(' + (listCount + 1) + ')>' + song.title + ' - ' + song.singer + '</a></td>'
                     + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList(' + (listCount + 1) + ')></i></td></tr></table></div>';
                 ++listCount;
             });
@@ -465,10 +521,11 @@
 
         // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
         // ajax처리해야함
+        // 화면에서 제일 나중에 구현할것 
         function removeSongInMyList(targetIdx) {
             let $targetSong = $('[data-idx="' + targetIdx + '"]');
             $targetSong.remove();
-            let $allMySongs = $(".listCount");
+            let $allMySongs = $('.listCount');
             // 2020.06.08저녁 -> 셀렉터를 이용해 자식노드의 내용 바꿔줘야함.
             // 바꿀리스트 
             // -> .listCount div의(this) data-idx
@@ -496,19 +553,18 @@
         // 플레이리스트에 한곡도 없을때 기본적으로 display: none
         // 플레이리스트에 한곡이라도 담기면 plyerArea를 활성화한다(inline-block)
         function showPlayerArea() {
-            $("#playerArea").css('display', 'inline-block');
+            $("#playerArea").css('visibility', 'visible');
         }
 
         // 현재 재생중인 영역의 css 변경 
-        function currentPalyTargetTagColorChange(idx){
-            console.log("==색상변경")
+        function currentPalyTargetTagColorChange(idx) {
+            console.log("현재 재생중인 영역의 색상 변경")
             let $allSongsInMyList = $(".titleAndSingerText");
-            $allSongsInMyList.each(function(index,item){
-                if(item.style.color != '#4a4e69'){
+            $allSongsInMyList.each(function (index, item) {
+                if (item.style.color != '#4a4e69') {
                     item.style.color = '#4a4e69';
-                    console.log("--")
                 }
-                if(index+1==idx) {
+                if (index + 1 == idx) {
                     item.style.color = '#265df1';
                 }
             })
@@ -516,8 +572,6 @@
 
         function onPlay(targetIdx) {
             currentPlayingIdx = targetIdx;
-            //이 부분을 youtubeId 로 처음부터 조회하는것도 괜찮을듯 
-            //let musicIndex = $('[data-youtubeId="' + targetId + '"').attr("data-idx");
             let youtubeId = $('[data-idx="' + targetIdx + '"]').attr("data-youtubeId");
             currentPalyTargetTagColorChange(targetIdx);
             if (player == null) {
@@ -547,8 +601,16 @@
         }
 
         function onPlayerStateChange(event) {
-            // 재생이 종료됐으면 다음 영상을 재생한다. 
-            if (player.getPlayerState() == 0) {
+
+            let isFinished = player.getPlayerState() == 0;
+            // 한곡반복일 경우
+            if (isFinished && $('#repeatOneSong').attr('data-isChecked') === 'true') {
+                onPlay(currentPlayingIdx);
+            } // 마지막 곡 재생이 끝났는데 전곡반복일 경우, 첫번째 곡을 다시 재생한다
+            else if (isFinished && $(".listCount").length == currentPlayingIdx && $('#repeatAll').attr('data-isChecked') === 'true') {
+                onPlay(1);
+            } // 재생이 종료됐으면 다음 영상을 재생한다.
+            else if (isFinished) {
                 console.log("영상종료");
                 playNext();
             }
