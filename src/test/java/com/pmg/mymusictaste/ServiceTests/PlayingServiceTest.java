@@ -34,12 +34,12 @@ public class PlayingServiceTest {
   public void insertPlayListTest(){
     
     System.out.println("####[playList Service Test]");
-    User user = new User();
-    Playing playList = new Playing();
+    // User user = new User();
+    // Playing playList = new Playing();
 
-    user = User.builder().userid("hb").nickname("hyunbin").password("1111").build();
-    playList = Playing.builder().title("에잇").singer("아이유").user(user).youtubeid("!@#SDFASF11").build();
-    //pServ.addMusic(playList);
+    // user = User.builder().userid("hb").nickname("hyunbin").password("1111").build();
+    // playList = Playing.builder().title("에잇").singer("아이유").user(user).youtubeid("!@#SDFASF11").build();
+    // //pServ.addMusic(playList);
 
   }
 

@@ -109,7 +109,10 @@ public class KakaoAPIService {
             JsonElement element = parser.parse(result);
             
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+<<<<<<< HEAD
             //JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+=======
+>>>>>>> 6f5e9a274a2a821deec3427349af4e4975114160
             String userId = element.getAsJsonObject().get("id").getAsString();
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
             String profileImg = properties.getAsJsonObject().get("thumbnail_image").getAsString();
