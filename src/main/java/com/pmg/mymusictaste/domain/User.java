@@ -22,11 +22,5 @@ public class User {
     private String userid;
     private String password;
     private String nickname;
-
-    @OneToMany
-    private List<Playing> playList;
-
-
-
     
 }

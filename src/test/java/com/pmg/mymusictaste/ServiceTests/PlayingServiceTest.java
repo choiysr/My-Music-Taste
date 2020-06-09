@@ -39,17 +39,17 @@ public class PlayingServiceTest {
 
     user = User.builder().userid("hb").nickname("hyunbin").password("1111").build();
     playList = Playing.builder().title("에잇").singer("아이유").user(user).youtubeid("!@#SDFASF11").build();
-    pServ.addMusic(playList);
+    //pServ.addMusic(playList);
 
   }
 
   @Test
   public void getPlayList(){
     User user = urepo.findById("userid").orElse(null);
-    Page<Playing> playList = pServ.getPlayingByUser(1, 5, user);
-    for(Playing pl : playList){
+    //Page<Playing> playList = pServ.getPlayingByUser(1, 5, user);
+    /* for(Playing pl : playList){
       System.out.println("playList> " + pl);
-    }
+    } */
   }
 
   @Test

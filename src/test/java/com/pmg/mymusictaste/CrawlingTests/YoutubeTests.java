@@ -19,11 +19,9 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
-import com.pmg.mymusictaste.util.YoutubeCrawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -175,8 +173,8 @@ public class YoutubeTests {
         }
         // script 이상
         System.out.println(doc);
-        Elements element = doc.select("#video-title");
-        String title = element.attr("href");
+        //Elements element = doc.select("#video-title");
+        //String title = element.attr("href");
 
     }
 

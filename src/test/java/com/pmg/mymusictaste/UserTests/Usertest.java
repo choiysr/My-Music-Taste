@@ -1,13 +1,12 @@
 package com.pmg.mymusictaste.UserTests;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.User;
 import com.pmg.mymusictaste.repository.PlayingRepository;
 import com.pmg.mymusictaste.repository.UserRepository;
+import com.pmg.mymusictaste.service.PlayingService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 public class Usertest {
 
     @Autowired
+    private PlayingRepository prepo;
+
+    @Autowired
     private UserRepository urepo;
 
     @Autowired
-    private PlayingRepository prepo;
+    private PlayingService pservce;
 
     @Test
     public void userTest() {
@@ -33,15 +35,28 @@ public class Usertest {
 
     @Test
     public void playlistInsertTest(){
+        System.out.println("playListInserTest");
 
+        User user = urepo.findById("userid").orElse(null);
+
+        // User user = urepo.findById("hb").orElse(null);
+        // System.out.println("user > "+ user);
+        // Playing list = Playing.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
+        // prepo.save(list);
+        // Playing list2 = Playing.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
+        // prepo.save(list2);
         
-    }
-
-    @Test
-    public void savePlayList(){
-    List<Playing> playlist = new ArrayList<>();
-    
-
+        //List<Playing> playList = urepo.findAllByUserid(user.getUserid());
+        /* for(Playing play : playList){
+            System.out.println("play > " + play );
+        }
+         */
+        
+        List<Playing> list = prepo.findAllByUser(user);
+        
+        for(Playing li : list){
+            System.out.println("playing List > " + li);
+        } 
     }
     
 }
