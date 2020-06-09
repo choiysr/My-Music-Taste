@@ -1,7 +1,10 @@
 package com.pmg.mymusictaste.UserTests;
 
-import com.google.api.services.youtube.model.Playlist;
+import java.util.List;
+
+import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.User;
+import com.pmg.mymusictaste.repository.PlayingRepository;
 import com.pmg.mymusictaste.repository.UserRepository;
 
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,9 @@ public class Usertest {
     @Autowired
     private UserRepository urepo;
 
+    @Autowired
+    private PlayingRepository prepo;
+
     @Test
     public void userTest() {
         User user = User.builder().userid("userid").password("password").nickname("nickname").build();
@@ -25,13 +31,19 @@ public class Usertest {
 
     @Test
     public void playlistInsertTest(){
+        System.out.println("playListInserTest");
 
-        // User user = urepo.findById("userid").orElse(null);
-        // System.out.println("user > "+ user);
-        // Playlist list = Playlist.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
+         User user = urepo.findById("userid").orElse(null);
+        //System.out.println("user > "+ user);
+        // Playing list = Playing.builder().singer("songsinger1").title("songtitle1").user(user).youtubeid("oCkAUDJKa10").build();
         // prepo.save(list);
-        // Playlist list2 = Playlist.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
+        // Playing list2 = Playing.builder().singer("songsinger2").title("songtitle2").user(user).youtubeid("oCkAUasdfKa10").build();
         // prepo.save(list2);
+        
+        List<Playing> playList = urepo.findAllByUserId(user.getUserid());
+        for(Playing play : playList){
+            System.out.println("play > " + play );
+        }
 
     }
     
