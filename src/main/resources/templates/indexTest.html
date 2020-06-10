@@ -297,17 +297,18 @@
             getMusicChartList('realtime', 1);
             console.log("onread3214y")
 
-
             // 로그인한 유저의 플레이리스트 목록을 불러옴. 
-            // 플레이리스트가 없는 경우? 
             ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {
                 if (result.length != 0) {
+                    console.log("불러온리스트");
+                    console.log(result);
                     let mySongArr = [];
                     let $mySongListDiv = $('#myList');
                     let isFirstPlay = $('.listCount').length == 0;
                     result.forEach((item, index) => {
                         let song = {
-                            'youtubeId': item.youtubeId,
+                            'pid' : item.pid,
+                            'youtubeId': item.youtubeid,
                             'title': item.title,
                             'singer': item.singer
                         };
@@ -393,7 +394,6 @@
                 } else {
                     $chartText.text('월간차트')
                 }
-
             }
         }
 
@@ -424,19 +424,22 @@
         function addAllMusicIntoPlaylist(play) {
             let $myListDiv = $('#myList');
             let $chartList = $(".chartList");
+            let sids = [];
             let songArr = [];
             let isFirstPlay = $('.listCount').length == 0;
             $chartList.each(function (index, item) {
-                let $targetSong = $("#" + item.id);
-                let song = {
-                    'youtubeId': $targetSong.attr("data-youtubeId"),
-                    'title': $targetSong.attr("data-title"),
-                    'singer': $targetSong.attr("data-singer")
-                };
-                songArr.push(song);
+                sids.push(item.id);
             })
-            // ★ajax 호출이 들어가야 함 
-            // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
+            ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
+                result.forEach((item,index)=>{
+                    let song = {
+                        'pid' : pid,
+                        'youtubeId': item.youtubeid,
+                        'title': item.title,
+                        'singer': item.singer };
+                    songArr.push(item);
+                })
+            });
             $myListDiv.append(makeMyListTag(songArr));
             if (isFirstPlay) {
                 console.log("리스트에 아무곡도 들어있지 않은 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생")
@@ -459,18 +462,17 @@
             let $myListDiv = $('#myList');
             let listStr = '';
             let songArr = [];
-            let isFirstPlay = $('.listCount').length == 0;
+            let currentListCount = $('.listCount').length;
             let $targetSong = $('#' + sid);
-
+            let sids = [];
             let pid = "";
-            ajaxService.postAjax(API_Server.commonURL + "playList", sid, (result) => {
-                result.content.forEach(element => {
-                    pid = element.pid;
-                });
+            sids.push(sid);
+            ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
+                pid=result[0].pid;
             })
 
-
             let song = {
+                'pid' : pid,
                 'sid': sid,
                 'youtubeId': $targetSong.attr('data-youtubeId'),
                 'title': $targetSong.attr('data-title'),
@@ -481,15 +483,16 @@
             // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
             $myListDiv.append(makeMyListTag(songArr));
             // 리스트에 아무곡도 들어있지 않았던 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생시킨다. 
-            if (isFirstPlay) {
-                console.log("리스트에 아무곡도 들어있지 않은 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생")
+            if (currentListCount==0) {
                 showPlayerArea();
                 onPlay(1);
             }
-            if (play == 'play') {
+            else if (currentListCount!=0 && play == 'play') {
                 // top리스트에서 재생버튼을 눌렀을 경우, 기존 리스트에 해당 곡이 있었을경우(sid가 중복되는경우)
                 // 마지막 노드의(last())곡이 재생된다. 
-                onPlay($('[data-sid="' + sid + '"]').last().attr('data-idx'));
+                // onPlay($('[data-sid="' + sid + '"]').last().attr('data-idx'));
+                // sid를 사용하지 않기 위해 기존 리스트의 +1을 해서 재생시킨다. 안되면 빠꾸시켜보자
+                onPlay(currentListCount+1);
             }
         }
 
@@ -499,7 +502,7 @@
             let isFirstPlay = listCount == 0;
             let listStr = '';
             songArr.forEach((song, index) => {
-                listStr += '<div class="border-top p-3 px-md-4 mx-0 listCount" data-idx="' + (listCount + 1) + '" data-youtubeId="' + song.youtubeId + '" data-sid="' + song.sid + '"><table><tr style="font-size: small;">'
+                listStr += '<div class="border-top p-3 px-md-4 mx-0 listCount" data-idx="' + (listCount + 1) + '" data-youtubeId="' + song.youtubeId + '" data-pid="' + song.pid + '"><table><tr style="font-size: small;">'
                     + '<td style="width: 5vw;"><input type="checkbox" class="listCheckbox" value=' + (listCount + 1) + '></td>'
                     + '<td style="width: 90vw; text-align: left;"><a class="titleAndSingerText" style="cursor:pointer;"onclick=onPlay(' + (listCount + 1) + ')>' + song.title + ' - ' + song.singer + '</a></td>'
                     + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList(' + (listCount + 1) + ')></i></td></tr></table></div>';

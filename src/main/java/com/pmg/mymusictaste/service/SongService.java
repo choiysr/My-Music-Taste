@@ -9,10 +9,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface SongService {
 
-    // 테스트용. 
-    public Page<Song> getSongList(Pageable pageInfo);
+    public Song getSongById(Long sid);
     
-
     public Page<Song> getSongListByType(int startPage, int amount, String type);
     
     public void saveSong(Song song);

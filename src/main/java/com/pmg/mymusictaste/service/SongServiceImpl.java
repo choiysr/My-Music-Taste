@@ -19,12 +19,9 @@ public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepo;
 
-    // 테스트용 
     @Override
-    public Page<Song> getSongList(Pageable pageInfo) {
-        System.out.println("pageInfo > " + pageInfo);
-        Page<Song> songList = songRepo.findAll(pageInfo);
-        return songList;
+    public Song getSongById(Long sid) {
+        return songRepo.findById(sid).orElse(null);
     }
 
 
