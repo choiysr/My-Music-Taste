@@ -19,8 +19,8 @@ public class PlayingServiceImpl implements PlayingService{
   //Page<Song> findAllByUserId(String user, Pageable page){}
 
   @Override
-  public void addMusic(List<Playing> playList){
-      repository.saveAll(playList);
+  public List<Playing> addMusic(List<Playing> playList){
+     return repository.saveAll(playList);
   }
 
   //String user, Pageable page

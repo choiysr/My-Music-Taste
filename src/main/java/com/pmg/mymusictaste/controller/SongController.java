@@ -1,11 +1,12 @@
 package com.pmg.mymusictaste.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pmg.mymusictaste.config.auth.dto.SessionMember;
+import com.pmg.mymusictaste.domain.Member;
 import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.domain.Song;
-import com.pmg.mymusictaste.repository.MemberRepository;
 import com.pmg.mymusictaste.service.MemberService;
 import com.pmg.mymusictaste.service.PlayingService;
 import com.pmg.mymusictaste.service.SongService;
@@ -41,14 +42,28 @@ public class SongController {
     }
 
     @PostMapping("/playList")
-    public void addMusic(@RequestBody List<Integer> sids){
+    public ResponseEntity<List<Playing>> addMusic(@RequestBody List<Long> sids, @SessionAttribute("user") SessionMember user){
+        System.out.println("==========================================");
+        List<Playing> playList = new ArrayList<>();
+        Member member = memServ.findByEmail(user.getEmail());
+        for(Long sid : sids) {
+            Song song = songServ.getSongById(sid);
+            playList.add(Playing.builder()
+            .title(song.getTitle())
+            .singer(song.getSinger())
+            .youtubeid(song.getYoutubeId())
+            .member(member).build());
+        }
+        
+        playServ.addMusic(playList);;
 
 
+        return new ResponseEntity<>(playList,HttpStatus.OK);
     }
 
     @GetMapping("/playList")
-    public ResponseEntity<List<Playing>> getPlayList(@SessionAttribute("user") SessionMember member){
-        return new ResponseEntity<>(playServ.getMemberPlayList(memServ.findByEmail(member.getEmail())),HttpStatus.OK);
+    public ResponseEntity<List<Playing>> getPlayList(@SessionAttribute("user") SessionMember user){
+        return new ResponseEntity<>(playServ.getMemberPlayList(memServ.findByEmail(user.getEmail())),HttpStatus.OK);
     }
     
   }

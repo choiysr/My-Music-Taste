@@ -9,7 +9,7 @@ public interface PlayingService {
 
   //Page<Playlist> findAllByUserId(String user, Pageable page);
   
-  public void addMusic(List<Playing> playList);
+  public List<Playing> addMusic(List<Playing> playList);
 
   /* public Page<Playing> getPlayingByUser(int startPage, int amount, User user); */
 
