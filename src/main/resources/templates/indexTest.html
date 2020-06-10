@@ -205,7 +205,7 @@
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;" id="deleteAll">선택삭제</button>
+                                        style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList();">선택삭제</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
@@ -300,14 +300,12 @@
             // 로그인한 유저의 플레이리스트 목록을 불러옴. 
             ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {
                 if (result.length != 0) {
-                    console.log("불러온리스트");
-                    console.log(result);
                     let mySongArr = [];
                     let $mySongListDiv = $('#myList');
                     let isFirstPlay = $('.listCount').length == 0;
                     result.forEach((item, index) => {
                         let song = {
-                            'pid' : item.pid,
+                            'pid': item.pid,
                             'youtubeId': item.youtubeid,
                             'title': item.title,
                             'singer': item.singer
@@ -431,12 +429,13 @@
                 sids.push(item.id);
             })
             ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                result.forEach((item,index)=>{
+                result.forEach((item, index) => {
                     let song = {
-                        'pid' : pid,
+                        'pid': pid,
                         'youtubeId': item.youtubeid,
                         'title': item.title,
-                        'singer': item.singer };
+                        'singer': item.singer
+                    };
                     songArr.push(item);
                 })
             });
@@ -468,11 +467,11 @@
             let pid = "";
             sids.push(sid);
             ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                pid=result[0].pid;
+                pid = result[0].pid;
             })
 
             let song = {
-                'pid' : pid,
+                'pid': pid,
                 'sid': sid,
                 'youtubeId': $targetSong.attr('data-youtubeId'),
                 'title': $targetSong.attr('data-title'),
@@ -483,16 +482,16 @@
             // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
             $myListDiv.append(makeMyListTag(songArr));
             // 리스트에 아무곡도 들어있지 않았던 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생시킨다. 
-            if (currentListCount==0) {
+            if (currentListCount == 0) {
                 showPlayerArea();
                 onPlay(1);
             }
-            else if (currentListCount!=0 && play == 'play') {
+            else if (currentListCount != 0 && play == 'play') {
                 // top리스트에서 재생버튼을 눌렀을 경우, 기존 리스트에 해당 곡이 있었을경우(sid가 중복되는경우)
                 // 마지막 노드의(last())곡이 재생된다. 
                 // onPlay($('[data-sid="' + sid + '"]').last().attr('data-idx'));
                 // sid를 사용하지 않기 위해 기존 리스트의 +1을 해서 재생시킨다. 안되면 빠꾸시켜보자
-                onPlay(currentListCount+1);
+                onPlay(currentListCount + 1);
             }
         }
 
@@ -515,27 +514,24 @@
         // ajax처리해야함
         // 화면에서 제일 나중에 구현할것 
         function removeSongInMyList(targetIdx) {
-            let $targetSong = $('[data-idx="' + targetIdx + '"]');
-            $targetSong.remove();
+            if (targetIdx == undefined) {
+                $('.listCheckbox:checked').each(function () {
+                    let $removeSong = $('[data-idx="' + $(this).val() + '"]');
+                    $removeSong.remove();
+                })
+            } else {
+                let $targetSong = $('[data-idx="' + targetIdx + '"]');
+                $targetSong.remove();
+            }
             let $allMySongs = $('.listCount');
-            // 2020.06.08저녁 -> 셀렉터를 이용해 자식노드의 내용 바꿔줘야함.
-            // 바꿀리스트 
-            // -> .listCount div의(this) data-idx
-            // -> 첫번째 td의 checkbox value 
-            // -> 두번째 td의 onclick의 onPlay파라미터
-            // -> 마지막 td의 removeSongInMyList의 파라미터 
 
-            // $allMySongs.each(function(index,item){
-            //     let test = $(item);
-            //     console.log("---test")
-            //     console.log(test)
-            //     console.log("children")
-            //     console.log(test.children)
-
-            // })
-
-
-
+            $allMySongs.each(function (index, item) {
+                let myMusic = $(item);
+                myMusic.attr("data-idx", index + 1);
+                myMusic.find(".listCheckbox").val(index + 1);
+                myMusic.find(".titleAndSingerText").attr("onclick", 'onPlay(' + (index + 1) + ')');
+                myMusic.find(".gd-close").attr("onclick", 'removeSongInMyList(' + (index + 1) + ')');
+            })
         }
 
 
@@ -550,7 +546,6 @@
 
         // 현재 재생중인 영역의 css 변경 
         function currentPalyTargetTagColorChange(idx) {
-            console.log("현재 재생중인 영역의 색상 변경")
             let $allSongsInMyList = $(".titleAndSingerText");
             $allSongsInMyList.each(function (index, item) {
                 if (item.style.color != '#4a4e69') {
@@ -572,6 +567,7 @@
                     height: '240',
                     width: '320',
                     videoId: youtubeId,
+                    host : 'https://www.youtube.com',
                     playerVars: {
                         'controls': 1, //플레이어 컨드롤러 표시여부
                         'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션

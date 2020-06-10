@@ -14,6 +14,7 @@ import com.pmg.mymusictaste.service.SongService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,6 @@ public class SongController {
 
     @PostMapping("/playList")
     public ResponseEntity<List<Playing>> addMusic(@RequestBody List<Long> sids, @SessionAttribute("user") SessionMember user){
-        System.out.println("==========================================");
         List<Playing> playList = new ArrayList<>();
         Member member = memServ.findByEmail(user.getEmail());
         for(Long sid : sids) {
@@ -54,16 +54,19 @@ public class SongController {
             .youtubeid(song.getYoutubeId())
             .member(member).build());
         }
-        
         playServ.addMusic(playList);;
-
-
         return new ResponseEntity<>(playList,HttpStatus.OK);
     }
 
     @GetMapping("/playList")
     public ResponseEntity<List<Playing>> getPlayList(@SessionAttribute("user") SessionMember user){
         return new ResponseEntity<>(playServ.getMemberPlayList(memServ.findByEmail(user.getEmail())),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/playList")
+    public void deletePlayList(@RequestBody List<Long> pids, @SessionAttribute("user") SessionMember user){
+        System.out.println("실행==");
+        playServ.deletePlayingList(pids);
     }
     
   }
