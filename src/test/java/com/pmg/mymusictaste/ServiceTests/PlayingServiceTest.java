@@ -1,5 +1,7 @@
 package com.pmg.mymusictaste.ServiceTests;
 
+import java.util.List;
+
 import com.pmg.mymusictaste.domain.Member;
 import com.pmg.mymusictaste.domain.Playing;
 import com.pmg.mymusictaste.repository.MemberRepository;
@@ -26,27 +28,34 @@ public class PlayingServiceTest {
   @Autowired
   private PlayingRepository pRepo;
 
+
   @Test
   public void insertPlayListTest(){
     
-    System.out.println("####[playList Service Test]");
-    Member member = new Member();
-    Playing playList = new Playing();
+    // System.out.println("####[playList Service Test]");
+    // Member member = new Member();
+    // Playing playList = new Playing();
 
-    member = Member.builder().userid("hb").nickname("hyunbin").password("1111").build();
-    playList = Playing.builder().title("에잇").singer("아이유").member(member).youtubeid("!@#SDFASF11").build();
+    // member = Member.builder().userid("hb").nickname("hyunbin").password("1111").build();
+    // playList = Playing.builder().title("에잇").singer("아이유").member(member).youtubeid("!@#SDFASF11").build();
     //pServ.addMusic(playList);
+
+    Member test = mRepo.findByEmail("choiysr@pmgroup.co.kr").orElse(null);
+    pRepo.save(Playing.builder().member(test).singer("남진").title("금요일에만나요").youtubeid("youtubeid234").build());
+    pRepo.findAllByMember(test);
+
 
   }
 
   @Test
   public void getPlayList(){
-    Member member = mRepo.findById("userid").orElse(null);
-    //Page<Playing> playList = pServ.getPlayingByUser(1, 5, user);
-    /* for(Playing pl : playList){
-      System.out.println("playList> " + pl);
-    } */
-  }
+    Member test = mRepo.findByEmail("choiysr@pmgroup.co.kr").orElse(null);
+    List<Playing> list = pRepo.findAllByMember(test);
+    for(Playing p: list ){
+      System.out.println(p);
+    }
+  } 
+  
 
   @Test
   public void countTest(){

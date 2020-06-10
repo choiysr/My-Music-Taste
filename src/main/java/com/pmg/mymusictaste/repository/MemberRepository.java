@@ -1,9 +1,8 @@
 package com.pmg.mymusictaste.repository;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.pmg.mymusictaste.domain.Member;
-import com.pmg.mymusictaste.domain.Playing;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, String>{
     
+    Optional<Member> findByEmail(String email);
 
-    //List<Playing> findByUserid(Member member);
-    List<Playing> findAllByUserid(String userid);
 }

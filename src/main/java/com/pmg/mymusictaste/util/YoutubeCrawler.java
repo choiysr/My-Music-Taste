@@ -30,7 +30,7 @@ public class YoutubeCrawler {
 
     public static YoutubeCrawler getChrome() {
         String webDriverID = "webdriver.chrome.driver";
-        String webDriverPath = "C:\\Users\\choiy\\workspace\\mymusictaste\\src\\main\\resources\\chromedriver.exe";
+        String webDriverPath = "C:\\git\\My-Music-Taste\\src\\main\\resources\\chromedriver.exe";
         return new YoutubeCrawler(webDriverID, webDriverPath);
     }
 

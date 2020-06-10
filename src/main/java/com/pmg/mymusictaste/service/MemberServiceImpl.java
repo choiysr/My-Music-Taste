@@ -13,13 +13,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
-  
-  private final MemberRepository memberRepo;
+
+  private final MemberRepository mRepo;
 
   @Override
-  public List<Playing> getPlayList(Member member){
-    List<Playing> list = null;
-    //return memberRepo.findAllByUserid(user.getUserid());
-    return list;
+  public Member findByEmail(String email) {
+    return mRepo.findByEmail(email).orElse(null);
   }
+
+    
+
 }
