@@ -224,7 +224,7 @@
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;" id="deleteAll">선택삭제</button>
+                                        style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList()">선택삭제</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
@@ -498,7 +498,7 @@
             let listStr = '';
             songArr.forEach((song, index) => {
                 listStr += '<div class="border-top p-3 px-md-4 mx-0 listCount" data-idx="' + (listCount + 1) + '" data-youtubeId="' + song.youtubeId + '" data-sid="' + song.sid + '"><table><tr style="font-size: small;">'
-                    + '<td style="width: 5vw;"><input type="checkbox" class="listCheckbox" value=' + (listCount + 1) + '></td>'
+                    + '<td style="width: 5vw;"><input type="checkbox" class="removeSongInMyList" value=' + (listCount + 1) + '></td>'
                     + '<td style="width: 90vw; text-align: left;"><a class="titleAndSingerText" style="cursor:pointer;"onclick=onPlay(' + (listCount + 1) + ')>' + song.title + ' - ' + song.singer + '</a></td>'
                     + '<td style="width: 5vw;"><i class="gd-close text-light" onclick=removeSongInMyList(' + (listCount + 1) + ')></i></td></tr></table></div>';
                 ++listCount;
@@ -510,8 +510,15 @@
         // ajax처리해야함
         // 화면에서 제일 나중에 구현할것 
         function removeSongInMyList(targetIdx) {
-            let $targetSong = $('[data-idx="' + targetIdx + '"]');
-            $targetSong.remove();
+            if(targetIdx == undefined){
+                $('.removeSongInMyList:checked').each(function(){
+                    let $removeSong = $('[data-idx="' + $(this).val() + '"]');
+                    $removeSong.remove();
+                })
+            }else{
+                let $targetSong = $('[data-idx="' + targetIdx + '"]');
+                $targetSong.remove();
+            }
             let $allMySongs = $('.listCount');
             // 2020.06.08저녁 -> 셀렉터를 이용해 자식노드의 내용 바꿔줘야함.
             // 바꿀리스트 
@@ -520,14 +527,13 @@
             // -> 두번째 td의 onclick의 onPlay파라미터
             // -> 마지막 td의 removeSongInMyList의 파라미터 
 
-            // $allMySongs.each(function(index,item){
-            //     let test = $(item);
-            //     console.log("---test")
-            //     console.log(test)
-            //     console.log("children")
-            //     console.log(test.children)
-
-            // })
+             $allMySongs.each(function(index,item){
+                let myMusic = $(item);
+                myMusic.attr("data-idx", index+1);
+                myMusic.find(".listCheckbox").val(index+1);
+                myMusic.find(".titleAndSingerText").attr("onclick",'onPlay('+(index+1)+')');
+                myMusic.find(".gd-close").attr("onclick",'removeSongInMyList('+(index+1)+')');
+             })
 
 
 
