@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
     <!-- Title -->
@@ -36,7 +36,7 @@
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
                 <!-- Logo For Mobile View -->
-                    <img class="img-fluid w-100" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard">
+                <img class="img-fluid w-100" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard">
                 <!-- End Logo For Mobile View -->
 
                 <!-- Logo For Desktop View -->
@@ -64,37 +64,17 @@
                     </div>
                     <!-- End User Notifications -->
                     <!-- User Avatar -->
-                    <div class="dropdown mx-3 dropdown ml-2">
-                        <img th:src="@{~/public/img/kakao_login_small.png}" id="loginBtn">
-                        <!-- <a id="profileMenuInvoker" class="header-complex-invoker" href="#" aria-controls="profileMenu"
-                            aria-haspopup="true" aria-expanded="false" data-unfold-event="click"
-                            data-unfold-target="#profileMenu" data-unfold-type="css-animation"
-                            data-unfold-duration="300" data-unfold-animation-in="fadeIn"
-                            data-unfold-animation-out="fadeOut">
-                            <span class="mr-md-2 avatar-placeholder">J</span>
-                            <span class="d-none d-md-block">John Doe</span>
-                            <i class="gd-angle-down d-none d-md-block ml-2"></i>
-                        </a> -->
-                        <!-- <ul id="profileMenu"
-                            class="unfold unfold-user unfold-light unfold-top unfold-centered position-absolute pt-2 pb-1 mt-4 unfold-css-animation unfold-hidden fadeOut"
-                            aria-labelledby="profileMenuInvoker" style="animation-duration: 300ms;">
-                            <li class="unfold-item">
-                                <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
-                                    <span class="unfold-item-icon mr-3">
-                                        <i class="gd-user"></i>
-                                    </span>
-                                    My Profile
-                                </a>
-                            </li>
-                            <li class="unfold-item unfold-item-has-divider">
-                                <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
-                                    <span class="unfold-item-icon mr-3">
-                                        <i class="gd-power-off"></i>
-                                    </span>
-                                    Sign Out
-                                </a>
-                            </li>
-                        </ul> -->
+                    <div th:if="${userName} != null" class="dropdown mx-3 dropdown ml-2">
+                        <img class="avatar-sm rounded-circle" th:src="${userImg}" style="display: inline-block;">
+                        <p th:text="${userName}" style="display: inline-block; font-size: small;"></p>
+                        <button type="button" class="btn btn-light rounded-pill btn-sm"
+                            onclick="location.href='/logout'">logout</button>
+                    </div>
+                    <div th:unless="${userName} != null" class="dropdown mx-3 dropdown ml-2">
+                        <button type="button" class="btn btn-google mb-3 mr-3 btn-sm" id="loginBtn"
+                            onclick="location.href='/oauth2/authorization/google'">
+                            <i class="gd-google align-middle mr-1"></i> Google
+                        </button>
                     </div>
                     <!-- End User Avatar -->
                 </div>
@@ -213,6 +193,7 @@
                 <!-- End Card -->
                 <!-- Card -->
                 <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4" id="playerArea" style="visibility:hidden;">
+                    <!-- <div class="col-lg-6 col-xl-4 mb-3 mb-lg-4" id="playerArea" th:style="${userName} != null ? 'visibility:inline-block;' :  'visibility:hidden;'"> -->
                     <div class="card h-100">
                         <div class="card-header" style="text-align: center;">
                             <h5 class="h6 text-uppercase font-weight-semi-bold mb-0">MUSIC PLAYER</h5>
@@ -234,18 +215,17 @@
                             </div>
 
                             <div id="myList" style="overflow-y:auto; overflow-x:hidden; height:4380.550px;">
-
+                                <!-- <div th:each="p : ${userPlaylist}" class="border-top p-3 px-md-4 mx-0 listCount">
+                                    <table>
+                                        <tr style="font-size: small;">
+                                            <td style="width: 5vw;"><input type="checkbox"></td>
+                                            <td th:text="${p.singer}"style="width: 90vw; text-align: left;">
+                                            </td>
+                                            <td style="width: 5vw;"><i class="gd-close text-light"></i></td>
+                                        </tr>
+                                    </table>
+                                </div> -->
                             </div>
-                            <!-- <div class="border-top p-3 px-md-4 mx-0 listCount">
-                                <table>
-                                    <tr style="font-size: small;">
-                                        <td style="width: 5vw;"><input type="checkbox"></td>
-                                        <td style="width: 90vw; text-align: left;">에잇(Prod.&Feat. SUGA of BTS) - 아이유
-                                        </td>
-                                        <td style="width: 5vw;"><i class="gd-close text-light"></i></td>
-                                    </tr>
-                                </table>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -314,19 +294,32 @@
 
         $(document).ready(() => {
 
-            console.log("READY")
-
-            $("#loginBtn").on('click',function(){                
-               window.open
-               ("https://kauth.kakao.com/oauth/authorize?client_id=87db6ec0a1298910d0c5bdec9823a0af&redirect_uri=http://localhost:8080/login&response_type=code","_self");
-            })
-
-        
-
             getMusicChartList('realtime', 1);
             console.log("onread3214y")
 
 
+            // 로그인한 유저의 플레이리스트 목록을 불러옴. 
+            // 플레이리스트가 없는 경우? 
+            ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {
+                if (result.length != 0) {
+                    let mySongArr = [];
+                    let $mySongListDiv = $('#myList');
+                    let isFirstPlay = $('.listCount').length == 0;
+                    result.forEach((item, index) => {
+                        let song = {
+                            'youtubeId': item.youtubeId,
+                            'title': item.title,
+                            'singer': item.singer
+                        };
+                        mySongArr.push(song);
+                    })
+                    $mySongListDiv.append(makeMyListTag(mySongArr));
+                    if (isFirstPlay) {
+                        showPlayerArea();
+                        onPlay(1);
+                    }
+                }
+            })
 
             // 전체선택 버튼 눌렀을때 리스트의 모든 곡을 체크/체크해제  
             $('#checkAll').on('click', function (e) {
@@ -468,6 +461,15 @@
             let songArr = [];
             let isFirstPlay = $('.listCount').length == 0;
             let $targetSong = $('#' + sid);
+
+            let pid = "";
+            ajaxService.postAjax(API_Server.commonURL + "playList", sid, (result) => {
+                result.content.forEach(element => {
+                    pid = element.pid;
+                });
+            })
+
+
             let song = {
                 'sid': sid,
                 'youtubeId': $targetSong.attr('data-youtubeId'),

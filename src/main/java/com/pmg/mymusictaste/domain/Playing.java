@@ -9,13 +9,16 @@ import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Playlist
  */
 @Entity
-@Data
+@Getter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,8 +35,5 @@ public class Playing {
     private String singer;
     private String youtubeid;
 
-
-
-    
     
 }
