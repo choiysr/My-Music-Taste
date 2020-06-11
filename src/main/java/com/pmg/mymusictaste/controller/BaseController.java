@@ -3,9 +3,6 @@ package com.pmg.mymusictaste.controller;
 import javax.servlet.http.HttpSession;
 
 import com.pmg.mymusictaste.config.auth.dto.SessionMember;
-import com.pmg.mymusictaste.domain.Member;
-import com.pmg.mymusictaste.service.MemberService;
-import com.pmg.mymusictaste.service.PlayingService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

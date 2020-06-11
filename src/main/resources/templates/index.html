@@ -36,20 +36,14 @@
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
                 <!-- Logo For Mobile View -->
+<<<<<<< HEAD
                 <a class="navbar-brand navbar-brand-mobile">
                     <img class="img-fluid w-100" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
                 </a>
+=======
+                <img class="img-fluid w-30" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
+>>>>>>> 05b01729d6b9daf1eaee70aa12096ede052eff7f
                 <!-- End Logo For Mobile View -->
-
-                <!-- Logo For Desktop View -->
-                <a class="navbar-brand navbar-brand-desktop" href="/">
-                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard"
-                        style="width: auto; height: 33px;">
-                    <!--메인 이미지 -->
-                    <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
-                        style="width: auto; height: 33px;">
-                </a>
-                <!-- End Logo For Desktop View -->
             </div>
 
             <div class="header-content col px-md-3">
@@ -67,7 +61,6 @@
                     <!-- End User Notifications -->
                     <!-- User Avatar -->
                     <div th:if="${userName} != null" class="dropdown mx-3 dropdown ml-2">
-                        <input type="hidden" id="loginCheck" value=th:text="${userEmail}" />
                         <img class="avatar-sm rounded-circle" th:src="${userImg}" style="display: inline-block;">
                         <p th:text="${userName}" style="display: inline-block; font-size: small;"></p>
                         <button type="button" class="btn btn-light rounded-pill btn-sm"
@@ -176,8 +169,7 @@
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;" id="deleteAll"
-                                        onclick="removeSongInMyList();">선택삭제</button>
+                                        style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList();">선택삭제</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
@@ -259,7 +251,6 @@
         $.GDCore.components.GDChartistDonut.init('.js-donut-chart');
     </script>
     <script>
-
         var player;
         var currentPlayingIdx;
         const API_Server = new URL('http://localhost:8080/');
@@ -443,6 +434,7 @@
                 onPlay(myListLength - charListLenght + 1);
             }
         }
+        
 
 
         // top리스트에서 add버튼 눌렀을 경우 
@@ -455,22 +447,22 @@
             let $targetSong = $('#' + sid);
             let sids = [];
             let pid = "";
-            let song;
+            let song ;
             //로그인 이메일 정보가져오기 없을시 공백
             var loginCheck = "[[${userEmail}]]";
-            if (loginCheck != "") {
+            if(loginCheck != ""){
                 sids.push(sid);
                 ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                    pid = result[0].pid;
+                   pid=result[0].pid;
                 })
             }
-            song = {
-                'pid': pid,
-                'sid': sid,
-                'youtubeId': $targetSong.attr('data-youtubeId'),
-                'title': $targetSong.attr('data-title'),
-                'singer': $targetSong.attr('data-singer')
-            };
+                song = {
+                    'pid': pid,
+                    'sid': sid,
+                    'youtubeId': $targetSong.attr('data-youtubeId'),
+                    'title': $targetSong.attr('data-title'),
+                    'singer': $targetSong.attr('data-singer')
+                };
             songArr.push(song);
             // ★ajax 호출이 들어가야 함 
             // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
@@ -504,64 +496,80 @@
             return listStr;
         }
 
-        // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
-        function removeSongInMyList(targetIdx) {
+           // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
+           function removeSongInMyList(targetIdx) {
 
-
-            var loginCheck = '[[${userEmail}]]';
-            let targetObjs = getSongTags(targetIdx);
-
-            if (loginCheck != '') { // 로그인 된 사용자
+                var loginCheck = '[[${userEmail}]]';
+                let targetObjs = getSongTags(targetIdx);
                 let pids = [];
-                targetObjs.forEach((item) => {
-                    pids.push(item.attr('data-pid'));
+                let removeIdx = []; 
+                let curIdx = 0;
+                let compareIdx = currentPlayingIdx;
+
+                targetObjs.forEach((item,index) => {
+                        pids.push(item.attr('data-pid'));
+                        if(item.attr('data-idx') < currentPlayingIdx){
+                            curIdx ++;
+                        }
+                        removeIdx.push(item.attr('data-idx'));
                 });
-                ajaxService.deleteAjax('playList', pids, removeTags(targetObjs));
-            } else {
-                removeTags(targetObjs);
-            }
+                if (loginCheck != '') { // 로그인 된 사용자
+                    ajaxService.deleteAjax('playList', pids, removeTags(targetObjs));
+                } else {
+                    removeTags(targetObjs);
+                }
+                let $allMySongs = $('.listCount');
 
-            let $allMySongs = $('.listCount');
-
-            $allMySongs.each(function (index, item) {
-                let myMusic = $(item);
-                myMusic.attr('data-idx', index + 1);
-                myMusic.find('.listCheckbox').val(index + 1);
-                myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
-                myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
-            })
-
-        }
-
-        function getSongTags(targetIdx) {
-            let $songObjArr = [];
-            if (targetIdx == undefined) {
-                $('.listCheckbox:checked').each(function () {
-                    let $targetSong = $('[data-idx="' + $(this).val() + '"]');
-                    $songObjArr.push($targetSong);
+                $allMySongs.each(function (index, item) {
+                    let myMusic = $(item);
+                    myMusic.attr('data-idx', index + 1);
+                    myMusic.find('.listCheckbox').val(index + 1);
+                    myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
+                    myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
                 })
-            } else {
-                let $targetSong = $('[data-idx="' + targetIdx + '"]');
-                $songObjArr.push($targetSong);
+                
+
+                console.log("currentPlayIngdex > " + currentPlayingIdx);
+                console.log("targetIdx > " + targetIdx);
+
+                //삭제한 동영상 중지후 다음곡 재생
+                var containsIdx = removeIdx.includes(""+currentPlayingIdx);
+
+                if(targetIdx == undefined){
+                    currentPlayingIdx -= curIdx;
+                } else if(targetIdx < currentPlayingIdx ){
+                    currentPlayingIdx--;
+                }
+
+                if((compareIdx == targetIdx) || containsIdx){
+                    stopVideo();
+                    playNext(currentPlayingIdx);
+                }
+                
+                console.log("currentPlayingIdx > " + currentPlayingIdx);
+
             }
-            return $songObjArr;
-        }
+
+            function getSongTags(targetIdx) {
+                let $songObjArr = [];
+                if (targetIdx == undefined) {
+                    $('.listCheckbox:checked').each(function () {
+                        let $targetSong = $('[data-idx="' + $(this).val() + '"]');
+                        $songObjArr.push($targetSong);
+                    })
+                } else {
+                    let $targetSong = $('[data-idx="' + targetIdx + '"]');
+                    $songObjArr.push($targetSong);
+                }
+                return $songObjArr;
+            }
 
 
-        function removeTags(targetObjs) {
-            targetObjs.forEach(($item, index) => {
-                $item.remove();
-            })
-        }
-
-        function removeSelectedSongs(targetIdx) {
-            let $songObjArr = [];
-            $('.listCheckbox:checked').each(function () {
-                let $targetSong = $('[data-idx="' + $(this).val() + '"]');
-                $songObjArr.push($targetSong);
-            })
-
-        }
+            function removeTags(targetObjs) {
+                targetObjs.forEach(($item, index) => {
+                    $item.remove();
+                })
+            }
 
 
         /* ========== 뮤직 플레이어 관련 ========== */
@@ -595,21 +603,23 @@
             currentPalyTargetTagColorChange(targetIdx);
             if (player == null) {
                 console.log("플레이어 객체 생성");
-                player = new YT.Player('player', {
-                    height: '240',
-                    width: '320',
-                    videoId: youtubeId,
-                    host: 'https://www.youtube.com',
-                    playerVars: {
-                        'controls': 1, //플레이어 컨드롤러 표시여부
-                        'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
-                        'autoplay': 1, //자동재생 여부
-                    },
-                    events: {
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange
-                    }
-                });
+                window.YT.ready(function(){
+                    player = new window.YT.Player('player', {
+                        height: '240',
+                        width: '320',
+                        videoId: youtubeId,
+                        host: 'https://www.youtube.com',
+                        playerVars: {
+                            'controls': 1, //플레이어 컨드롤러 표시여부
+                            'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
+                            'autoplay': 1, //자동재생 여부
+                        },
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                })
             } else {
                 player.loadVideoById(youtubeId);
             }
@@ -636,9 +646,15 @@
             }
         }
 
-        function playNext() {
+        function playNext(idx) {
             //플레이리스트 idx 로 이어서 재생.
-            let nextPage = ++currentPlayingIdx;
+            let nextPage;
+            if(idx != undefined){
+                nextPage = currentPlayingIdx;
+            }else{
+                nextPage = ++currentPlayingIdx;
+            }
+            
             onPlay(nextPage);
         }
 

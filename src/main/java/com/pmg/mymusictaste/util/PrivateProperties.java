@@ -20,4 +20,4 @@ public class PrivateProperties {
         return properties.getProperty(property);
     }
 
-}
+} 
