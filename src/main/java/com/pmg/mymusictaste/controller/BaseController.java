@@ -24,7 +24,7 @@ public class BaseController {
         model.addAttribute("userEmail", member.getEmail());
         model.addAttribute("userImg", member.getPicture());
     }
-    return "indexTest";
+    return "index";
   }
 
   
