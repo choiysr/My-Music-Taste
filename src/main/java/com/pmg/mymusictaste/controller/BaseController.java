@@ -33,7 +33,7 @@ public class BaseController {
         model.addAttribute("userImg", member.getPicture());
         model.addAttribute("userPlaylist", pserv.getMemberPlayList(mserv.findByEmail(member.getEmail())));
     }
-    return "indexTest";
+    return "index";
   }
 
   
