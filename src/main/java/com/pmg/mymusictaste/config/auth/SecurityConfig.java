@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .headers().frameOptions().disable()
         .and()
         .authorizeRequests() // URL별 권한 관리를 설정하는 옵션의 시작점. 
-                .antMatchers("/", "/resources/**", "/templates/**", "/js/**", "/profile").permitAll() // 지정된 URL은 permitAll() - 전체열람 
+                .antMatchers("/", "/resources/**", "/resources/static/public/**", "/resources/templates", "/templates/**", "/static/**", "/js/**", "/profile").permitAll() // 지정된 URL은 permitAll() - 전체열람 
                 .antMatchers("/playList/**").hasRole(Role.MEMBER.name()) // 이건 수정필요할듯 일단은... 
                 .anyRequest().permitAll() // 나머지 url들은 모두 인증된 사용자들에게만 허용하게 함.(이건 삭제해도 될라나?)
                 .and().logout().logoutSuccessUrl("/") // 로그아웃 성공 시 이동하는 URL
