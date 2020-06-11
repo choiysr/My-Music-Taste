@@ -19,10 +19,10 @@ public class CombineTests {
     @Test
     public void autoCrawlTest() {
 
-        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.DAILY));
-        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.MONTHLY));
-        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.REALTIME));
-        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.WEEKLY));
+        // sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.DAILY));
+        // sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.MONTHLY));
+        // sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.REALTIME));
+        // sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.WEEKLY));
     }
 
     // @Test
