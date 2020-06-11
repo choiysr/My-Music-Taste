@@ -65,7 +65,6 @@ public class SongController {
 
     @DeleteMapping("/playList")
     public void deletePlayList(@RequestBody List<Long> pids, @SessionAttribute("user") SessionMember user){
-        System.out.println("실행==");
         playServ.deletePlayingList(pids);
     }
     
