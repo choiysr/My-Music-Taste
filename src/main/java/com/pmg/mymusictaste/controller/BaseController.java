@@ -6,12 +6,14 @@ import com.pmg.mymusictaste.config.auth.dto.SessionMember;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 public class BaseController {
 
   private final HttpSession httpSession;
