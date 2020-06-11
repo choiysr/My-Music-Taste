@@ -26,15 +26,15 @@ public class MelonCrawler {
     try {
       doc = Jsoup.connect(target.getUrl()).get();
       if (doc != null) {
-        if (target.equals(MelonTarget.REALTIME)) {
-          songType = "REALTIME";
-        } else if (target.equals(MelonTarget.DAILY)) {
-          songType = "DAILY";
-        } else if (target.equals(MelonTarget.WEEKLY)) {
-          songType = "WEEKLY";
-        } else {
-          songType = "MONTHLY";
-        }
+        // if (target.equals(MelonTarget.REALTIME)) {
+        //   songType = "REALTIME";
+        // } else if (target.equals(MelonTarget.DAILY)) {
+        //   songType = "DAILY";
+        // } else if (target.equals(MelonTarget.WEEKLY)) {
+        //   songType = "WEEKLY";
+        // } else {
+        //   songType = "MONTHLY";
+        // }
         elements = doc.select("tr.lst50");
         songList = new ArrayList<SongInfo>();
         for (Element el : elements) {
@@ -53,7 +53,7 @@ public class MelonCrawler {
             }
           }
           song.setRanking(rank++);
-          song.setType(songType);
+          song.setType(target);
           song.setSinger(singersText);
           song.setThumbnail(el.select("div").select("img").attr("src"));
           songList.add(song);

@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import com.pmg.mymusictaste.DTO.SongInfo;
 import com.pmg.mymusictaste.domain.Song;
 import com.pmg.mymusictaste.service.CrawlingService;
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,12 @@ public class CrawlingServiceTest {
     @Setter(onMethod_ = { @Autowired })
     private CrawlingService crawlServ;
 
+
+    @Test
+    public void melonTargetTest(){
+        System.out.println(MelonTarget.valueOf("DAILY"));
+    }
+
     @Test
     public void insertSongDatasAfterCrawling() {
 
@@ -31,7 +38,7 @@ public class CrawlingServiceTest {
                 .singer("singer" + i)
                 .ranking(i)
                 .thumbnail("thumbnail" + i)
-                .type("DAILY").build());
+                .type(MelonTarget.DAILY).build());
         });
 
         List<Song> finalList = SongInfo.toSongList(targetList);

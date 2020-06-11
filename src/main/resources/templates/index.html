@@ -537,7 +537,6 @@
         // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
         function removeSongInMyList(targetIdx) {
 
-
             var loginCheck = '[[${userEmail}]]';
             let targetObjs = getSongTags(targetIdx);
 
@@ -560,6 +559,7 @@
                 myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
                 myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
             })
+            
         }
 
         function getSongTags(targetIdx) {
