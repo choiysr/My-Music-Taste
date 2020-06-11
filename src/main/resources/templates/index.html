@@ -36,18 +36,8 @@
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
                 <!-- Logo For Mobile View -->
-                <img class="img-fluid w-100" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard">
+                <img class="img-fluid w-30" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
                 <!-- End Logo For Mobile View -->
-
-                <!-- Logo For Desktop View -->
-                <a class="navbar-brand navbar-brand-desktop" href="/">
-                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/logo-mini.png}" alt="Graindashboard"
-                        style="width: auto; height: 33px;">
-                    <!--메인 이미지 -->
-                    <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
-                        style="width: auto; height: 33px;">
-                </a>
-                <!-- End Logo For Desktop View -->
             </div>
 
             <div class="header-content col px-md-3">
@@ -65,7 +55,6 @@
                     <!-- End User Notifications -->
                     <!-- User Avatar -->
                     <div th:if="${userName} != null" class="dropdown mx-3 dropdown ml-2">
-                        <input type="hidden" id="loginCheck" value=th:text="${userEmail}"/>
                         <img class="avatar-sm rounded-circle" th:src="${userImg}" style="display: inline-block;">
                         <p th:text="${userName}" style="display: inline-block; font-size: small;"></p>
                         <button type="button" class="btn btn-light rounded-pill btn-sm"
@@ -291,10 +280,10 @@
         var player;
         var currentPlayingIdx;
         const API_Server = new URL('http://localhost:8080/');
+
         $(document).ready(() => {
 
             getMusicChartList('realtime', 1);
-            console.log("onread3214y")
 
             // 로그인한 유저의 플레이리스트 목록을 불러옴. 
             ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {
@@ -424,34 +413,34 @@
             let sids = [];
             let songArr = [];
             let isFirstPlay = $('.listCount').length == 0;
-            
+
             //로그인 이메일 정보가져오기 없을시 공백
             var loginCheck = "[[${userEmail}]]";
-            
+
             // 로그인 되었을시 DB 에 저장 
-            if(loginCheck != ""){
-                console.log("login~");
+            if (loginCheck != "") {
                 $chartList.each(function (index, item) {
                     sids.push(item.id);
                 })
                 ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                    result.forEach((item,index)=>{
+                    result.forEach((item, index) => {
                         song = {
-                            'pid' : item.pid,
+                            'pid': item.pid,
                             'youtubeId': item.youtubeid,
                             'title': item.title,
-                            'singer': item.singer };
+                            'singer': item.singer
+                        };
                         songArr.push(song);
                     })
                 });
-            //로그인이 아닐 시 보여주기만 
-            }else{
-                $chartList.each(function (index,item) {
+                //로그인이 아닐 시 보여주기만 
+            } else {
+                $chartList.each(function (index, item) {
                     song = {
-                        'sid' : item.id,
-                        'youtubeId' : item.dataset.youtubeid,
-                        'title' : item.dataset.title,
-                        'singer' : item.dataset.singer
+                        'sid': item.id,
+                        'youtubeId': item.dataset.youtubeid,
+                        'title': item.dataset.title,
+                        'singer': item.dataset.singer
                     }
                     songArr.push(song);
                 })
@@ -471,6 +460,7 @@
                 onPlay(myListLength - charListLenght + 1);
             }
         }
+        
 
 
         // top리스트에서 add버튼 눌렀을 경우 
@@ -532,33 +522,62 @@
             return listStr;
         }
 
-        // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
-        // ajax처리해야함
-        // 화면에서 제일 나중에 구현할것 
-        function removeSongInMyList(targetIdx) {
+           // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
+           function removeSongInMyList(targetIdx) {
 
-            //삭제시 로그인 정보필요할듯해서 
-            //var loginCheck = "[[${userEmail}]]";
+                var loginCheck = '[[${userEmail}]]';
+                let targetObjs = getSongTags(targetIdx);
+                let pids = [];
+                let removeIdx = []; 
 
-            if(targetIdx == undefined){
-                $('.listCheckbox:checked').each(function(){
-                    let $removeSong = $('[data-idx="' + $(this).val() + '"]');
-                    $removeSong.remove();
+                targetObjs.forEach((item) => {
+                        pids.push(item.attr('data-pid'));
+                        removeIdx.push(item.attr('data-idx'));
+                });
+                if (loginCheck != '') { // 로그인 된 사용자
+                    ajaxService.deleteAjax('playList', pids, removeTags(targetObjs));
+                } else {
+                    removeTags(targetObjs);
+                }
+                let $allMySongs = $('.listCount');
+
+                $allMySongs.each(function (index, item) {
+                    let myMusic = $(item);
+                    myMusic.attr('data-idx', index + 1);
+                    myMusic.find('.listCheckbox').val(index + 1);
+                    myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
+                    myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
                 })
-            }else{
-                let $targetSong = $('[data-idx="' + targetIdx + '"]');
-                $targetSong.remove();
+
+                //삭제한 동영상 중지후 다음곡 재생
+                var containsIdx = $.inArray(currentPlayingIdx , removeIdx);
+                if((currentPlayingIdx == targetIdx) || containsIdx){
+                    stopVideo();
+                    playNext("remove");    
+                }
+
             }
-            let $allMySongs = $('.listCount');
-            
-            $allMySongs.each(function(index,item){
-                let myMusic = $(item);
-                myMusic.attr("data-idx", index+1);
-                myMusic.find(".listCheckbox").val(index+1);
-                myMusic.find(".titleAndSingerText").attr("onclick",'onPlay('+(index+1)+')');
-                myMusic.find(".gd-close").attr("onclick",'removeSongInMyList('+(index+1)+')');
-             })
-        }
+
+            function getSongTags(targetIdx) {
+                let $songObjArr = [];
+                if (targetIdx == undefined) {
+                    $('.listCheckbox:checked').each(function () {
+                        let $targetSong = $('[data-idx="' + $(this).val() + '"]');
+                        $songObjArr.push($targetSong);
+                    })
+                } else {
+                    let $targetSong = $('[data-idx="' + targetIdx + '"]');
+                    $songObjArr.push($targetSong);
+                }
+                return $songObjArr;
+            }
+
+
+            function removeTags(targetObjs) {
+                targetObjs.forEach(($item, index) => {
+                    $item.remove();
+                })
+            }
 
 
 
@@ -632,9 +651,17 @@
             }
         }
 
-        function playNext() {
+        function playNext(idx) {
             //플레이리스트 idx 로 이어서 재생.
-            let nextPage = ++currentPlayingIdx;
+            console.log("currentPlayingIdx > " + currentPlayingIdx);
+            let nextPage;
+
+            if(idx == 'remove'){
+                nextPage = currentPlayingIdx;
+            }else{
+                nextPage = ++currentPlayingIdx;
+            }
+            
             onPlay(nextPage);
         }
 

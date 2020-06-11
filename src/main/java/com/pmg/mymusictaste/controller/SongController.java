@@ -54,7 +54,7 @@ public class SongController {
             .youtubeid(song.getYoutubeId())
             .member(member).build());
         }
-        playServ.addMusic(playList);;
+        playServ.addMusic(playList);
         return new ResponseEntity<>(playList,HttpStatus.OK);
     }
 
@@ -64,8 +64,7 @@ public class SongController {
     }
 
     @DeleteMapping("/playList")
-    public void deletePlayList(@RequestBody List<Long> pids, @SessionAttribute("user") SessionMember user){
-        System.out.println("실행==");
+    public void deletePlayList(@RequestBody List<Long> pids){
         playServ.deletePlayingList(pids);
     }
     
