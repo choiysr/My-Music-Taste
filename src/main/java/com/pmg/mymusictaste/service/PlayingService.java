@@ -15,5 +15,7 @@ public interface PlayingService {
 
   public List<Playing> getMemberPlayList(Member member);
 
+  public void deletePlayingList(List<Long> pids);
+
 
 }

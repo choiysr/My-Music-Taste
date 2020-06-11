@@ -39,4 +39,11 @@ public class PlayingServiceImpl implements PlayingService{
     return repository.findAllByMember(member);
   }
 
+  @Override
+  public void deletePlayingList(List<Long> pids) {
+   repository.deleteAllByIdInQuery(pids);
+  }
+
+  
+
 }
