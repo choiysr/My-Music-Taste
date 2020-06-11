@@ -36,7 +36,7 @@ public class AutoCrawl {
     }
 
     // 1시간마다 실행
-    @Scheduled(cron="5 0 0-24 * * *")
+    @Scheduled(cron="5 0 0-23 * * *")
     public void crawlRealTime(){
         List<Song> list = startCrawling(MelonTarget.REALTIME);
         sServ.deleteByType(MelonTarget.REALTIME);
