@@ -35,10 +35,22 @@
     <header class="header bg-body">
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
-                <!-- Logo For Mobile View -->
-                <img class="img-fluid w-30" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
-                <!-- End Logo For Mobile View -->
+                <a class="navbar-brand navbar-brand-mobile" href="/">
+                    <img class="img-fluid w-100" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
+                </a>
+
+                <a class="navbar-brand navbar-brand-desktop" href="/">
+                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
+                        style="width: auto; height: 33px;">
+                    <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
+                        style="width: auto; height: 33px;">
+                </a>
             </div>
+
+            <a class="navbar-brand navbar-brand-desktop" href="/">
+                <img class="side-nav-show-on-closed" src="@{~/public/img/music_icon.png}" alt="Graindashboard"
+                    style="width: auto; height: 33px;">
+            </a>
 
             <div class="header-content col px-md-3">
                 <div class="d-flex align-items-center">
@@ -163,7 +175,8 @@
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
-                                        style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList();">선택삭제</button>
+                                        style="font-size: x-small;" id="deleteAll"
+                                        onclick="removeSongInMyList();">선택삭제</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
@@ -428,7 +441,7 @@
                 onPlay(myListLength - charListLenght + 1);
             }
         }
-        
+
 
 
         // top리스트에서 add버튼 눌렀을 경우 
@@ -441,22 +454,22 @@
             let $targetSong = $('#' + sid);
             let sids = [];
             let pid = "";
-            let song ;
+            let song;
             //로그인 이메일 정보가져오기 없을시 공백
             var loginCheck = "[[${userEmail}]]";
-            if(loginCheck != ""){
+            if (loginCheck != "") {
                 sids.push(sid);
                 ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                   pid=result[0].pid;
+                    pid = result[0].pid;
                 })
             }
-                song = {
-                    'pid': pid,
-                    'sid': sid,
-                    'youtubeId': $targetSong.attr('data-youtubeId'),
-                    'title': $targetSong.attr('data-title'),
-                    'singer': $targetSong.attr('data-singer')
-                };
+            song = {
+                'pid': pid,
+                'sid': sid,
+                'youtubeId': $targetSong.attr('data-youtubeId'),
+                'title': $targetSong.attr('data-title'),
+                'singer': $targetSong.attr('data-singer')
+            };
             songArr.push(song);
             // ★ajax 호출이 들어가야 함 
             // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
@@ -490,78 +503,78 @@
             return listStr;
         }
 
-           // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
-           function removeSongInMyList(targetIdx) {
+        // 플레이리스트에서 삭제버튼(X)을 누르면 리스트에서 삭제시키는 function
+        function removeSongInMyList(targetIdx) {
 
-                var loginCheck = '[[${userEmail}]]';
-                let targetObjs = getSongTags(targetIdx);
-                let pids = [];
-                let removeIdx = []; 
-                let curIdx = 0;
-                let compareIdx = currentPlayingIdx;
+            var loginCheck = '[[${userEmail}]]';
+            let targetObjs = getSongTags(targetIdx);
+            let pids = [];
+            let removeIdx = [];
+            let curIdx = 0;
+            let compareIdx = currentPlayingIdx;
 
-                targetObjs.forEach((item,index) => {
-                        pids.push(item.attr('data-pid'));
-                        if(item.attr('data-idx') < currentPlayingIdx){
-                            curIdx ++;
-                        }
-                        removeIdx.push(item.attr('data-idx'));
-                });
-                if (loginCheck != '') { // 로그인 된 사용자
-                    ajaxService.deleteAjax('playList', pids, removeTags(targetObjs));
-                } else {
-                    removeTags(targetObjs);
+            targetObjs.forEach((item, index) => {
+                pids.push(item.attr('data-pid'));
+                if (item.attr('data-idx') < currentPlayingIdx) {
+                    curIdx++;
                 }
-                let $allMySongs = $('.listCount');
+                removeIdx.push(item.attr('data-idx'));
+            });
+            if (loginCheck != '') { // 로그인 된 사용자
+                ajaxService.deleteAjax('playList', pids, removeTags(targetObjs));
+            } else {
+                removeTags(targetObjs);
+            }
+            let $allMySongs = $('.listCount');
 
-                $allMySongs.each(function (index, item) {
-                    let myMusic = $(item);
-                    myMusic.attr('data-idx', index + 1);
-                    myMusic.find('.listCheckbox').val(index + 1);
-                    myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
-                    myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
-                })
+            $allMySongs.each(function (index, item) {
+                let myMusic = $(item);
+                myMusic.attr('data-idx', index + 1);
+                myMusic.find('.listCheckbox').val(index + 1);
+                myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
+                myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
+            })
 
-                //삭제한 동영상 중지후 다음곡 재생
-                var containsIdx = removeIdx.includes(""+currentPlayingIdx);
+            //삭제한 동영상 중지후 다음곡 재생
+            var containsIdx = removeIdx.includes("" + currentPlayingIdx);
 
-                if(targetIdx == undefined){
-                    currentPlayingIdx -= curIdx;
-                } else if(targetIdx < currentPlayingIdx ){
-                    currentPlayingIdx--;
-                }
-
-                if((compareIdx == targetIdx) || containsIdx){
-                    stopVideo();
-                    playNext(currentPlayingIdx);
-                }
-
-                if($allMySongs.length==0){
-                    hidePlayerArea();
-                }
-
+            if (targetIdx == undefined) {
+                currentPlayingIdx -= curIdx;
+            } else if (targetIdx < currentPlayingIdx) {
+                currentPlayingIdx--;
             }
 
-            function getSongTags(targetIdx) {
-                let $songObjArr = [];
-                if (targetIdx == undefined) {
-                    $('.listCheckbox:checked').each(function () {
-                        let $targetSong = $('[data-idx="' + $(this).val() + '"]');
-                        $songObjArr.push($targetSong);
-                    })
-                } else {
-                    let $targetSong = $('[data-idx="' + targetIdx + '"]');
+            if ((compareIdx == targetIdx) || containsIdx) {
+                stopVideo();
+                playNext(currentPlayingIdx);
+            }
+
+            if ($allMySongs.length == 0) {
+                hidePlayerArea();
+            }
+
+        }
+
+        function getSongTags(targetIdx) {
+            let $songObjArr = [];
+            if (targetIdx == undefined) {
+                $('.listCheckbox:checked').each(function () {
+                    let $targetSong = $('[data-idx="' + $(this).val() + '"]');
                     $songObjArr.push($targetSong);
-                }
-                return $songObjArr;
-            }
-
-
-            function removeTags(targetObjs) {
-                targetObjs.forEach(($item, index) => {
-                    $item.remove();
                 })
+            } else {
+                let $targetSong = $('[data-idx="' + targetIdx + '"]');
+                $songObjArr.push($targetSong);
             }
+            return $songObjArr;
+        }
+
+
+        function removeTags(targetObjs) {
+            targetObjs.forEach(($item, index) => {
+                $item.remove();
+            })
+        }
 
 
         /* ========== 뮤직 플레이어 관련 ========== */
@@ -595,7 +608,7 @@
             currentPalyTargetTagColorChange(targetIdx);
             if (player == null) {
                 console.log("플레이어 객체 생성");
-                window.YT.ready(function(){
+                window.YT.ready(function () {
                     player = new window.YT.Player('player', {
                         height: '240',
                         width: '320',
@@ -641,12 +654,12 @@
         function playNext(idx) {
             //플레이리스트 idx 로 이어서 재생.
             let nextPage;
-            if(idx != undefined){
+            if (idx != undefined) {
                 nextPage = currentPlayingIdx;
-            }else{
+            } else {
                 nextPage = ++currentPlayingIdx;
             }
-            
+
             onPlay(nextPage);
         }
 
