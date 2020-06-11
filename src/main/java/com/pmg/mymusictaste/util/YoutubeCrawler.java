@@ -29,8 +29,9 @@ public class YoutubeCrawler {
     }
 
     public static YoutubeCrawler getChrome() {
+        
         String webDriverID = "webdriver.chrome.driver";
-        String webDriverPath = "C:\\Users\\choiy\\workspace\\mymusictaste\\src\\main\\resources\\chromedriver.exe";
+        String webDriverPath = PrivateProperties.getPrivateProperty("chromedriver.path");
         return new YoutubeCrawler(webDriverID, webDriverPath);
     }
 

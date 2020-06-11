@@ -1,6 +1,8 @@
 package com.pmg.mymusictaste.CrawlingTests;
 
+import com.pmg.mymusictaste.Scheduler.AutoCrawl;
 import com.pmg.mymusictaste.service.SongService;
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,11 @@ public class CombineTests {
 
     @Test
     public void autoCrawlTest() {
-        // AutoCrawl ac = new AutoCrawl();
-        // sServ.saveSongList(ac.startCrawling(MelonTarget.DAILY));
-        // sServ.saveSongList(ac.startCrawling(MelonTarget.MONTHLY));
-        // sServ.saveSongList(ac.startCrawling(MelonTarget.REALTIME));
-        // sServ.saveSongList(ac.startCrawling(MelonTarget.WEEKLY));
+
+        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.DAILY));
+        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.MONTHLY));
+        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.REALTIME));
+        sServ.saveSongList(AutoCrawl.startCrawling(MelonTarget.WEEKLY));
     }
 
     // @Test
