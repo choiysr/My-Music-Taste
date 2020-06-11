@@ -2,6 +2,8 @@ package com.pmg.mymusictaste.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.pmg.mymusictaste.domain.Member;
 import com.pmg.mymusictaste.domain.Playing;
 
@@ -18,6 +20,7 @@ public interface PlayingRepository extends JpaRepository<Playing, Long>{
     List<Playing> findAllByMember(Member member);
     Integer countByMember(Member member); 
 
+    @Transactional
     @Modifying
     @Query("delete from Playing p where p.pid in :pids")
     void deleteAllByIdInQuery(@Param("pids") List<Long> pids);

@@ -19,11 +19,6 @@ public class BaseController {
 
   private final HttpSession httpSession;
 
-  private final PlayingService pserv;
-  private final MemberService mserv;
-  
-
-
   @GetMapping("/")
   public String mappedUrl(Model model) {
     SessionMember member = (SessionMember) httpSession.getAttribute("user");
@@ -31,9 +26,8 @@ public class BaseController {
         model.addAttribute("userName", member.getName());
         model.addAttribute("userEmail", member.getEmail());
         model.addAttribute("userImg", member.getPicture());
-        model.addAttribute("userPlaylist", pserv.getMemberPlayList(mserv.findByEmail(member.getEmail())));
     }
-    return "indexTest";
+    return "index";
   }
 
   
