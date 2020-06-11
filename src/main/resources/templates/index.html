@@ -521,10 +521,6 @@
                     myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
                     myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
                 })
-                
-
-                console.log("currentPlayIngdex > " + currentPlayingIdx);
-                console.log("targetIdx > " + targetIdx);
 
                 //삭제한 동영상 중지후 다음곡 재생
                 var containsIdx = removeIdx.includes(""+currentPlayingIdx);
@@ -539,8 +535,10 @@
                     stopVideo();
                     playNext(currentPlayingIdx);
                 }
-                
-                console.log("currentPlayingIdx > " + currentPlayingIdx);
+
+                if($allMySongs.length==0){
+                    hidePlayerArea();
+                }
 
             }
 
