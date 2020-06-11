@@ -65,6 +65,7 @@
                     <!-- End User Notifications -->
                     <!-- User Avatar -->
                     <div th:if="${userName} != null" class="dropdown mx-3 dropdown ml-2">
+                        <input type="hidden" id="loginCheck" value=th:text="${userEmail}"/>
                         <img class="avatar-sm rounded-circle" th:src="${userImg}" style="display: inline-block;">
                         <p th:text="${userName}" style="display: inline-block; font-size: small;"></p>
                         <button type="button" class="btn btn-light rounded-pill btn-sm"
@@ -205,7 +206,11 @@
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="checkAll" data-isChecked=false>전체선택</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
+<<<<<<< HEAD
+                                        style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList()">선택삭제</button>
+=======
                                         style="font-size: x-small;" id="deleteAll" onclick="removeSongInMyList();">선택삭제</button>
+>>>>>>> 1c54a5b8b6c85da1c4f7ca92078f23847bfb7738
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
                                         style="font-size: x-small;" id="repeatAll" data-isChecked=false>전체반복</button>
                                     <button type="button" class="btn btn-outline-primary rounded-pill btn-sm"
@@ -425,20 +430,39 @@
             let sids = [];
             let songArr = [];
             let isFirstPlay = $('.listCount').length == 0;
-            $chartList.each(function (index, item) {
-                sids.push(item.id);
-            })
-            ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                result.forEach((item, index) => {
-                    let song = {
-                        'pid': pid,
-                        'youtubeId': item.youtubeid,
-                        'title': item.title,
-                        'singer': item.singer
-                    };
-                    songArr.push(item);
+            
+            //로그인 이메일 정보가져오기 없을시 공백
+            var loginCheck = "[[${userEmail}]]";
+            
+            // 로그인 되었을시 DB 에 저장 
+            if(loginCheck != ""){
+                console.log("login~");
+                $chartList.each(function (index, item) {
+                    sids.push(item.id);
                 })
-            });
+                ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
+                    result.forEach((item,index)=>{
+                        song = {
+                            'pid' : item.pid,
+                            'youtubeId': item.youtubeid,
+                            'title': item.title,
+                            'singer': item.singer };
+                        songArr.push(song);
+                    })
+                });
+            //로그인이 아닐 시 보여주기만 
+            }else{
+                $chartList.each(function (index,item) {
+                    song = {
+                        'sid' : item.id,
+                        'youtubeId' : item.dataset.youtubeid,
+                        'title' : item.dataset.title,
+                        'singer' : item.dataset.singer
+                    }
+                    songArr.push(song);
+                })
+            }
+
             $myListDiv.append(makeMyListTag(songArr));
             if (isFirstPlay) {
                 console.log("리스트에 아무곡도 들어있지 않은 경우 리스트영역을 띄우고 리스트에 들어온 가장 첫곡을 재생")
@@ -465,18 +489,22 @@
             let $targetSong = $('#' + sid);
             let sids = [];
             let pid = "";
-            sids.push(sid);
-            ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
-                pid = result[0].pid;
-            })
-
-            let song = {
-                'pid': pid,
-                'sid': sid,
-                'youtubeId': $targetSong.attr('data-youtubeId'),
-                'title': $targetSong.attr('data-title'),
-                'singer': $targetSong.attr('data-singer')
-            };
+            let song ;
+            //로그인 이메일 정보가져오기 없을시 공백
+            var loginCheck = "[[${userEmail}]]";
+            if(loginCheck != ""){
+                sids.push(sid);
+                ajaxService.postAjax(API_Server.commonURL + "playList", sids, (result) => {
+                   pid=result[0].pid;
+                })
+            }
+                song = {
+                    'pid': pid,
+                    'sid': sid,
+                    'youtubeId': $targetSong.attr('data-youtubeId'),
+                    'title': $targetSong.attr('data-title'),
+                    'singer': $targetSong.attr('data-singer')
+                };
             songArr.push(song);
             // ★ajax 호출이 들어가야 함 
             // add하는 동시에 db에서 생성시킨 pid를 makeMyListTag의 data-pid속성으로 넣어줄것(추후 삭제시 필요)
@@ -514,24 +542,28 @@
         // ajax처리해야함
         // 화면에서 제일 나중에 구현할것 
         function removeSongInMyList(targetIdx) {
-            if (targetIdx == undefined) {
-                $('.listCheckbox:checked').each(function () {
+
+            //삭제시 로그인 정보필요할듯해서 
+            //var loginCheck = "[[${userEmail}]]";
+
+            if(targetIdx == undefined){
+                $('.listCheckbox:checked').each(function(){
                     let $removeSong = $('[data-idx="' + $(this).val() + '"]');
                     $removeSong.remove();
                 })
-            } else {
+            }else{
                 let $targetSong = $('[data-idx="' + targetIdx + '"]');
                 $targetSong.remove();
             }
             let $allMySongs = $('.listCount');
-
-            $allMySongs.each(function (index, item) {
+            
+            $allMySongs.each(function(index,item){
                 let myMusic = $(item);
-                myMusic.attr("data-idx", index + 1);
-                myMusic.find(".listCheckbox").val(index + 1);
-                myMusic.find(".titleAndSingerText").attr("onclick", 'onPlay(' + (index + 1) + ')');
-                myMusic.find(".gd-close").attr("onclick", 'removeSongInMyList(' + (index + 1) + ')');
-            })
+                myMusic.attr("data-idx", index+1);
+                myMusic.find(".listCheckbox").val(index+1);
+                myMusic.find(".titleAndSingerText").attr("onclick",'onPlay('+(index+1)+')');
+                myMusic.find(".gd-close").attr("onclick",'removeSongInMyList('+(index+1)+')');
+             })
         }
 
 
@@ -567,7 +599,7 @@
                     height: '240',
                     width: '320',
                     videoId: youtubeId,
-                    host : 'https://www.youtube.com',
+                    host: 'https://www.youtube.com',
                     playerVars: {
                         'controls': 1, //플레이어 컨드롤러 표시여부
                         'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션

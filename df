@@ -1,0 +1,392 @@
+[33mcommit d70aee6829525d40418a50aa9af996ab61d24afd[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 10 16:11:58 2020 +0900
+
+    indexTest 삭제
+
+[33mcommit 02bbf27fc220ef0007f46694f71c98672d605238[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 23:11:41 2020 +0900
+
+    change user -> Member
+
+[33mcommit 85eacfd5242d88ab97d82bdfe7ecdf2bedfc53b9[m
+Merge: bfbb9d1 6f5e9a2
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 22:13:47 2020 +0900
+
+    s
+
+[33mcommit bfbb9d14862d95130ff4ceaae4919eb14a187aba[m
+Merge: 3702d35 93741a1
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 18:33:57 2020 +0900
+
+    kakao api
+
+[33mcommit 6f5e9a274a2a821deec3427349af4e4975114160[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Tue Jun 9 18:32:49 2020 +0900
+
+    oauth2 구현중
+
+[33mcommit 3702d35bf4e9f90d75a4c005d80fa2b6e6e5a7bd[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 16:01:32 2020 +0900
+
+    kakao api
+
+[33mcommit 93741a11f094f5e0222656aa7c9d2eb78e4f6760[m
+Merge: 9f805b1 0aee7a0
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Tue Jun 9 16:00:00 2020 +0900
+
+    kakao login api
+
+[33mcommit 9f805b1cafb49691a8cc8f0b531b360191028c57[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Tue Jun 9 13:15:15 2020 +0900
+
+    commit
+
+[33mcommit 0aee7a026583a3aadd8517ade2a28581a7970a42[m
+Merge: 617ea91 a6f1e97
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 13:13:59 2020 +0900
+
+    playing 서비스
+
+[33mcommit 617ea9198b75a0a14a8fb940a8a9969acabc672e[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 13:08:34 2020 +0900
+
+    playing 관계 적용
+
+[33mcommit a6f1e977104bb902924e9ddc39f3c10045f634bd[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Tue Jun 9 12:53:15 2020 +0900
+
+    navbar 화면변경, 전체재생,담기
+
+[33mcommit cf8f7de4ad5f93d6b5ff0b7432175dd1b7fcb503[m
+Merge: d160a4e 78434ef
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 09:43:06 2020 +0900
+
+    Merge branch 'master' of https://github.com/choiysr/My-Music-Taste
+
+[33mcommit d160a4eeeb9eaddf7229e514eb615a6f330913d2[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Tue Jun 9 09:42:57 2020 +0900
+
+    for pull
+
+[33mcommit 78434ef0036ff304f68d7a971caea1a56de39c6a[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 23:21:52 2020 +0900
+
+    indexTest.html>곡 재생 핸들링 기능 추가
+
+[33mcommit fa423bb108ff51bea4a4b9a1b63e40eddd6c7658[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 20:54:11 2020 +0900
+
+    indexTest.html>리스트 추가,재생중인 곡 css변경
+
+[33mcommit f7180353e561878511d71e144b0e0c6b17b0de10[m
+Merge: 362c6b9 ae7133f
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 18:53:15 2020 +0900
+
+    indexTest.html 뮤직차트 가져오고, add하는부분 수정
+
+[33mcommit 362c6b91779af9424dc86cfbe623611d93e44092[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 18:34:23 2020 +0900
+
+    indexTest.html 뮤직차트 가져오고, add하는부분 수정
+
+[33mcommit ae7133ff12af4132974d8cce188e442dc8f73d74[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Mon Jun 8 18:33:16 2020 +0900
+
+    playList 데이터 담기 및 id 값 데이터가져오기
+
+[33mcommit 16e4ec4f9f7b28ae342159c1b011f8fd1560b4e9[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 12:36:05 2020 +0900
+
+    modifid nav bar in index.html
+
+[33mcommit b7930dd83c749f3cae28ec3164615b936cb5090e[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Mon Jun 8 10:53:22 2020 +0900
+
+    modify ajaxutil.js
+
+[33mcommit d740ea995f82afb486d82514ba441cb0835dc8ec[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Sun Jun 7 22:27:18 2020 +0900
+
+    Create getSongListByType Method in SongService. test completed
+
+[33mcommit 213f33bbe391a9538c0ee796eb659222b80eb2eb[m
+Merge: c36202b 4f47fe4
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Sun Jun 7 18:24:26 2020 +0900
+
+    Merge branch 'master' of https://github.com/choiysr/My-Music-Taste
+
+[33mcommit c36202b7f8c302363b8810b7863b2a9591caef4b[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Sun Jun 7 18:24:18 2020 +0900
+
+    commit for pull
+
+[33mcommit 4f47fe45cbaa40e8cdaf1957990fe734d3b4f269[m
+Author: hyunbin95 <hyunbin7195@daum.net>
+Date:   Sun Jun 7 16:17:52 2020 +0900
+
+    index.html
+
+[33mcommit f8f78e3b084f09009e74ae74b63abf8ad7f892be[m
+Merge: 39297ee 850926b
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Sat Jun 6 18:52:38 2020 +0900
+
+    Merge branch 'master' of https://github.com/choiysr/My-Music-Taste
+
+[33mcommit 39297eeba61fcc0c01bc5f3e19d7a3575ef060e2[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Sat Jun 6 18:52:32 2020 +0900
+
+    reate findByType Method in repository
+
+[33mcommit 850926bb2ab430328e668bbe16771d5d5ecd8de1[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Sat Jun 6 18:46:40 2020 +0900
+
+    index html
+
+[33mcommit 3aaa857a97409e33bbff00e5fa9184a719a371a4[m
+Merge: 058f73e 2f1bc25
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Fri Jun 5 18:31:03 2020 +0900
+
+    create new method in SongController can return songList classified by rank-type
+
+[33mcommit 058f73e3e4601537e37b0659d561d71cdac9dabc[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Fri Jun 5 18:29:59 2020 +0900
+
+    create new method in SongController can return songList classified by rank-type
+
+[33mcommit 2f1bc251da22ac75fdb3e964c985b201fbccca22[m
+Merge: 24e3822 1d2d1fb
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Fri Jun 5 18:23:54 2020 +0900
+
+    lndex.html
+
+[33mcommit 24e3822e1b53fadb38347d843f30ffa1c16f0003[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Fri Jun 5 16:50:09 2020 +0900
+
+    musicTest
+
+[33mcommit 1d2d1fb91dff588aec44a2d2f0476127adb7a7d9[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Fri Jun 5 16:50:03 2020 +0900
+
+    modify meloncrawler - 가수명 하나만 나오는 부분, 썸네일 src get
+
+[33mcommit 96ee14007fed22b3060f78b92a2a51ee3f9d7e89[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 20:36:37 2020 +0900
+
+    create autoCrawler
+
+[33mcommit 7cc3846ea9456a957dd857ab40334febffc1171d[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 19:31:04 2020 +0900
+
+    create melontarget enum class
+
+[33mcommit a7c04477c23ebaed41537198ba119a1f7b997dfa[m
+Merge: 32f6a9a c88a40d
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 17:36:28 2020 +0900
+
+    create new crawler with selenium. add needed external jar
+
+[33mcommit 32f6a9a38451bbb7c54776a1cd15ff58e9072685[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 17:22:13 2020 +0900
+
+    create new crawler with selenium. custom jars import
+
+[33mcommit c88a40d29d1838943556f32e93cf821e764266e9[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Thu Jun 4 17:20:15 2020 +0900
+
+    musicTest
+
+[33mcommit c808ad1f0bd86384b48415aa061ea57d6548a1af[m
+Merge: 84e9d3b 8351aca
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Thu Jun 4 13:59:33 2020 +0900
+
+    crawler
+
+[33mcommit 84e9d3bb94059a2c80dd012c5a64b5c1c0819bfa[m
+Merge: d4ba74a 7a890c7
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Thu Jun 4 13:51:05 2020 +0900
+
+    crawler
+
+[33mcommit 8351aca175f12b72b56f72649a96e74926913be5[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 13:49:46 2020 +0900
+
+    insert dummies
+
+[33mcommit 7a890c74279d5b17d79074921ef95438142ff6ab[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 10:27:26 2020 +0900
+
+    apply git ignore
+
+[33mcommit d4f7dbdac7e05a828af3b361b6167f27d81aaceb[m
+Author: Dreamer <48176963+choiysr@users.noreply.github.com>
+Date:   Thu Jun 4 10:24:35 2020 +0900
+
+    Delete application.properties
+
+[33mcommit 799bcc64cbf1659a20594339e4a81bf9bae42196[m
+Author: Dreamer <48176963+choiysr@users.noreply.github.com>
+Date:   Thu Jun 4 10:24:28 2020 +0900
+
+    Delete youtube.properties
+
+[33mcommit 560a6fa0a6677af5a2dcbb7429357344b437bde0[m
+Merge: 57842c1 41d0501
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 10:23:44 2020 +0900
+
+    apply gitignore
+
+[33mcommit 57842c1e0a4f24a68c7e0f4189d4b8fe8044644c[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Thu Jun 4 09:48:19 2020 +0900
+
+    commit for pull
+
+[33mcommit d4ba74a3379a93ed934feb140cc55036b70d30d4[m
+Merge: 3cca3b5 41d0501
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 22:40:49 2020 +0900
+
+    i want pull
+
+[33mcommit 3cca3b566539127fc3ac848ca35e15c716b2f6ef[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 22:34:46 2020 +0900
+
+    i want pull
+
+[33mcommit 41d050127d11f3b1a2931e9afaea2d7a3f0f34ec[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 22:16:50 2020 +0900
+
+    combineTest
+
+[33mcommit 627147dae35a315df9adc5269fbab8f5ef9c4b03[m
+Merge: c09a64b 777eb71
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 21:52:14 2020 +0900
+
+    Merge branch 'master' of https://github.com/choiysr/My-Music-Taste
+
+[33mcommit c09a64b2bdb9eb18ce64f02358a5f687f77abbc5[m
+Merge: 730df20 bef1875
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 21:49:19 2020 +0900
+
+    hello
+
+[33mcommit 777eb71b98aaf1b58b3661d02da9eb1b25e23f68[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 21:47:55 2020 +0900
+
+    combine two crawlers
+
+[33mcommit b933a2ade2ad151e71d3bb7f97e0952176887c54[m
+Merge: de3b5c1 bef1875
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 20:03:18 2020 +0900
+
+    Merge branch 'master' of https://github.com/choiysr/My-Music-Taste
+
+[33mcommit de3b5c1b7f40a9306ccffcf3529e7a520cc04ff6[m
+Merge: 88a808a 9db1e0f
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 20:03:05 2020 +0900
+
+    test
+
+[33mcommit 730df20df4f1ae7f78952bc6298ef9b5c4b5337e[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 18:09:04 2020 +0900
+
+    MelonCrawler
+
+[33mcommit bef1875d02d1dfc287335ea54aa1a0cb4332f246[m
+Merge: a7ee7d3 0bbb601
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 18:07:27 2020 +0900
+
+    youtubeCrawler, player(demo) 구현
+
+[33mcommit a7ee7d325edd81cf1f5605d35571b9aa9adc608f[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 18:02:33 2020 +0900
+
+    youtube Crawler, moviePlayer(demo) 구현
+
+[33mcommit 0bbb601d22c1d3326f29a55f32cf24564331c536[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 17:53:16 2020 +0900
+
+    2020.06.03
+
+[33mcommit a021ccbea8964224e0354fc1b2e1ceeb28ee9947[m
+Merge: 397ec49 f4819af
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 17:50:24 2020 +0900
+
+    2020.06.03
+
+[33mcommit 397ec49fd4ee608e7062813638cba646936e96cc[m
+Author: hyunbin <hyunbin7195@daum.net>
+Date:   Wed Jun 3 10:45:48 2020 +0900
+
+    first commit
+
+[33mcommit f4819aff35cd7ffe8071e77dc31c4714db8a713f[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Wed Jun 3 09:43:02 2020 +0900
+
+    designed architecture
+
+[33mcommit 88a808afe573852d66641a561db8bb62cd08164b[m
+Author: choiysr <valsa_de_euridice@naver.com>
+Date:   Tue Jun 2 22:17:33 2020 +0900
+
+    test
+
+[33mcommit 9db1e0f8662199f6c4413cebff284d55bb1d8ecf[m
+Author: dreamer <valsa_de_euridice@naver.com>
+Date:   Tue Jun 2 17:28:21 2020 +0900
+
+    melon clawling test
