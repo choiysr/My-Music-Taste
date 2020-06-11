@@ -529,9 +529,14 @@
                 let targetObjs = getSongTags(targetIdx);
                 let pids = [];
                 let removeIdx = []; 
+                let curIdx = 0;
+                let compareIdx = currentPlayingIdx;
 
-                targetObjs.forEach((item) => {
+                targetObjs.forEach((item,index) => {
                         pids.push(item.attr('data-pid'));
+                        if(item.attr('data-idx') < currentPlayingIdx){
+                            curIdx ++;
+                        }
                         removeIdx.push(item.attr('data-idx'));
                 });
                 if (loginCheck != '') { // 로그인 된 사용자
@@ -548,13 +553,26 @@
                     myMusic.find('.titleAndSingerText').attr('onclick', 'onPlay(' + (index + 1) + ')');
                     myMusic.find('.gd-close').attr('onclick', 'removeSongInMyList(' + (index + 1) + ')');
                 })
+                
+
+                console.log("currentPlayIngdex > " + currentPlayingIdx);
+                console.log("targetIdx > " + targetIdx);
 
                 //삭제한 동영상 중지후 다음곡 재생
-                var containsIdx = $.inArray(currentPlayingIdx , removeIdx);
-                if((currentPlayingIdx == targetIdx) || containsIdx){
-                    stopVideo();
-                    playNext("remove");    
+                var containsIdx = removeIdx.includes(""+currentPlayingIdx);
+
+                if(targetIdx == undefined){
+                    currentPlayingIdx -= curIdx;
+                } else if(targetIdx < currentPlayingIdx ){
+                    currentPlayingIdx--;
                 }
+
+                if((compareIdx == targetIdx) || containsIdx){
+                    stopVideo();
+                    playNext(currentPlayingIdx);
+                }
+                
+                console.log("currentPlayingIdx > " + currentPlayingIdx);
 
             }
 
@@ -653,10 +671,8 @@
 
         function playNext(idx) {
             //플레이리스트 idx 로 이어서 재생.
-            console.log("currentPlayingIdx > " + currentPlayingIdx);
             let nextPage;
-
-            if(idx == 'remove'){
+            if(idx != undefined){
                 nextPage = currentPlayingIdx;
             }else{
                 nextPage = ++currentPlayingIdx;

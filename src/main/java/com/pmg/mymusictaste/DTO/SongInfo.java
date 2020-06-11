@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pmg.mymusictaste.domain.Song;
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class SongInfo {
 
     private Integer ranking;
     private String title;
-    private String type;
+    private MelonTarget type;
     private String singer;
     private String thumbnail;
     private String youtubeId;

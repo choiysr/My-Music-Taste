@@ -2,9 +2,13 @@ package com.pmg.mymusictaste.domain;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.pmg.mymusictaste.util.MelonTarget;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +26,9 @@ public class Song {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long sid;
   private Integer ranking;
-  private String type;
+
+  @Enumerated(EnumType.STRING)
+  private MelonTarget type;
   private String title;
   private String singer;
   private String thumbnail;

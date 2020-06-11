@@ -20,12 +20,12 @@ public class SongServiceTest {
 
     @Test
     public void getSongListByTypeTest(){
-        int page = 1;
-        String type = "DAILY";
-        Page<Song> songPage = sServ.getSongListByType(page,50,type); 
-        for(Song song : songPage.getContent()) {
-            log.info("song : " + song);
-        }
+        // int page = 1;
+        // String type = "DAILY";
+        // Page<Song> songPage = sServ.getSongListByType(page,50,type); 
+        // for(Song song : songPage.getContent()) {
+        //     log.info("song : " + song);
+        // }
     }
 
     
