@@ -28,6 +28,7 @@
     <!-- Icon import -->
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
+    
 </head>
 
 <body class="has-sidebar has-fixed-sidebar-and-header">
@@ -38,19 +39,15 @@
                 <a class="navbar-brand navbar-brand-mobile" href="/">
                     <img class="img-fluid w-100" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
                 </a>
-
                 <a class="navbar-brand navbar-brand-desktop" href="/">
                     <img class="side-nav-show-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
                         style="width: auto; height: 33px;">
+                </a>
+                <a class="navbar-brand navbar-brand-desktop" href="/">
                     <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
                         style="width: auto; height: 33px;">
                 </a>
             </div>
-
-            <a class="navbar-brand navbar-brand-desktop" href="/">
-                <img class="side-nav-show-on-closed" src="@{~/public/img/music_icon.png}" alt="Graindashboard"
-                    style="width: auto; height: 33px;">
-            </a>
 
             <div class="header-content col px-md-3">
                 <div class="d-flex align-items-center">
@@ -261,6 +258,24 @@
         var player;
         var currentPlayingIdx;
         const API_Server = new URL('http://localhost:8080/');
+
+        $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 0) {
+                $('#MOVE_TOP_BTN').fadeIn();
+            } else {
+                $('#MOVE_TOP_BTN').fadeOut();
+            }
+        });
+        
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
+
 
         $(document).ready(() => {
 

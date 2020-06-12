@@ -19,22 +19,12 @@ public class MelonCrawler {
     Elements elements = null;
     List<SongInfo> songList = null;
     SongInfo song = null;
-    String songType = null;
     Integer rank = 1;
 
     // 프로세스부
     try {
       doc = Jsoup.connect(target.getUrl()).get();
       if (doc != null) {
-        // if (target.equals(MelonTarget.REALTIME)) {
-        //   songType = "REALTIME";
-        // } else if (target.equals(MelonTarget.DAILY)) {
-        //   songType = "DAILY";
-        // } else if (target.equals(MelonTarget.WEEKLY)) {
-        //   songType = "WEEKLY";
-        // } else {
-        //   songType = "MONTHLY";
-        // }
         elements = doc.select("tr.lst50");
         songList = new ArrayList<SongInfo>();
         for (Element el : elements) {
