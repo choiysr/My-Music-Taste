@@ -33,14 +33,14 @@
         <nav class="navbar flex-nowrap p-0">
             <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
                 <a class="navbar-brand navbar-brand-mobile" href="/">
-                    <img class="img-fluid w-100" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard">
+                    <img class="img-fluid w-100" th:src="@{~/public/img/logo.png}" alt="Graindashboard">
                 </a>
                 <a class="navbar-brand navbar-brand-desktop" href="/">
-                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
+                    <img class="side-nav-show-on-closed" th:src="@{~/public/img/logo.png}" alt="Graindashboard"
                         style="width: auto; height: 33px;">
                 </a>
                 <a class="navbar-brand navbar-brand-desktop" href="/">
-                    <img class="side-nav-hide-on-closed" th:src="@{~/public/img/music_icon.png}" alt="Graindashboard"
+                    <img class="side-nav-hide-on-closed" th:src="@{~/public/img/logo.png}" alt="Graindashboard"
                         style="width: auto; height: 33px;">
                 </a>
             </div>
@@ -202,31 +202,15 @@
             <!-- Footer -->
             <footer class="small p-3 px-md-4 mt-auto">
                 <div class="row justify-content-between">
-                    <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
-                        <ul class="list-dot list-inline mb-0">
-                            <li class="list-dot-item list-dot-item-not list-inline-item mr-lg-2"><a class="link-dark"
-                                    href="#">FAQ</a></li>
-                            <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark" href="#">Support</a>
-                            </li>
-                            <li class="list-dot-item list-inline-item mr-lg-2"><a class="link-dark" href="#">Contact
-                                    us</a></li>
-                        </ul>
+
+                    <div class="col-lg text-center text-lg-center mb-3 mb-lg-0">
+                        <a class="link-muted" href="https://www.facebook.com/yesora.choi" target="_blank"><i class="gd-facebook"></i></a> 
+                        <a class="link-muted" href="https://github.com/choiysr" target="_blank"><i class="gd-github"></i></a>
+                        <a class="link-muted" href="https://www.instagram.com/the_____dreamer/" target="_blank"><i class="gd-instagram"></i></a> 
+                        <br>
+                        &copy; YESORA CHOI 
                     </div>
 
-                    <div class="col-lg text-center mb-3 mb-lg-0">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                        class="gd-twitter-alt"></i></a></li>
-                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                        class="gd-facebook"></i></a></li>
-                            <li class="list-inline-item mx-2"><a class="link-muted" href="#"><i
-                                        class="gd-github"></i></a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg text-center text-lg-right">
-                        &copy; 2019 Graindashboard. All Rights Reserved.
-                    </div>
                 </div>
             </footer>
             <!-- End Footer -->
@@ -268,7 +252,7 @@
             tag.src = "https://www.youtube.com/iframe_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            
+
 
             // 로그인한 유저의 플레이리스트 목록을 불러옴. 
             ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {

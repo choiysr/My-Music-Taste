@@ -31,7 +31,7 @@ public class AutoCrawl {
         melonCrawler = new MelonCrawler();
         youtubeCrawler = YoutubeCrawler.getChrome();
         List<SongInfo> targetList = youtubeCrawler.crawl(melonCrawler.crawl(target));
-        return SongInfo.toSongList(targetList);
+                         return SongInfo.toSongList(targetList);
     }
 
     // 1시간마다 실행
