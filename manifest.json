@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+  
+    "name": "tetoda_robot_chromeExtension",
+    "description": "chromeExtension Test",
+    "version": "1.0.0",
+  
+    "browser_action": {
+      "default_icon": "music_icon.png",
+      "default_popup": "index.html"
+    },
+    "permissions": [
+      "tabs",
+      "<all_urls>"
+    ]
+  }

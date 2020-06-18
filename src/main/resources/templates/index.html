@@ -13,22 +13,18 @@
     <link rel="shortcut icon" th:href="@{~/public/img/favicon.ico}">
 
 
-    <!-- DEMO CHARTS -->
-    <link rel="stylesheet" th:href="@{~/public/demo/chartist.css}">
-    <link rel="stylesheet" th:href="@{~/public/demo/chartist-plugin-tooltip.css}">
-
     <!-- Template -->
     <link rel="stylesheet" th:href="@{~/public/graindashboard/css/graindashboard.css}">
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
     <!-- YOUTUBE API-->
-    <script src="https://www.youtube.com/player_api"></script>
+    <!-- <script src="https://www.youtube.com/player_api"></script> -->
     <script th:src="@{~/public/js/ajaxUtil.js}"></script>
     <!-- Icon import -->
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
-    
+
 </head>
 
 <body class="has-sidebar has-fixed-sidebar-and-header">
@@ -87,7 +83,7 @@
         <aside id="sidebar" class="js-custom-scroll side-nav">
             <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
                 <!-- Title -->
-                <li class="sidebar-heading h6">MUSIC TOP50</li>
+                <li class="sidebar-heading h6">MUSIC TOP100</li>
                 <!-- End Title -->
 
 
@@ -242,44 +238,37 @@
     <script th:src="@{~/public/graindashboard/js/graindashboard.js}"></script>
     <script th:src="@{~/public/graindashboard/js/graindashboard.vendor.js}"></script>
 
-    <!-- DEMO CHARTS -->
-    <script th:src="@{~/public/demo/resizeSensor.js}"></script>
-    <script th:src="@{~/public/demo/chartist.js}"></script>
-    <script th:src="@{~/public/demo/chartist-plugin-tooltip.js}"></script>
-    <script th:src="@{~/public/demo/gd.chartist-area.js}"></script>
-    <script th:src="@{~/public/demo/gd.chartist-bar.js}"></script>
-    <script th:src="@{~/public/demo/gd.chartist-donut.js}"></script>
-    <script>
-        $.GDCore.components.GDChartistArea.init('.js-area-chart');
-        $.GDCore.components.GDChartistBar.init('.js-bar-chart');
-        $.GDCore.components.GDChartistDonut.init('.js-donut-chart');
-    </script>
     <script>
         var player;
         var currentPlayingIdx;
         const API_Server = new URL('http://localhost:8080/');
 
-        $(function() {
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 0) {
-                $('#MOVE_TOP_BTN').fadeIn();
-            } else {
-                $('#MOVE_TOP_BTN').fadeOut();
-            }
+        $(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+                    $('#MOVE_TOP_BTN').fadeIn();
+                } else {
+                    $('#MOVE_TOP_BTN').fadeOut();
+                }
+            });
+
+            $("#MOVE_TOP_BTN").click(function () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 400);
+                return false;
+            });
         });
-        
-        $("#MOVE_TOP_BTN").click(function() {
-            $('html, body').animate({
-                scrollTop : 0
-            }, 400);
-            return false;
-        });
-    });
 
 
         $(document).ready(() => {
 
             getMusicChartList('realtime', 1);
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            
 
             // 로그인한 유저의 플레이리스트 목록을 불러옴. 
             ajaxService.getAjax(API_Server.commonURL + "playList", (result) => {
@@ -623,23 +612,38 @@
             currentPalyTargetTagColorChange(targetIdx);
             if (player == null) {
                 console.log("플레이어 객체 생성");
-                window.YT.ready(function () {
-                    player = new window.YT.Player('player', {
-                        height: '240',
-                        width: '320',
-                        videoId: youtubeId,
-                        host: 'https://www.youtube.com',
-                        playerVars: {
-                            'controls': 1, //플레이어 컨드롤러 표시여부
-                            'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
-                            'autoplay': 1, //자동재생 여부
-                        },
-                        events: {
-                            'onReady': onPlayerReady,
-                            'onStateChange': onPlayerStateChange
-                        }
-                    });
-                })
+                player = new YT.Player('player', {
+                    height: '217',
+                    width: '290',
+                    videoId: youtubeId,
+                    host: 'https://www.youtube.com',
+                    playerVars: {
+                        'controls': 1, //플레이어 컨드롤러 표시여부
+                        'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
+                        'autoplay': 1, //자동재생 여부
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+                /*                 window.YT.ready(function () {
+                                    player = new window.YT.Player('player', {
+                                        height: '240',
+                                        width: '320',
+                                        videoId: youtubeId,
+                                        host: 'https://www.youtube.com',
+                                        playerVars: {
+                                            'controls': 1, //플레이어 컨드롤러 표시여부
+                                            'playsinline': 1, //ios환경에서 전체화면으로 재생하지 않게하는 옵션
+                                            'autoplay': 1, //자동재생 여부
+                                        },
+                                        events: {
+                                            'onReady': onPlayerReady,
+                                            'onStateChange': onPlayerStateChange
+                                        }
+                                    });
+                                }) */
             } else {
                 player.loadVideoById(youtubeId);
             }

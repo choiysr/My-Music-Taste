@@ -30,7 +30,7 @@ public class AutoCrawl {
     public List<Song> startCrawling(MelonTarget target) {
         melonCrawler = new MelonCrawler();
         youtubeCrawler = YoutubeCrawler.getChrome();
-        List<SongInfo> targetList = youtubeCrawler.crawl(melonCrawler.getMelonCrawlingList(target));
+        List<SongInfo> targetList = youtubeCrawler.crawl(melonCrawler.crawl(target));
         return SongInfo.toSongList(targetList);
     }
 
